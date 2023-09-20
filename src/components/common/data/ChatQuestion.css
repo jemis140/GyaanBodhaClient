@@ -1,0 +1,17 @@
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.chat-input {
+  flex: 1;
+}
+
+.chat-send-button {
+  background: linear-gradient(to right, #4d2882, #b74400);
+  border: none;
+  border-radius: 50%;
+  margin-left: 8px;
+  transition: background-color 0.3s;
+}

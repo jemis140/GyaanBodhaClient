@@ -1,0 +1,100 @@
+import React, { useState, useEffect, useRef } from "react";
+import { Row, Col } from "antd";
+
+import TextInput from "./TextForm";
+import TextSummary from "./TextConversation";
+import { getTextSummary } from "../api/textSummaryAPI";
+import { handleTextSummaryData } from "../api/textSummaryFirebaseAPI";
+import { realtimeDb } from "../../../firebase";
+import { ref, onValue, off } from "firebase/database";
+import { useDispatch } from "react-redux";
+import { fetchTextSummary } from "../../../store/modules/text/textThunks";
+
+const TextTab = () => {
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [chatData, setChatData] = useState([]);
+
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    chatRef.current = ref(realtimeDb, "chatsText");
+
+    const chatListener = onValue(chatRef.current, (snapshot) => {
+      const chatDataArray = [];
+      snapshot.forEach((childSnapshot) => {
+        chatDataArray.push(childSnapshot.val());
+      });
+      setChatData(chatDataArray);
+      setIsLoading(false);
+    });
+
+    return () => {
+      if (chatRef.current) {
+        off(chatRef.current, "value", chatListener);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchTextSummary());
+  }, []);
+
+  const handleGenerateSummary = async (text) => {
+    try {
+      const response = await getTextSummary(text);
+      if (response.status === 200) {
+        const summary = response.data.aiResponse;
+
+        console.log("summary", summary);
+        handleTextSummaryData(summary);
+      } else {
+        console.error(`Failed to get article summary: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Generate Vector Store Error:", error);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <div
+        style={{
+          width: "80%",
+          marginBottom: "20px",
+          marginTop: "30px",
+          justifyContent: "center",
+        }}
+      >
+        <TextInput onTextSubmit={handleGenerateSummary} />
+      </div>
+
+      <Row
+        gutter={[16, 16]}
+        style={{ marginBottom: "20px" }}
+        xs={24}
+        sm={20}
+        md={20}
+        lg={20}
+      >
+        <Col xs={24} sm={24} md={24} lg={24}>
+          {isLoading ? (
+            <p>Loading chat data...</p>
+          ) : (
+            <TextSummary chatData={chatData} />
+          )}
+        </Col>
+      </Row>
+    </div>
+  );
+};
+
+export default TextTab;

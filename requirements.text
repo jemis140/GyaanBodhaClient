@@ -1,0 +1,15 @@
+react
+react-dom
+react-redux 
+react-router-dom 
+axios 
+formik 
+jest 
+@testing-library/react 
+@testing-library/jest-dom 
+eslint 
+prettier 
+react-query 
+react-firebase-hooks 
+framer-motion 
+

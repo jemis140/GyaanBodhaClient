@@ -1,0 +1,1 @@
+export const STORE_ARTICLE_CHAT = "STORE_ARTICLE_CHAT";

@@ -1,0 +1,1 @@
+export const STORE_EUCLID_CHAT = "STORE_EUCLID_CHAT";
