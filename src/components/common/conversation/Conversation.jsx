@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { UpOutlined } from "@ant-design/icons";
-import { List, Button } from "antd";
+import { List, Button, Row } from "antd";
 import UserConversation from "../../../components/common/conversation/UserConversation";
 import AIConversation from "../../../components/common/conversation/AIConversation";
 
@@ -75,29 +75,30 @@ const Conversation = ({ chatData, responseFlag }) => {
       </List>
       <div
         style={{
-          position: "absolute",
           bottom: "10px",
           right: "20px",
           marginTop: "10px",
         }}
       >
-        {scrollToTopVisible && (
-          <Button
-            style={{
-              background: "linear-gradient(to right, #5a0a75, #b25400)",
-              borderRadius: "50%",
-              width: "40px" /* Set the width and height to make it circular */,
-              height: "40px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            type="primary"
-            onClick={scrollToTop}
-          >
-            <UpOutlined />
-          </Button>
-        )}
+        <Row style={{ display: "flex", justifyContent: "flex-end" }}>
+          {scrollToTopVisible && (
+            <Button
+              style={{
+                background: "linear-gradient(to right, #5a0a75, #b25400)",
+                borderRadius: "50%",
+                height: "40px",
+                alignItems: "center",
+                marginTop: "10px",
+                marginRight: "10px",
+                position: "absolute",
+              }}
+              type="primary"
+              onClick={scrollToTop}
+            >
+              <UpOutlined />
+            </Button>
+          )}
+        </Row>
       </div>
     </div>
   );

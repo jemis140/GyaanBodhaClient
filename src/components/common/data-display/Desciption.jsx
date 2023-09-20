@@ -24,12 +24,10 @@ const Description = ({ moduleType }) => {
       {/* Heading and Description */}
       <div>
         <div style={{ marginBottom: "5px" }}>
-          <Title level={4} strong>
-            {heading}
-          </Title>
+          <h2 style={{ marginBottom: "5px" }}>{heading}</h2>
         </div>
         <div>
-          <Title level={5}>{description}</Title>
+          <h3>{description}</h3>
         </div>
       </div>
     </div>
