@@ -53,9 +53,6 @@ const TextSummary = ({ chatData }) => {
               >
                 <Avatar size={32} icon={<RobotOutlined />} />
               </div>
-              <Text strong type="secondary">
-                AI
-              </Text>
             </Space>
           </div>
           <div

@@ -9,6 +9,9 @@ import { realtimeDb } from "../../../firebase";
 import { ref, onValue, off } from "firebase/database";
 import { useDispatch } from "react-redux";
 import { fetchTextSummary } from "../../../store/modules/text/textThunks";
+import Description from "../../../components/common/data-display/Desciption";
+import Loader from "../../../components/common/conversation/Loader";
+import Conversation from "../../../components/common/conversation/Conversation";
 
 const TextTab = () => {
   const dispatch = useDispatch();
@@ -68,7 +71,7 @@ const TextTab = () => {
     >
       <div
         style={{
-          width: "80%",
+          width: "100%",
           marginBottom: "20px",
           marginTop: "30px",
           justifyContent: "center",
@@ -76,21 +79,10 @@ const TextTab = () => {
       >
         <TextInput onTextSubmit={handleGenerateSummary} />
       </div>
-
-      <Row
-        gutter={[16, 16]}
-        style={{ marginBottom: "20px" }}
-        xs={24}
-        sm={20}
-        md={20}
-        lg={20}
-      >
+      <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
         <Col xs={24} sm={24} md={24} lg={24}>
-          {isLoading ? (
-            <p>Loading chat data...</p>
-          ) : (
-            <TextSummary chatData={chatData} />
-          )}
+          {/* Conversation component */}
+          {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
         </Col>
       </Row>
     </div>

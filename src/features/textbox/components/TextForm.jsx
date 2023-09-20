@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Input, Button, Typography, Col, Row } from "antd";
+import { Input, Button, Typography, Card, Row } from "antd";
+import GradientButton from "../../../components/common/general/Button";
+import Description from "../../../components/common/data-display/Desciption";
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -17,51 +19,64 @@ const TextInput = ({ onTextSubmit }) => {
   };
 
   return (
-    <Col
-      gutter={[16, 16]}
+    <div
       style={{
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
       }}
     >
-      <Row xs={24} sm={20} md={20} lg={20}>
-        <TextArea
-          placeholder="Enter text here ..."
-          value={text}
-          onChange={handleTextChange}
-          autoSize={{ minRows: 7, maxRows: 20 }}
-          style={{ width: "100%" }}
-        />
-      </Row>
-      <Row
-        xs={24}
-        sm={4}
-        md={4}
-        lg={4}
+      <Card
         style={{
-          marginTop: "20px",
+          background: "linear-gradient(to right, #ffffff, #f0f0f0)",
+          boxShadow: " 0 4px 8px rgba(0, 0.1, 0.1, 0.1)",
+        }}
+        bodyStyle={{
+          borderColor: "linear-gradient(to left, #4d2882, #b74400)",
+          border: "1px solid transparent",
+          borderRadius: "8px",
+          padding: "20px",
+          margin: "10px",
         }}
       >
-        <Button
-          type="primary"
-          onClick={handleTextSubmit}
+        {/* start of input section */}
+        <Description moduleType="TEXT_SUMMARY" />
+        <Row>
+          <TextArea
+            placeholder="Enter text here ..."
+            value={text}
+            onChange={handleTextChange}
+            autoSize={{ minRows: 7, maxRows: 20 }}
+            style={{ width: "100%" }}
+          />
+        </Row>
+        <Row
+          xs={24}
+          sm={4}
+          md={4}
+          lg={4}
           style={{
-            width: "10%",
-            fontSize: "14px",
-            padding: "6px 12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#502f73", // Darker shade of purple
-            color: "#fff", // White text color
-            overflow: "hidden",
+            marginTop: "20px",
           }}
         >
-          Summarize
-        </Button>
-      </Row>
-    </Col>
+          <GradientButton
+            label="Summarize"
+            onClick={handleTextSubmit}
+            style={{
+              width: "10%",
+              fontSize: "14px",
+              padding: "6px 12px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "linear-gradient(to bottom, #502f73, #46287a)", // Darker shade of purple
+              color: "#fff", // White text color
+              overflow: "hidden",
+            }}
+          />
+        </Row>
+      </Card>
+    </div>
   );
 };
 
