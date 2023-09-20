@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Card } from "antd";
 import { getEuclidConversationChain } from "../api/euclidAPI";
 import { realtimeDb } from "../../../firebase";
 import { ref, onValue, off } from "firebase/database";
 import { useDispatch } from "react-redux";
-
+import ChatInput from "../../../components/common/data/ChatQuestion";
 import { fetchChatConversations } from "../../../store/modules/euclid/euclidThunks";
 import { handleQuestionSubmission } from "../api/euclidFirebaseAPI";
-import Conversation from "./conversation/Conversation";
+import Conversation from "../../../components/common/conversation/Conversation";
+import Description from "../../../components/common/data-display/Desciption";
+import Loader from "../../../components/common/conversation/Loader";
 import EuclidForm from "./forms/EuclidForm";
-import QuestionInput from "./forms/Question";
 
 const EuclidTab = () => {
   const dispatch = useDispatch();
@@ -71,26 +72,38 @@ const EuclidTab = () => {
         margin: "50px",
       }}
     >
-      <EuclidForm onFormSubmit={handleCreateConversationChain} />
-
-      <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
-        <Col xs={24} sm={24} md={24} lg={24}>
-          {/* QuestionInput component */}
-          <QuestionInput
-            question={question}
-            setQuestion={setQuestion}
-            onAsk={handleAskQuestion}
-          />
-        </Col>
-      </Row>
+      <Card
+        style={{
+          background: "linear-gradient(to right, #ffffff, #f0f0f0f)",
+          boxShadow: " 0 4px 8px rgba(0, 0, 0.1, 0.1)",
+          marginLeft: "10px",
+          marginBottom: "10px",
+        }}
+        bodyStyle={{
+          borderColor: "linear-gradient(to left, #4d2882, #b74400)",
+          border: "1px solid transparent",
+          borderRadius: "8px",
+          padding: "20px",
+          marginBottom: "10px",
+        }}
+      >
+        <Description moduleType="EUCLID_QA" />
+        <EuclidForm onFormSubmit={handleCreateConversationChain} />
+        <Row gutter={[16, 16]} style={{ margin: "10px" }}>
+          <Col xs={24} sm={24} md={24} lg={24}>
+            {/* QuestionInput component */}
+            <ChatInput
+              question={question}
+              setQuestion={setQuestion}
+              onAsk={handleAskQuestion}
+            />
+          </Col>
+        </Row>
+      </Card>
       <Row gutter={[16, 16]} style={{ margin: "10px" }}>
         <Col xs={24} sm={24} md={24} lg={24}>
           {/* Conversation component */}
-          {isLoading ? (
-            <p>Loading chat data...</p>
-          ) : (
-            <Conversation chatData={chatData} />
-          )}
+          {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
         </Col>
       </Row>
     </div>

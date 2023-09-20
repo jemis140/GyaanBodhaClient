@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Input, Button, Row, Col } from "antd";
 import ArticleURLInput from "./articleForm";
+import { Card, Row, Col } from "antd";
 import UploadDoc from "./UploadDoc";
 import TextForm from "./TextForm";
 import GradientButton from "../../../../components/common/general/Button";
+import ChatInput from "../../../../components/common/data/ChatQuestion";
 
 const EuclidInput = ({ onFormSubmit }) => {
   const [url, setUrl] = useState("");
@@ -16,11 +17,10 @@ const EuclidInput = ({ onFormSubmit }) => {
 
   return (
     <div>
-      <div style={{ marginTop: "20px" }}>
-        <UploadDoc setFiles={setFiles} style={{ marginBottom: "15px" }} />
-        <ArticleURLInput setUrl={setUrl} />
-        <TextForm setText={setText} />
-      </div>
+      <UploadDoc setFiles={setFiles} style={{ marginBottom: "15px" }} />
+      <ArticleURLInput setUrl={setUrl} />
+      <TextForm setText={setText} />
+
       <div
         style={{
           marginLeft: "20px",
