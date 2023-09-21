@@ -105,13 +105,7 @@ const PdfTab = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        margin: "15px",
-      }}
-    >
+    <div>
       <Card
         style={{
           background: "linear-gradient(to right, #ffffff, #f0f0f0)",

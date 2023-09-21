@@ -17,7 +17,7 @@ const TextInput = ({ setText }) => {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        margin: "20px",
+        marginTop: "20px",
       }}
     >
       <Row xs={24} sm={20} md={20} lg={20}>
