@@ -1,38 +1,46 @@
 import React from "react";
-import { Layout, Menu, Row, Col } from "antd";
-import { UserOutlined, SettingOutlined } from "@ant-design/icons";
+import { Layout, Row, Col } from "antd";
 import { Typography } from "antd";
+
 const { Header } = Layout;
 const { Title } = Typography;
 
 const TopMenu = () => {
+  const headerStyle = {
+    background: "linear-gradient(to right, #4d2882, #b74400)",
+  };
+
+  const titleStyle = {
+    background: "linear-gradient(to right, #502f73, #ff8c40)",
+    WebkitBackgroundClip: "text",
+    color: "white",
+  };
+
+  const menuItemsStyle = {
+    display: "flex",
+    listStyle: "none",
+    justifyContent: "flex-end",
+  };
+
+  const menuItemStyle = {
+    margin: "0 16px",
+    color: "white",
+  };
+
   return (
-    <Header style={{ backgroundColor: "#502f73", color: "white" }}>
+    <Header style={headerStyle}>
       <Row justify="center">
         <Col span={6}>
-          <Title level={3} style={{ color: "white" }}>
+          <Title level={3} style={titleStyle}>
             GyaanBodha
           </Title>
         </Col>
         <Col span={18}>
-          {/* Menu items */}
-          {/* Adjust the menu items and styles accordingly */}
-          {/* For demonstration, I'm using placeholders */}
-          <ul
-            style={{
-              display: "flex",
-              listStyle: "none",
-              justifyContent: "flex-end",
-            }}
-          >
-            <li style={{ margin: "0 16px", color: "white" }}>
-              Research Reports
-            </li>
-            <li style={{ margin: "0 16px", color: "white" }}>
-              Research Topics
-            </li>
-            <li style={{ margin: "0 16px", color: "white" }}>Profile</li>
-            <li style={{ margin: "0 16px", color: "white" }}>Settings</li>
+          <ul style={menuItemsStyle}>
+            <li style={menuItemStyle}>Research Reports</li>
+            <li style={menuItemStyle}>Research Topics</li>
+            <li style={menuItemStyle}>Profile</li>
+            <li style={menuItemStyle}>Settings</li>
           </ul>
         </Col>
       </Row>
