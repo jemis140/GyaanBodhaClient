@@ -13,6 +13,9 @@ import {
   SettingOutlined,
   CloseOutlined,
   MenuFoldOutlined,
+  AppstoreOutlined,
+  MailOutlined,
+  PieChartOutlined,
   MenuUnfoldOutlined,
   SnippetsOutlined,
   QuestionCircleOutlined,
@@ -71,7 +74,7 @@ const ToggleButton = ({ collapsed, toggleCollapsed }) => {
 };
 
 const SideBar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [selectedSubMenu, setSelectedSubMenu] = useState(null);
 
   const toggleCollapsed = () => {

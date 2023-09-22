@@ -14,7 +14,7 @@ const Homepage = () => {
       </Layout>
 
       <Layout style={{ marginLeft: "0", transition: "margin 0.3s" }}>
-        <Content style={{ overflowY: "hidden" }}>
+        <Content>
           <Row>
             <Col span={3}>
               <Sidebar />
