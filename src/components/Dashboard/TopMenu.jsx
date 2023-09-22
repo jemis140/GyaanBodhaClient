@@ -15,26 +15,31 @@ const { SubMenu } = Menu;
 
 const TopMenu = () => {
   const headerStyle = {
-    background: "linear-gradient(to right, #4d2882, #b74400)",
+    background: "linear-gradient(to right, #4d2882, #b74400)", // Adjust gradient colors
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    position: "sticky",
-    zIndex: 1,
+    position: "fixed", // Set position to fixed
+    width: "100%", // Set width to 100% to cover the entire screen
+    zIndex: 1000, // Set a high z-index to ensure it stays on top
   };
 
   const titleStyle = {
-    background: "linear-gradient(to right, #502f73, #ff8c40)",
+    background: "linear-gradient(to down, #b74400, #f0f0f0)", // Adjust gradient colors
     WebkitBackgroundClip: "text",
-    color: "white",
+    color: "#f0f0f0",
+  };
+
+  const menuStyle = {
+    background: "transparent", // Adjust the background to be transparent
   };
 
   return (
     <Header style={headerStyle}>
-      <Title level={3} style={titleStyle}>
+      <Title style={titleStyle} level={3}>
         GyaanBodha
       </Title>
-      <Menu mode="horizontal" theme="dark" selectable={false}>
+      <Menu mode="horizontal" theme="dark" selectable={false} style={menuStyle}>
         <SubMenu
           key="profile"
           icon={<UserOutlined />}

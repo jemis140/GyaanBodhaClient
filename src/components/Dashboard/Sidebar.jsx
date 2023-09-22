@@ -12,7 +12,10 @@ import {
   BookOutlined,
   SettingOutlined,
   CloseOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
   SnippetsOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons";
 import userGuide from "../../assets/userGuide.svg";
 import EgyptianWisdomSymbol from "../../assets/EgyptianWisdomSymbol.svg";
@@ -48,6 +51,25 @@ const researchTopics = [
   },
 ];
 
+const ToggleButton = ({ collapsed, toggleCollapsed }) => {
+  return (
+    <Button
+      onClick={toggleCollapsed}
+      style={{
+        backgroundColor: "#ffffff",
+        borderColor: "#502f73",
+        borderRadius: "4px",
+        position: "absolute",
+        top: "16px",
+        right: collapsed ? "16px" : "250px", // Adjust right position
+        zIndex: 1,
+      }}
+    >
+      {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+    </Button>
+  );
+};
+
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedSubMenu, setSelectedSubMenu] = useState(null);
@@ -61,67 +83,74 @@ const SideBar = () => {
   };
 
   return (
-    <Sider
-      collapsible
-      collapsed={collapsed}
+    <div
       style={{
-        background: "#f0f2f5",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.17)",
-        position: "fixed",
-        height: "100vh",
-        zIndex: 1,
+        width: "100%",
       }}
     >
-      <div
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        trigger={null}
+        width={250}
         style={{
-          padding: "16px",
-          textAlign: "center",
-          marginBottom: "16px",
-          borderBottom: "1px solid #ccc",
+          backgroundColor: "#f0f2f5",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.17)",
+          position: "fixed",
+          zIndex: "1",
+          height: "100vh",
         }}
       >
-        <Button
-          onClick={toggleCollapsed}
+        <Row>
+          <Col>
+            <Button
+              onClick={toggleCollapsed}
+              style={{ marginLeft: 4, backgroundColor: "#502f73" }}
+            >
+              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            </Button>
+          </Col>
+        </Row>
+        <Menu
+          theme="light"
+          mode="inline"
+          defaultSelectedKeys={["2"]}
+          defaultOpenKeys={["sub1"]}
+          inlineCollapsed={collapsed}
           style={{
-            backgroundColor: "#ffffff",
+            marginTop: "20px",
+            background: "#f0f2f5",
+            borderRight: "none",
           }}
         >
-          {collapsed ? <MenuOutlined /> : <CloseOutlined />}
-        </Button>
-      </div>
+          <Menu.Item icon={<UserOutlined />}>
+            <Link to="/profile">Profile</Link>
+          </Menu.Item>
 
-      <Menu
-        theme="light"
-        mode="inline"
-        defaultSelectedKeys={["2"]}
-        defaultOpenKeys={["sub1"]}
-        inlineCollapsed={collapsed}
-        style={{ background: "#f0f2f5", borderRight: "none" }}
-      >
-        <Menu.Item key="1" icon={<UserOutlined />}>
-          <Link to="/profile">Profile</Link>
-        </Menu.Item>
+          <Menu.Item key="2" icon={<BarChartOutlined />}>
+            Research State
+          </Menu.Item>
 
-        <Menu.Item key="2" icon={<BarChartOutlined />}>
-          Research State
-        </Menu.Item>
+          <Menu.SubMenu key="sub1" icon={<BookOutlined />} title="Notebooks">
+            {researchTopics.map((topic) => (
+              <Menu.Item key={topic.key} icon={<SearchOutlined />}>
+                {topic.value}
+              </Menu.Item>
+            ))}
+          </Menu.SubMenu>
 
-        <Menu.SubMenu key="sub1" icon={<BookOutlined />} title="Notebooks">
-          {researchTopics.map((topic) => (
-            <Menu.Item key={topic.key} icon={<SearchOutlined />}>
-              {topic.value}
-            </Menu.Item>
-          ))}
-        </Menu.SubMenu>
-
-        <Menu.Item key="4" icon={<SnippetsOutlined />}>
-          <Link to="/dashboard">Reports</Link>
-        </Menu.Item>
-        <Menu.Item key="7" icon={<SettingOutlined />}>
-          Settings
-        </Menu.Item>
-      </Menu>
-    </Sider>
+          <Menu.Item key="4" icon={<SnippetsOutlined />}>
+            <Link to="/dashboard">Reports</Link>
+          </Menu.Item>
+          <Menu.Item key="7" icon={<SettingOutlined />}>
+            Settings
+          </Menu.Item>
+          <Menu.Item key="7" icon={<QuestionCircleOutlined />}>
+            user guide
+          </Menu.Item>
+        </Menu>
+      </Sider>
+    </div>
   );
 };
 
