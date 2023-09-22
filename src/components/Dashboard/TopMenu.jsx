@@ -1,41 +1,70 @@
 import React from "react";
-import { Layout, Menu, Row, Col } from "antd";
-import { UserOutlined, SettingOutlined } from "@ant-design/icons";
-import { Typography } from "antd";
+import { Layout, Row, Col, Menu, Typography } from "antd";
+import {
+  UserOutlined,
+  BulbOutlined,
+  SettingOutlined,
+  DownOutlined,
+  LogoutOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
+
 const { Header } = Layout;
 const { Title } = Typography;
+const { SubMenu } = Menu;
 
 const TopMenu = () => {
+  const headerStyle = {
+    background: "linear-gradient(to right, #4d2882, #b74400)", // Adjust gradient colors
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "fixed", // Set position to fixed
+    width: "100%", // Set width to 100% to cover the entire screen
+    zIndex: 1000, // Set a high z-index to ensure it stays on top
+  };
+
+  const titleStyle = {
+    background: "linear-gradient(to down, #b74400, #f0f0f0)", // Adjust gradient colors
+    WebkitBackgroundClip: "text",
+    color: "#f0f0f0",
+  };
+
+  const menuStyle = {
+    background: "transparent", // Adjust the background to be transparent
+  };
+
   return (
-    <Header style={{ backgroundColor: "#502f73", color: "white" }}>
-      <Row justify="center">
-        <Col span={6}>
-          <Title level={3} style={{ color: "white" }}>
-            GyaanBodha
-          </Title>
-        </Col>
-        <Col span={18}>
-          {/* Menu items */}
-          {/* Adjust the menu items and styles accordingly */}
-          {/* For demonstration, I'm using placeholders */}
-          <ul
-            style={{
-              display: "flex",
-              listStyle: "none",
-              justifyContent: "flex-end",
-            }}
-          >
-            <li style={{ margin: "0 16px", color: "white" }}>
-              Research Reports
-            </li>
-            <li style={{ margin: "0 16px", color: "white" }}>
-              Research Topics
-            </li>
-            <li style={{ margin: "0 16px", color: "white" }}>Profile</li>
-            <li style={{ margin: "0 16px", color: "white" }}>Settings</li>
-          </ul>
-        </Col>
-      </Row>
+    <Header style={headerStyle}>
+      <Title style={titleStyle} level={3}>
+        GyaanBodha
+      </Title>
+      <Menu mode="horizontal" theme="dark" selectable={false} style={menuStyle}>
+        <SubMenu
+          key="profile"
+          icon={<UserOutlined />}
+          title={
+            <span>
+              Profile
+              <DownOutlined />
+            </span>
+          }
+        >
+          <Menu.Item key="user-info">User Info</Menu.Item>
+          <Menu.Item key="logout" icon={<LogoutOutlined />}>
+            Logout
+          </Menu.Item>
+          <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
+            Help
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item key="settings" icon={<SettingOutlined />}>
+          Settings
+        </Menu.Item>
+        <Menu.Item key="dark-mode" icon={<BulbOutlined />}>
+          Dark Mode
+        </Menu.Item>
+      </Menu>
     </Header>
   );
 };

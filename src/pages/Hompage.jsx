@@ -8,17 +8,24 @@ const { Content } = Layout;
 
 const Homepage = () => {
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <TopMenu />
+    <>
       <Layout>
-        <Sidebar />
-        <Layout>
-          <Content>
-            <Tabs />
-          </Content>
-        </Layout>
+        <TopMenu />
       </Layout>
-    </Layout>
+
+      <Layout style={{ marginLeft: "0", transition: "margin 0.3s" }}>
+        <Content>
+          <Row>
+            <Col span={3}>
+              <Sidebar />
+            </Col>
+            <Col span={21}>
+              <Tabs />
+            </Col>
+          </Row>
+        </Content>
+      </Layout>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import LoginPage from "./pages/LoginPage"; // Import the LoginPage component
 import SignupPage from "./pages/SignUpPage"; // Import the SignupPage component
 import Homepage from "./pages/Hompage";
+import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./components/authentication/ResetPassword";
 import store from "./store/store";
 
@@ -17,7 +18,8 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/reset" element={<ResetPassword />} />
-            <Route path="/dashboard" element={<Homepage />} />
+            <Route path="/" element={<Homepage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </BrowserRouter>
       </div>

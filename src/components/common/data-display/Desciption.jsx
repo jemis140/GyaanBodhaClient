@@ -8,6 +8,12 @@ const { Title } = Typography;
 const Description = ({ moduleType }) => {
   const { icon, heading, description } = MODULES[moduleType];
 
+  const gradientStyle = {
+    background: `linear-gradient(to right, #9C27B0, #FF9800)`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  };
+
   return (
     <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
       {/* Icon */}
@@ -22,12 +28,12 @@ const Description = ({ moduleType }) => {
       </div>
 
       {/* Heading and Description */}
-      <div>
-        <div style={{ marginBottom: "5px" }}>
-          <h2 style={{ marginBottom: "5px" }}>{heading}</h2>
+      <div style={{ margin: "5px" }} margin>
+        <div>
+          <h2 style={gradientStyle}>{heading}</h2>
         </div>
         <div>
-          <h3>{description}</h3>
+          <h3 style={gradientStyle}>{description}</h3>
         </div>
       </div>
     </div>

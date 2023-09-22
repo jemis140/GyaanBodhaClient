@@ -1,12 +1,5 @@
 // moduleConstants.js
 
-import {
-  FilePdfOutlined,
-  YoutubeOutlined,
-  FileTextOutlined,
-  ReadOutlined,
-} from "@ant-design/icons";
-
 export const MODULES = {
   PDF_QA: {
     heading: "Multiple PDF Q/A conversation",
@@ -25,8 +18,7 @@ export const MODULES = {
     description: "Generate summary of any text",
   },
   EUCLID_QA: {
-    heading: "Create conversation chain with multiple datasources",
-    description:
-      "Users can copy text from any source, and in return, they will receive a summary.",
+    heading: "Multiple Datasource conversation chain",
+    description: "Create Q/A conversation chain of mutiple datasource",
   },
 };

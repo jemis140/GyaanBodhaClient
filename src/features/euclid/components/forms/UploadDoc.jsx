@@ -30,7 +30,7 @@ const UploadDoc = ({ setFiles }) => {
   const isFileListEmpty = fileList.length === 0;
 
   return (
-    <div style={{ justifyContent: "space-evenly", margin: "20px" }}>
+    <div style={{ justifyContent: "space-evenly" }}>
       <Row gutter={[24, 24]}>
         <Col span={12}>
           <Dragger
