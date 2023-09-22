@@ -67,8 +67,7 @@ const SideBar = () => {
       style={{
         background: "#f0f2f5",
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.17)",
-        position: "sticky",
-        top: 0,
+        position: "fixed",
         height: "100vh",
       }}
     >
@@ -117,24 +116,6 @@ const SideBar = () => {
         <Menu.Item key="4" icon={<SnippetsOutlined />}>
           <Link to="/dashboard">Reports</Link>
         </Menu.Item>
-
-        <Menu.Item key="5" icon={<BulbOutlined />}>
-          Dark Mode
-        </Menu.Item>
-
-        <Menu.Item
-          key="6"
-          icon={
-            <img
-              src={userGuide}
-              alt="User Guide"
-              style={{ width: "15px", height: "15px", color: "#834898" }} // Adjust width and height
-            />
-          }
-        >
-          User Guide
-        </Menu.Item>
-
         <Menu.Item key="7" icon={<SettingOutlined />}>
           Settings
         </Menu.Item>

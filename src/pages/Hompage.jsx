@@ -1,7 +1,5 @@
-// Homepage.js
-
 import React from "react";
-import { Layout } from "antd";
+import { Layout, Row, Col } from "antd";
 import Sidebar from "../components/Dashboard/Sidebar";
 import Tabs from "../components/Dashboard/Tabs";
 import TopMenu from "../components/Dashboard/TopMenu";
@@ -10,16 +8,20 @@ const { Content } = Layout;
 
 const Homepage = () => {
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <TopMenu />
-      <Layout>
-        <Sidebar />
-        <Layout style={{ marginLeft: 0, transition: "margin 0.3s" }}>
-          <Content style={{ margin: "16px" }}>
+    <Layout>
+      <Row style={{ position: "fixed", width: "100%", marginBottom: "64px" }}>
+        <TopMenu />
+      </Row>
+      <Row>
+        <Row style={{ width: "100%", height: "100vh", marginTop: "64px" }}>
+          <Col span={4}>
+            <Sidebar />
+          </Col>
+          <Col span={20}>
             <Tabs />
-          </Content>
-        </Layout>
-      </Layout>
+          </Col>
+        </Row>
+      </Row>
     </Layout>
   );
 };
