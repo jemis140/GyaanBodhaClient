@@ -25,7 +25,7 @@ export default function ColorTabs() {
     <div
       style={{
         padding: "16px",
-        height: "calc(100vh - 60px)", // Adjust height based on your layout, // Hide overflow
+        overflowY: "hidden", // Adjust height based on your layout, // Hide overflow
       }}
     >
       <Tabs

@@ -69,6 +69,7 @@ const SideBar = () => {
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.17)",
         position: "fixed",
         height: "100vh",
+        zIndex: 1,
       }}
     >
       <div

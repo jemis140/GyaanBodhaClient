@@ -16,7 +16,11 @@ const { SubMenu } = Menu;
 const TopMenu = () => {
   const headerStyle = {
     background: "linear-gradient(to right, #4d2882, #b74400)",
-    overflow: "hidden",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "sticky",
+    zIndex: 1,
   };
 
   const titleStyle = {
@@ -27,48 +31,35 @@ const TopMenu = () => {
 
   return (
     <Header style={headerStyle}>
-      <Row justify="space-between" align="middle">
-        <Col span={6}>
-          <Title level={3} style={titleStyle}>
-            GyaanBodha
-          </Title>
-        </Col>
-        <Col
-          span={18}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-          }}
+      <Title level={3} style={titleStyle}>
+        GyaanBodha
+      </Title>
+      <Menu mode="horizontal" theme="dark" selectable={false}>
+        <SubMenu
+          key="profile"
+          icon={<UserOutlined />}
+          title={
+            <span>
+              Profile
+              <DownOutlined />
+            </span>
+          }
         >
-          <Menu mode="horizontal" style={titleStyle}>
-            <SubMenu
-              key="profile"
-              title={
-                <span>
-                  <UserOutlined />
-                  Profile
-                  <DownOutlined />
-                </span>
-              }
-            >
-              <Menu.Item key="user-info">User Info</Menu.Item>
-              <Menu.Item key="logout" icon={<LogoutOutlined />}>
-                Logout
-              </Menu.Item>
-              <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
-                Help
-              </Menu.Item>
-            </SubMenu>
-            <Menu.Item key="settings" icon={<SettingOutlined />}>
-              Settings
-            </Menu.Item>
-            <Menu.Item key="dark-mode" icon={<BulbOutlined />}>
-              Dark Mode
-            </Menu.Item>
-          </Menu>
-        </Col>
-      </Row>
+          <Menu.Item key="user-info">User Info</Menu.Item>
+          <Menu.Item key="logout" icon={<LogoutOutlined />}>
+            Logout
+          </Menu.Item>
+          <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
+            Help
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item key="settings" icon={<SettingOutlined />}>
+          Settings
+        </Menu.Item>
+        <Menu.Item key="dark-mode" icon={<BulbOutlined />}>
+          Dark Mode
+        </Menu.Item>
+      </Menu>
     </Header>
   );
 };
