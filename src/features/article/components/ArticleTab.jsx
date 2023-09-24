@@ -17,7 +17,8 @@ const ArticleTab = () => {
   const dispatch = useDispatch();
 
   const [chatData, setChatData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const chatRef = useRef(null);
 
@@ -53,11 +54,11 @@ const ArticleTab = () => {
 
   const handleGenerateSummary = async (articleUrl) => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       const response = await getArticleSummary(articleUrl);
 
       if (response.status === 200) {
-        setIsLoading(false);
+        setLoading(false);
         const summary = response.data.aiResponse;
         handleArticleSummaryData(summary);
         scrollToBottom();
@@ -93,6 +94,7 @@ const ArticleTab = () => {
       >
         <Description moduleType="ARTICLE_SUMMARY" />
         <ArticleURLForm onUrlSubmit={handleGenerateSummary} />
+        {loading && <Loader />}
       </Card>
       <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
         <Col xs={24} sm={24} md={24} lg={24}>

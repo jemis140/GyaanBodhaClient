@@ -95,7 +95,6 @@ const SideBar = () => {
         collapsible
         collapsed={collapsed}
         trigger={null}
-        width={250}
         style={{
           backgroundColor: "#f0f2f5",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.17)",
@@ -121,15 +120,11 @@ const SideBar = () => {
           defaultOpenKeys={["sub1"]}
           inlineCollapsed={collapsed}
           style={{
-            marginTop: "20px",
+            marginTop: "30px",
             background: "#f0f2f5",
             borderRight: "none",
           }}
         >
-          <Menu.Item icon={<UserOutlined />}>
-            <Link to="/profile">Profile</Link>
-          </Menu.Item>
-
           <Menu.Item key="2" icon={<BarChartOutlined />}>
             Research State
           </Menu.Item>

@@ -9,17 +9,14 @@ const { Content } = Layout;
 const Homepage = () => {
   return (
     <>
-      <Layout>
-        <TopMenu />
-      </Layout>
-
+      <TopMenu />
       <Layout style={{ marginLeft: "0", transition: "margin 0.3s" }}>
         <Content>
           <Row>
-            <Col span={3}>
+            <Col span={1}>
               <Sidebar />
             </Col>
-            <Col span={21}>
+            <Col span={23}>
               <Tabs />
             </Col>
           </Row>
