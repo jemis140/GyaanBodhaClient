@@ -1,0 +1,57 @@
+project_root/
+│
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── notebooks/
+│   │   │   ├── __init__.py
+│   │   │   ├── router.py         # Notebook API routes
+│   │   │   ├── models.py         # Notebook Pydantic models
+│   │   │   └── services.py       # Notebook services
+│   │   ├── auth/
+│   │   │   ├── __init__.py
+│   │   │   ├── router.py         # Authentication and JWT routes
+│   │   │   ├── models.py         # Pydantic models for authentication
+│   │   │   └── security.py       # JWT security functions
+│   │   ├── middleware/
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py           # Authentication middleware
+│   │   │   └── csrf.py           # CSRF protection middleware (custom)
+│   │   └── utils/
+│   │       ├── __init__.py
+│   │       └── csrf.py           # CSRF utility functions (custom)
+│   └── static/
+│       └── templates/
+│           └── index.html        # HTML templates (for example, with CSRF tokens)
+│
+├── nginx/
+│   ├── nginx.conf                # Nginx configuration (for HTTPS)
+│   └── ssl/
+│       ├── your-certificate.crt  # SSL/TLS certificate (replace with your own)
+│       └── your-certificate.key  # SSL/TLS certificate key (replace with your own)
+│
+├── requirements.txt              # Python dependencies
+├── .env                          # Environment variables (e.g., JWT secret key)
+├── main.py                       # FastAPI application entry point
+├── README.md                     # Project documentation
+
+
+feature/
+│── notebook/
+    ├── api/
+    │   ├── notebookAPI.js
+    │   ├── notebookFirebaseAPI.js
+    ├── components/
+    │   ├── notebookPopoverform.jsx
+    │   ├── notebookDashboard.jsx
+    │   ├── notebookTableTab.jsx
+    │   ├── ReportTableTab.jsx
+    ├── store/
+    │   ├── modules/
+    │   │   ├── notebook/
+    │   │   │   ├── notebookActionTypes.js
+    │   │   │   ├── notebookActions.js
+    │   │   │   ├── notebookReducer.js
+    │   │   │   ├── notebookThunks.js
