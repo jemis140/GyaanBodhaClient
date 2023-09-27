@@ -17,7 +17,7 @@ const NotebookTabs = () => {
   return (
     <div
       style={{
-        margin: "30px",
+        margin: "60px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

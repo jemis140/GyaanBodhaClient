@@ -124,17 +124,9 @@ const NotebookTableTab = () => {
         bordered
         size="small"
         pagination={{ pageSize: 10 }}
+        style={{ width: "100%" }}
       />
     </div>
-  );
-};
-
-// Editable cell component
-const NotebookCell = ({ editable, value, onChange }) => {
-  return editable ? (
-    <Input defaultValue={value} onPressEnter={(e) => e.target.value} />
-  ) : (
-    value
   );
 };
 

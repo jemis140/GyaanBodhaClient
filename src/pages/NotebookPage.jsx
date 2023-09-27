@@ -7,7 +7,7 @@ import NotebookTabs from "../features/notebook/components/DashboardNotebook";
 
 const { Content } = Layout;
 
-const Homepage = () => {
+const NotebookPage = () => {
   return (
     <>
       <TopMenu />
@@ -27,4 +27,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default NotebookPage;
