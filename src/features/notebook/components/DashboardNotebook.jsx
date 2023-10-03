@@ -30,7 +30,7 @@ const NotebookTabs = () => {
         tabBarStyle={{
           width: "100%",
         }}
-        style={{ width: "100%" }}
+        style={{ width: "100%", marginLeft: "60px", background: "f0f0f0" }}
       >
         <TabPane
           style={{

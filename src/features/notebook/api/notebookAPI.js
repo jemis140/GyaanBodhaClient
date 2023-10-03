@@ -1,53 +1,39 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1/8000"; // Replace with your actual API base URL
+const BASE_URL = "http://127.0.0.1:8000"; // Replace with your actual API base URL
 
-const notebookAPI = {
-  createNotebook: async (notebookData) => {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/create-notebook`,
-        notebookData
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error("Error creating notebook: " + error.message);
-    }
-  },
+export const createNotebook = async (name, description, tags, module) => {
+  try {
+    const formData = new FormData();
 
-  updateNotebook: async (notebookId, notebookData) => {
-    try {
-      const response = await axios.put(
-        `${BASE_URL}/update-notebook/${notebookId}`,
-        notebookData
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error("Error updating notebook: " + error.message);
-    }
-  },
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("tags", tags);
 
-  deleteNotebook: async (notebookId) => {
-    try {
-      const response = await axios.delete(
-        `${BASE_URL}/delete-notebook/${notebookId}`
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error("Error deleting notebook: " + error.message);
-    }
-  },
-
-  getNotebook: async (notebookId) => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/get-notebook/${notebookId}`
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error("Error getting notebook: " + error.message);
-    }
-  },
+    console.log("formData", formData);
+    console.log("Inside response Data");
+    const response = await axios.post(
+      `${BASE_URL}/create-notebook/${module}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        }, // To handle binary data like pickle files
+      }
+    );
+    console.log("response Data", response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error creating notebook: " + error.message);
+  }
 };
 
-export default notebookAPI;
+export const getNotebooks = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/get-all-notebooks`);
+    console.log("response.data", response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error getting notebook: " + error.message);
+  }
+};
