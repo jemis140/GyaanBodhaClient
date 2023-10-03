@@ -7,6 +7,8 @@ import Homepage from "./pages/Hompage";
 import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./components/authentication/ResetPassword";
 import store from "./store/store";
+import NotebookTabs from "./features/notebook/components/DashboardNotebook";
+import NotebookPage from "./pages/NotebookPage";
 
 function App() {
   return (
@@ -19,7 +21,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/reset" element={<ResetPassword />} />
             <Route path="/" element={<Homepage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<NotebookPage />} />
           </Routes>
         </BrowserRouter>
       </div>

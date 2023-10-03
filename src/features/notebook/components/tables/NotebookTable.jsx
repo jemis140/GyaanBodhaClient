@@ -1,59 +1,38 @@
-import React, { useState } from "react";
-import { Table, Input, Button, Popover } from "antd";
-import NotebookPopoverForm from "../notebookPopover";
+import React, { useState, useEffect } from "react";
+import { Collapse, Input, Button, Popover } from "antd";
+import { getNotebooks } from "../../api/notebookAPI";
+import NotebookPopoverForm from "./NotebookPopover";
+import Loader from "../../../../components/common/conversation/Loader";
 
 const { Search } = Input;
+const { Panel } = Collapse;
 
 const NotebookTableTab = () => {
-  const [notebooks, setNotebooks] = useState([]); // Your notebook data
-  const [visible, setVisible] = useState(false);
+  const [notebooks, setNotebooks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const columns = [
-    {
-      title: "Notebook Name",
-      dataIndex: "name",
-      key: "name",
-      filters: [
-        {
-          text: "Education",
-          value: "Education",
-        },
-        {
-          text: "Research",
-          value: "Research",
-        },
-      ],
-      onFilter: (value, record) => record.name.includes(value),
-    },
-    {
-      title: "Created At",
-      dataIndex: "createdAt",
-      key: "createdAt",
-    },
-    {
-      title: "Tags",
-      dataIndex: "tags",
-      key: "tags",
-    },
-  ];
+  useEffect(() => {
+    const fetchNotebooks = async () => {
+      try {
+        const notebooksData = await getNotebooks();
+        setNotebooks(notebooksData.notebooksMetaData);
+      } catch (error) {
+        console.error("Error fetching notebooks:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleCreateNotebook = (notebookData) => {
-    // Handle notebook creation logic here
-    console.log("Creating notebook:", notebookData);
-    // Update the state with the new notebook
-    setNotebooks([...notebooks, notebookData]);
-    setVisible(false);
-  };
+    fetchNotebooks();
+  }, []);
 
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
+      <div>
         <Popover
           title="Create a New Notebook"
           trigger="click"
-          visible={visible}
-          onVisibleChange={(vis) => setVisible(vis)}
-          content={<NotebookPopoverForm onSubmit={handleCreateNotebook} />}
+          content={<NotebookPopoverForm />}
         >
           <Button type="primary">Create New Notebook</Button>
         </Popover>
@@ -63,13 +42,29 @@ const NotebookTableTab = () => {
           style={{ width: 200, marginLeft: 16 }}
         />
       </div>
-      <Table
-        dataSource={notebooks}
-        columns={columns}
-        bordered
-        size="small"
-        pagination={{ pageSize: 10 }}
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <Collapse accordion>
+          {notebooks.map((notebook, index) => (
+            <Panel
+              header={`Notebook ${index + 1}`}
+              key={index}
+              showArrow={false}
+            >
+              <div>
+                <strong>Notebook Name:</strong> {notebook.name || "N/A"}
+              </div>
+              <div>
+                <strong>Created At:</strong> {notebook.createdAt || "N/A"}
+              </div>
+              <div>
+                <strong>Tags:</strong> {notebook.tags || "N/A"}
+              </div>
+            </Panel>
+          ))}
+        </Collapse>
+      )}
     </div>
   );
 };
