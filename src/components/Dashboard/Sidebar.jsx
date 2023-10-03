@@ -2,152 +2,75 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Layout, Menu, Image } from "antd";
 import {
-  MenuOutlined,
-  SearchOutlined,
-  YoutubeOutlined,
-  ReadOutlined,
-  UserOutlined,
   BarChartOutlined,
-  BulbOutlined,
   BookOutlined,
-  SettingOutlined,
   CloseOutlined,
   MenuFoldOutlined,
-  AppstoreOutlined,
-  MailOutlined,
-  PieChartOutlined,
   MenuUnfoldOutlined,
   SnippetsOutlined,
   QuestionCircleOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
-import userGuide from "../../assets/userGuide.svg";
-import EgyptianWisdomSymbol from "../../assets/EgyptianWisdomSymbol.svg";
-import { Col, Row } from "antd";
 
 const { Sider } = Layout;
 
-const researchTopics = [
-  {
-    key: "multiplePdf",
-    value: "Multiple PDF",
-    icon: <YoutubeOutlined />,
-  },
-  {
-    key: "youtubeVideo",
-    value: "YouTube Video",
-    icon: <YoutubeOutlined />,
-  },
-  {
-    key: "article",
-    value: "Article Summary",
-    icon: <YoutubeOutlined />,
-  },
-  {
-    key: "textSummary",
-    value: "Text Summary",
-    icon: <ReadOutlined />,
-  },
-  {
-    key: "investigation",
-    value: "Investigo",
-    icon: <SearchOutlined />,
-  },
+function getItem(label, key, icon, children, type) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  };
+}
+
+const items = [
+  getItem("Research State", "1", <BarChartOutlined />),
+  getItem("Notebooks", "2", <BookOutlined />),
+  getItem("Reports", "3", <SnippetsOutlined />),
+  getItem("About Info", "4", <InfoCircleOutlined />), // Updated icon here
+  getItem("User guide", "5", <QuestionCircleOutlined />),
 ];
 
-const ToggleButton = ({ collapsed, toggleCollapsed }) => {
-  return (
-    <Button
-      onClick={toggleCollapsed}
-      style={{
-        backgroundColor: "#ffffff",
-        borderColor: "#502f73",
-        borderRadius: "4px",
-        position: "absolute",
-        top: "16px",
-        right: collapsed ? "16px" : "250px", // Adjust right position
-        zIndex: 1,
-      }}
-    >
-      {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-    </Button>
-  );
-};
-
 const SideBar = () => {
-  const [collapsed, setCollapsed] = useState(true);
-  const [selectedSubMenu, setSelectedSubMenu] = useState(null);
+  const [collapsed, setCollapsed] = useState(false);
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
-  const handleSubmitMenuClick = (key) => {
-    setSelectedSubMenu(key);
-  };
-
   return (
     <div
       style={{
-        width: "100%",
+        marginTop: "60px",
+        flexDirection: "column",
+        zIndex: "1",
+        backgroundColor: "#f0f0f0",
+        position: "fixed",
+        zIndex: "1",
+        height: "100vh",
       }}
     >
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        trigger={null}
+      <Button
+        type="primary"
+        onClick={toggleCollapsed}
         style={{
-          backgroundColor: "#f0f2f5",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.17)",
-          position: "fixed",
-          zIndex: "1",
-          height: "100vh",
+          border: 1,
+          color: "#14042e",
+          backgroundColor: "#f0f0f0",
         }}
       >
-        <Row>
-          <Col>
-            <Button
-              onClick={toggleCollapsed}
-              style={{ marginLeft: 4, backgroundColor: "#502f73" }}
-            >
-              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            </Button>
-          </Col>
-        </Row>
-        <Menu
-          theme="light"
-          mode="inline"
-          defaultSelectedKeys={["2"]}
-          defaultOpenKeys={["sub1"]}
-          inlineCollapsed={collapsed}
-          style={{
-            marginTop: "30px",
-            background: "#f0f2f5",
-            borderRight: "none",
-          }}
-        >
-          <Menu.Item key="2" icon={<BarChartOutlined />}>
-            Research State
-          </Menu.Item>
-
-          <Menu.SubMenu key="sub1" icon={<BookOutlined />} title="Notebooks">
-            {researchTopics.map((topic) => (
-              <Menu.Item key={topic.key} icon={<SearchOutlined />}>
-                {topic.value}
-              </Menu.Item>
-            ))}
-          </Menu.SubMenu>
-
-          <Menu.Item key="4" icon={<SnippetsOutlined />}>
-            <Link to="/dashboard">Reports</Link>
-          </Menu.Item>
-          <Menu.Item key="7" icon={<SettingOutlined />}>
-            Settings
-          </Menu.Item>
-          <Menu.Item key="7" icon={<QuestionCircleOutlined />}>
-            user guide
-          </Menu.Item>
-        </Menu>
-      </Sider>
+        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+      </Button>
+      <Menu
+        defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub1"]}
+        mode="inline"
+        theme="light"
+        inlineCollapsed={collapsed}
+        items={items}
+        style={{ height: "100vh", background: "f0f0f0" }}
+      />
     </div>
   );
 };
