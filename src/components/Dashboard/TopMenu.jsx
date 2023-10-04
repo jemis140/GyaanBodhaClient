@@ -37,7 +37,7 @@ const TopMenu = () => {
   return (
     <Header style={headerStyle}>
       <Title style={titleStyle} level={3}>
-        GyaanBodha
+        GyaanBodhi
       </Title>
       <Menu mode="horizontal" theme="dark" selectable={false} style={menuStyle}>
         <SubMenu

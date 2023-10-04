@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Form, Input, Button, message, Select } from "antd";
+import { Form, Input, Button, message, Radio } from "antd";
 import { createNotebook } from "../../api/notebookAPI";
-
-const { Option } = Select;
 
 const modules = ["PDF", "Youtube", "Article", "Text", "Euclid"]; // Available module options
 
-const NotebookPopoverForm = () => {
+const NotebookForm = () => {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -16,14 +14,17 @@ const NotebookPopoverForm = () => {
   const handleFinish = async () => {
     setLoading(true);
     try {
-      await createNotebook(name, description, tags, module);
-      setName("");
-      setDescription("");
-      setTags("");
-      setModule("");
-      message.success("Notebook created successfully!");
+      const response = await createNotebook(name, description, tags, module);
+
+      if (response) {
+        setName("");
+        setDescription("");
+        setTags("");
+        setModule("");
+        message.success("Notebook created successfully!");
+      }
     } catch (error) {
-      console.error("Error creating notebook:", error.message);
+      message.error("Error creating notebook:", error.message);
       message.error("Failed to create notebook.");
     } finally {
       setLoading(false);
@@ -64,19 +65,19 @@ const NotebookPopoverForm = () => {
         />
       </Form.Item>
 
-      {/* Change module input to a dropdown */}
-      <Form.Item name="module" label="Module">
-        <Select
-          placeholder="Select a module"
-          value={module}
-          onChange={(value) => setModule(value)}
-        >
+      {/* Change module input to a radio group */}
+      <Form.Item
+        style={{ display: "flex", flexDirection: "column" }}
+        name="module"
+        label="Module"
+      >
+        <Radio.Group onChange={(e) => setModule(e.target.value)} value={module}>
           {modules.map((option) => (
-            <Option key={option} value={option}>
+            <Radio key={option} value={option}>
               {option}
-            </Option>
+            </Radio>
           ))}
-        </Select>
+        </Radio.Group>
       </Form.Item>
 
       <Form.Item>
@@ -88,4 +89,4 @@ const NotebookPopoverForm = () => {
   );
 };
 
-export default NotebookPopoverForm;
+export default NotebookForm;

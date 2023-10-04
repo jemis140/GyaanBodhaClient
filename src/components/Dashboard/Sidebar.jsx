@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button, Layout, Menu, Image } from "antd";
 import {
@@ -11,8 +12,6 @@ import {
   QuestionCircleOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-
-const { Sider } = Layout;
 
 function getItem(label, key, icon, children, type) {
   return {
@@ -33,10 +32,21 @@ const items = [
 ];
 
 const SideBar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
+  const [selectedMenuItemKey, setSelectedMenuItemKey] = useState("1"); // Initial selected menu item
+  const navigate = useNavigate(); // Get the navigate function
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
+  };
+
+  const handleMenuItemClick = (key) => {
+    setSelectedMenuItemKey(key);
+
+    // Check if the clicked menu item is "Notebooks" and navigate to "/dashboard"
+    if (key === "2") {
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -57,18 +67,21 @@ const SideBar = () => {
         style={{
           border: 1,
           color: "#14042e",
+          width: "30px",
+          height: "30px",
           backgroundColor: "#f0f0f0",
         }}
       >
         {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       </Button>
       <Menu
-        defaultSelectedKeys={["1"]}
+        selectedKeys={[selectedMenuItemKey]}
         defaultOpenKeys={["sub1"]}
         mode="inline"
         theme="light"
         inlineCollapsed={collapsed}
         items={items}
+        onClick={({ key }) => handleMenuItemClick(key)}
         style={{ height: "100vh", background: "f0f0f0" }}
       />
     </div>

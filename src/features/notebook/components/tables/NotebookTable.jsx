@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Collapse, Input, Button, Popover } from "antd";
 import { getNotebooks } from "../../api/notebookAPI";
-import NotebookPopoverForm from "./NotebookPopover";
+import NotebookForm from "./NotebookForm";
 import Loader from "../../../../components/common/conversation/Loader";
 
 const { Search } = Input;
@@ -10,6 +10,7 @@ const { Panel } = Collapse;
 const NotebookTableTab = () => {
   const [notebooks, setNotebooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isPopoverVisible, setPopoverVisible] = useState(false);
 
   useEffect(() => {
     const fetchNotebooks = async () => {
@@ -26,20 +27,51 @@ const NotebookTableTab = () => {
     fetchNotebooks();
   }, []);
 
+  const handlePopoverClick = () => {
+    setPopoverVisible(!isPopoverVisible);
+  };
+
+  const popoverStyle = {
+    left: "calc(50% + 100px)",
+    transform: "translateX(-50%)",
+  };
+
   return (
     <div>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          marginTop: "10px",
+          marginLeft: "70px",
+          padding: "15px",
+          justifyContent: "flex-start",
+          flexDirection: "row",
+        }}
+      >
         <Popover
           title="Create a New Notebook"
           trigger="click"
-          content={<NotebookPopoverForm />}
+          content={<NotebookForm />}
+          visible={isPopoverVisible}
+          onVisibleChange={handlePopoverClick}
+          style={{
+            textAlign: "center",
+            marginLeft: "15px",
+            justifyContent: "center",
+          }}
         >
-          <Button type="primary">Create New Notebook</Button>
+          <Button
+            type="primary"
+            onClick={handlePopoverClick}
+            style={{ marginBottom: "15px", marginRight: "16px" }}
+          >
+            Create New Notebook
+          </Button>
         </Popover>
         <Search
           placeholder="Search notebook name"
           onSearch={(value) => console.log(value)}
-          style={{ width: 200, marginLeft: 16 }}
+          style={{ width: 200 }}
         />
       </div>
       {loading ? (
