@@ -6,7 +6,7 @@ import TopMenu from "../components/Dashboard/TopMenu";
 
 const { Content } = Layout;
 
-const Homepage = () => {
+const HomePage = () => {
   return (
     <>
       <TopMenu />
@@ -26,4 +26,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default HomePage;
