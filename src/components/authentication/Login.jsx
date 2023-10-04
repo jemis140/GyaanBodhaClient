@@ -23,21 +23,12 @@ import CssBaseline from "@mui/material/CssBaseline";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { login } from "./api/authenticationAPI";
 
 const defaultTheme = createTheme();
 
-function Login({ signin }) {
-  const auth = getAuth();
+function Login() {
   const navigate = useNavigate();
-  const [user, loading, error] = useAuthState(auth);
-
-  useEffect(() => {
-    if (loading) {
-      // maybe trigger a loading screen
-      return;
-    }
-    if (user) navigate("/dashboard");
-  }, [user, loading]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -52,83 +43,19 @@ function Login({ signin }) {
     }));
   };
 
-  const handleGoogleSignIn = async ({ auth }) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     try {
-      const auth = getAuth();
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-
-      await auth
-        .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-        .then(async (userCredential) => {
-          try {
-            const user = userCredential.user;
-            console.log("toke", token);
-            const querySnapshot = await getDocs(
-              query(collection(db, "users"), where("uid", "==", user.uid))
-            );
-
-            if (querySnapshot.empty) {
-              await addDoc(collection(db, "users"), {
-                uid: user.uid,
-                firstName: user.displayName,
-                authProvider: "google",
-                email: user.email,
-              });
-            }
-          } catch (error) {
-            console.error("Error signing in with Google:", error.message);
-          }
-        })
-        .catch(function (error) {
-          // An error happened.
-          if (error.code === "auth/account-exists-with-different-credential") {
-            var pendingCred = error.credential;
-            // The provider account's email address.
-            var email = error.email;
-            // Get sign-in methods for this email.
-            auth.fetchSignInMethodsForEmail(email).then(function (methods) {
-              if (methods[0] === "password") {
-                // Asks the user their password.
-                // In real scenario, you should handle this asynchronously.
-                var password = promptUserForPassword(); // TODO: implement promptUserForPassword.
-                auth
-                  .signInWithEmailAndPassword(email, password)
-                  .then(function (result) {
-                    // Step 4a.
-                    return result.user.linkWithCredential(pendingCred);
-                  })
-                  .then(function () {
-                    // Google account successfully linked to the existing Firebase user.
-                    goToApp();
-                  });
-                return;
-              }
-
-              var provider = getProviderForProviderId(methods[0]);
-
-              auth.signInWithPopup(provider).then(function (result) {
-                result.user
-                  .linkAndRetrieveDataWithCredential(pendingCred)
-                  .then(function (usercred) {
-                    // Google account successfully linked to the existing Firebase user.
-                    goToApp();
-                  });
-              });
-            });
-          }
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handleForgotPassword = async () => {
-    try {
-      await sendPasswordResetEmail(auth, formData.email);
-      console.log("Password reset email sent.");
+      // Call the login API with user data
+      console.log("formData", formData.email, formData.password);
+      const token = await login(formData.email, formData.password);
+      // Navigate to the homepage after successful login
+      if (token) {
+        navigate("/");
+      }
     } catch (error) {
-      console.error("Error sending password reset email:", error.message);
+      console.log("Login failed:", error);
     }
   };
 
@@ -167,6 +94,7 @@ function Login({ signin }) {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -177,6 +105,7 @@ function Login({ signin }) {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -187,6 +116,7 @@ function Login({ signin }) {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onSubmit={handleSubmit}
             >
               Sign In
             </Button>

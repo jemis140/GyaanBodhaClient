@@ -1,39 +1,26 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { signup } from "../../store/modules/authentication/actions";
-import React from "react";
-import { connect } from "react-redux";
+import { signup } from "./api/authenticationAPI";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-function SignUp(email, password) {
-  const auth = getAuth();
-  const dispatch = useDispatch();
+function SignUp() {
   const navigate = useNavigate();
-  const [user, loading, error] = useAuthState(auth);
-
-  useEffect(() => {
-    if (loading) return;
-    if (user) navigate("/dashboard");
-  }, [user, loading]);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -50,15 +37,18 @@ function SignUp(email, password) {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      // Call the signup action with email and password
-      const user = dispatch(signup(formData));
-      // Navigate to the dashboard
+      // Call the signup API with user data
+      const user = await signup(formData);
+      console.log("User signed up:", user);
+
+      // Redirect to the homepage after successful signup
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      console.log("Signup failed:", error);
     }
   };
 
@@ -158,10 +148,4 @@ function SignUp(email, password) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signup: (userData) => dispatch(signup(userData)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(SignUp);
+export default SignUp;
