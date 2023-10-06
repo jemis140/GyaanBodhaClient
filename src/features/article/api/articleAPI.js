@@ -10,13 +10,17 @@ export const getArticleSummary = async (articleUrl) => {
 
     formData.append("articleUrl", articleUrl);
 
+    // Retrieve JWT token from localStorage
+    const jwtToken = localStorage.getItem("jwtToken");
+
     const response = await axios.post(
       `${BASE_URL}/getarticlesummary`,
       formData,
       {
         headers: {
           "Content-Type": "application/json",
-        }, // To handle binary data like pickle files
+          Authorization: `Bearer ${jwtToken}`, // Add JWT token as a header
+        },
       }
     );
     console.log("article summary response", response);
