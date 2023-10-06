@@ -18,13 +18,8 @@ export const signup = async (userData) => {
 };
 
 export const signIn = async (formData) => {
-  const { email, password } = formData;
-
   try {
-    const response = await axios.post(`${BASE_URL}/login`, {
-      email,
-      password,
-    });
+    const response = await axios.post(`${BASE_URL}/login`, formData);
     return response.data.token;
   } catch (error) {
     throw error;

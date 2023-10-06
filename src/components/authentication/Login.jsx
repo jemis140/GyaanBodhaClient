@@ -23,9 +23,8 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      const { token } = await signIn(formData.email, formData.password);
+      const token = await signIn(formData);
 
       // Store JWT token in localStorage
       localStorage.setItem("jwtToken", token);
