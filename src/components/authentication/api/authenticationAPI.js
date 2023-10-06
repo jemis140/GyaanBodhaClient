@@ -1,5 +1,11 @@
 import axios from "axios";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../../../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+
 const BASE_URL = "http://127.0.0.1:8000"; // Update this with your actual backend URL
 
 export const signup = async (userData) => {
@@ -11,17 +17,16 @@ export const signup = async (userData) => {
   }
 };
 
-export const login = async (email, password) => {
+export const signIn = async (formData) => {
   try {
-    const response = await axios.post(`${BASE_URL}/login`, { email, password });
-    console.log("login response data", response);
+    const response = await axios.post(`${BASE_URL}/login`, formData);
     return response.data.token;
   } catch (error) {
     throw error;
   }
 };
 
-export const logout = async (uid) => {
+export const signOut = async (uid) => {
   try {
     const response = await axios.post(`${BASE_URL}/logout`, { uid });
     return response.data;
@@ -38,4 +43,23 @@ export const getCurrentUserId = () => {
     // No user is signed in.
     return null;
   }
+};
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        user
+          .getIdToken()
+          .then((token) => {
+            resolve(token);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } else {
+        reject(new Error("No user signed in."));
+      }
+    });
+  });
 };
