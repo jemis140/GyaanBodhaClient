@@ -11,12 +11,6 @@ export default function SignupPage() {
     <Grid container>
       <Grid item xs={12}>
         <SignUp />
-        <Typography variant="body2" align="center">
-          Already have an account?{" "}
-          <Link component={RouterLink} to="/login" color="primary">
-            Sign in
-          </Link>
-        </Typography>
       </Grid>
     </Grid>
   );
