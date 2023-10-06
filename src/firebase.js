@@ -4,14 +4,14 @@ import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBLwkkQChr5ctAZy6OAPSHyqabJx-f6Orc",
-  authDomain: "localhost:3000/",
-  projectId: "researchagentdemo",
-  storageBucket: "researchagentdemo.appspot.com",
-  messagingSenderId: "957206693695",
-  appId: "1:957206693695:web:6bdb130552db73318f358a",
-  measurementId: "G-9402RJTBNZ",
-  databaseURL: "https://researchagentdemo-default-rtdb.firebaseio.com/",
+  apiKey: "AIzaSyBRwHWPVmqmzfFHGl4kusB8v8ddOWqLFy4",
+  authDomain: "gyaanbodha.firebaseapp.com",
+  databaseURL: "https://gyaanbodha-default-rtdb.firebaseio.com",
+  projectId: "gyaanbodha",
+  storageBucket: "gyaanbodha.appspot.com",
+  messagingSenderId: "71383435598",
+  appId: "1:71383435598:web:8700ed8fc194ceeaaa761f",
+  measurementId: "G-ZW9FBNWB5N",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
