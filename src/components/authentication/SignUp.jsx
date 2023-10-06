@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Typography, Input, Button, Checkbox } from "antd";
 import { signup } from "./api/authenticationAPI";
@@ -14,6 +14,20 @@ const SignUp = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      // Check if the user is already logged in
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (jwtToken) {
+        navigate("/"); // Redirect to homepage if already logged in
+      } else {
+        setLoading(false); // Set loading to false after authentication check
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
