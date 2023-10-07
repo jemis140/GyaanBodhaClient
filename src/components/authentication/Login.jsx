@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Typography, Input, Button, Checkbox } from "antd";
+import { Typography, Input, Button, Checkbox, Spin } from "antd";
 import { signIn } from "./api/authenticationAPI";
+import Spinner from "../common/general/Spinner";
 
 const { Title } = Typography;
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Change to false initially
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      // Check if the user is already logged in
-      const jwtToken = localStorage.getItem("jwtToken");
-      if (jwtToken) {
-        navigate("/"); // Redirect to homepage if already logged in
-      } else {
-        setLoading(false); // Set loading to false after authentication check
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -37,18 +25,25 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // Set loading to true while submitting
+
     try {
       const token = await signIn(formData);
-
+      console.log("token login", token);
       // Store JWT token in localStorage
-      localStorage.setItem("jwtToken", token);
+      localStorage.setItem("token", token);
 
-      // Navigate to the homepage after successful login
-      if (token) {
+      if (!token) {
+        navigate("/login");
+      } else {
         navigate("/");
       }
+
+      // Navigate to the homepage after successful login
     } catch (error) {
       console.log("Login failed:", error);
+    } finally {
+      setLoading(false); // Set loading back to false after login attempt
     }
   };
 
@@ -76,6 +71,7 @@ const Login = () => {
         <Button type="primary" htmlType="submit" block>
           Sign In
         </Button>
+        <div>{loading ? <Spinner /> : <></>}</div>
         <div style={{ marginTop: "10px" }}>
           <Link to="/reset">Forgot Password?</Link>
         </div>

@@ -52,13 +52,13 @@ export const getCurrentUser = () => {
         user
           .getIdToken()
           .then((token) => {
-            resolve(token);
+            resolve({ isUserSignedIn: true, token });
           })
           .catch((error) => {
             reject(error);
           });
       } else {
-        reject(new Error("No user signed in."));
+        resolve({ isUserSignedIn: false });
       }
     });
   });

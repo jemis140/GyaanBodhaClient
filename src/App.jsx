@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useAuthContext } from "firebase/auth";
 import { Provider } from "react-redux";
-import LoginPage from "./pages/LoginPage"; // Import the LoginPage component
 import SignupPage from "./pages/SignUpPage"; // Import the SignupPage component
 import Homepage from "./pages/Hompage";
 import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./components/authentication/ResetPassword";
 import store from "./store/store";
-import NotebookTabs from "./features/notebook/components/DashboardNotebook";
 import NotebookPage from "./pages/NotebookPage";
+import { getCurrentUser } from "./components/authentication/api/authenticationAPI";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
