@@ -26,21 +26,22 @@ const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Set loading to true while submitting
+    setLoading(true);
 
     try {
       const { userId, token } = await signup(formData);
-
-      // Store the token and user ID in local storage
       localStorage.setItem("token", token);
+
       if (token) {
+        resetSessionTimer(); // Reset session timer after successful sign-up
         navigate("/");
+      } else {
+        navigate("/login");
       }
-      // Redirect to the homepage after successful signup
     } catch (error) {
       console.log("Signup failed:", error);
     } finally {
-      setLoading(false); // Set loading back to false after signup attempt
+      setLoading(false);
     }
   };
 

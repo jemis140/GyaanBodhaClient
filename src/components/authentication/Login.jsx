@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Typography, Input, Button, Checkbox, Spin } from "antd";
 import { signIn } from "./api/authenticationAPI";
 import Spinner from "../common/general/Spinner";
+import {
+  startSessionTimer,
+  resetSessionTimer,
+} from "../../session/sessionManager";
 
 const { Title } = Typography;
 
@@ -25,25 +29,23 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Set loading to true while submitting
+    setLoading(true);
 
     try {
       const token = await signIn(formData);
       console.log("token login", token);
-      // Store JWT token in localStorage
       localStorage.setItem("token", token);
 
       if (!token) {
         navigate("/login");
       } else {
+        resetSessionTimer(); // Reset session timer after successful login
         navigate("/");
       }
-
-      // Navigate to the homepage after successful login
     } catch (error) {
       console.log("Login failed:", error);
     } finally {
-      setLoading(false); // Set loading back to false after login attempt
+      setLoading(false);
     }
   };
 

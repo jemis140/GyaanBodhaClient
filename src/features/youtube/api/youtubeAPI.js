@@ -9,6 +9,7 @@ export const getYoutubeConversationChain = async (youtubeUrl) => {
     const formData = new FormData();
 
     formData.append("youtube_url", youtubeUrl);
+    const token = localStorage.getItem("token");
 
     const response = await axios.post(
       `${BASE_URL}/getvectorstoreyt`,
@@ -16,9 +17,11 @@ export const getYoutubeConversationChain = async (youtubeUrl) => {
       {
         headers: {
           "Content-Type": "application/json",
-        }, // To handle binary data like pickle files
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
       }
     );
+
     console.log("youtube response", response);
     return response;
   } catch (error) {
@@ -32,18 +35,16 @@ export const getYoutubeQueryResponse = async (query, uniqueId) => {
     formData.append("query", query);
     formData.append("unique_id", uniqueId);
 
-    const response = await axios.post(
-      `${BASE_URL}/getyoutube`,
-      formData, // Send the formData object
-      {
-        headers: {
-          "Content-Type": "application/json",
-        }, // To handle binary data like pickle files
-      }
-    );
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(`${BASE_URL}/getyoutube`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
 
     console.log("response inside frontend", response);
-
     return response; // Return response.data instead of the entire response
   } catch (error) {
     throw error;

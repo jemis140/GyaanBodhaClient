@@ -10,8 +10,28 @@ import store from "./store/store";
 import NotebookPage from "./pages/NotebookPage";
 import { getCurrentUser } from "./components/authentication/api/authenticationAPI";
 import LoginPage from "./pages/LoginPage";
+import {
+  startSessionTimer,
+  resetSessionTimer,
+  clearSessionTimer,
+} from "./session/sessionManager";
 
 function App() {
+  useEffect(() => {
+    startSessionTimer();
+
+    // Attach event listener for user activity
+    document.addEventListener("mousemove", resetSessionTimer);
+    document.addEventListener("keydown", resetSessionTimer);
+
+    return () => {
+      // Clean up event listeners when the component unmounts
+      clearSessionTimer();
+      document.removeEventListener("mousemove", resetSessionTimer);
+      document.removeEventListener("keydown", resetSessionTimer);
+    };
+  }, []);
+
   return (
     <Provider store={store}>
       <div>
