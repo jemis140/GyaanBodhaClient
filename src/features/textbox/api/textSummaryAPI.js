@@ -9,10 +9,12 @@ export const getTextSummary = async (textData) => {
     const formData = new FormData();
 
     formData.append("textData", textData);
+    const token = localStorage.getItem("token");
 
     const response = await axios.post(`${BASE_URL}/gettextsummary`, formData, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
       },
     });
     console.log("text summary response", response);
