@@ -12,12 +12,16 @@ export const getEuclidConversationChain = async (files, url, text) => {
     });
     formData.append("article_url", url);
     formData.append("textbox", text);
+
+    const token = localStorage.getItem("token");
+
     const response = await axios.post(
       `${BASE_URL}/geteuclidconversationchain`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         }, // To handle binary data like pickle files
       }
     );

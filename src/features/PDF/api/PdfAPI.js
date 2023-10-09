@@ -11,12 +11,15 @@ export const getConversationChain = async (files) => {
       formData.append("files", file.originFileObj);
     });
 
+    const token = localStorage.getItem("token");
+
     const response = await axios.post(
       `${BASE_URL}/getconversationchain`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         }, // To handle binary data like pickle files
       }
     );
