@@ -27,13 +27,13 @@ const SignUp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-
     try {
-      const { userId, token } = await signup(formData);
-      localStorage.setItem("token", token);
+      const response = await signup(formData);
+      console.log("Signup API response:", response); // Log the response
 
-      if (token) {
-        resetSessionTimer(); // Reset session timer after successful sign-up
+      const { token, userId } = response; // Ensure the response has token and userId
+      console.log("userID", userId);
+      if (userId) {
         navigate("/");
       } else {
         navigate("/login");

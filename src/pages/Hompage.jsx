@@ -6,31 +6,45 @@ import TopMenu from "../components/Dashboard/TopMenu";
 import { getCurrentUser } from "../components/authentication/api/authenticationAPI";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/common/general/Spinner";
+import {
+  startSessionTimer,
+  resetSessionTimer,
+  updateSessionTimestamp,
+} from "../session/sessionManager"; // Update the import path
 
 const { Content } = Layout;
 
 const Homepage = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     try {
+  //       const { isUserSignedIn } = await getCurrentUser();
 
-  useEffect(() => {
-    const checkToken = async () => {
-      try {
-        const { isUserSignedIn } = await getCurrentUser();
+  //       if (isUserSignedIn) {
+  //         // Reset session timer and start it
+  //         resetSessionTimer();
+  //         startSessionTimer();
 
-        if (isUserSignedIn) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error checking JWT token:", error);
-        navigate("/login");
-      } finally {
-        setLoading(false);
-      }
-    };
+  //         // Update session timestamp on user activity
+  //         window.addEventListener("mousemove", updateSessionTimestamp);
+  //         window.addEventListener("keydown", updateSessionTimestamp);
 
-    checkToken();
-  }, [navigate]);
+  //         return () => {
+  //           window.removeEventListener("mousemove", updateSessionTimestamp);
+  //           window.removeEventListener("keydown", updateSessionTimestamp);
+  //         };
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking JWT token:", error);
+  //       navigate("/login");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   checkToken();
+  // }, [navigate]);
+
   return (
     <>
       <TopMenu />

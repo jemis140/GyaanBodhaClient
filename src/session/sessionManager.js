@@ -1,31 +1,19 @@
-import { signOut } from "../components/authentication/api/authenticationAPI";
-
-const SESSION_TIMEOUT = 60 * 1000; // 1 hour in milliseconds
-
 let sessionTimer;
 
-const startSessionTimer = () => {
+export const startSessionTimer = () => {
   sessionTimer = setTimeout(() => {
-    // Implement logout logic here
-    // For example, sign out the user using your authentication API
-    // Here, we're assuming signOut returns a Promise
-    signOut()
-      .then(() => {
-        console.log("User logged out due to inactivity.");
-      })
-      .catch((error) => {
-        console.error("Error logging out:", error);
-      });
-  }, SESSION_TIMEOUT);
+    // Session expired, clear localStorage and redirect to login
+    localStorage.clear();
+    window.location.href = "/login";
+  }, 3600000); // 1 hour in milliseconds
 };
 
-const resetSessionTimer = () => {
+export const resetSessionTimer = () => {
   clearTimeout(sessionTimer);
   startSessionTimer();
 };
 
-const clearSessionTimer = () => {
-  clearTimeout(sessionTimer);
+export const updateSessionTimestamp = () => {
+  const timestamp = new Date().getTime();
+  localStorage.setItem("sessionTimestamp", JSON.stringify(timestamp));
 };
-
-export { startSessionTimer, resetSessionTimer, clearSessionTimer };

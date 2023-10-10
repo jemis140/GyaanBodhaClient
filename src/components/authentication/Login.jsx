@@ -1,19 +1,6 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Typography, Input, Button, Checkbox, Spin } from "antd";
-import { signIn } from "./api/authenticationAPI";
-import Spinner from "../common/general/Spinner";
-import {
-  startSessionTimer,
-  resetSessionTimer,
-} from "../../session/sessionManager";
-
-const { Title } = Typography;
-
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Change to false initially
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,11 +22,8 @@ const Login = () => {
       const token = await signIn(formData);
       console.log("token login", token);
       localStorage.setItem("token", token);
-
-      if (!token) {
-        navigate("/login");
-      } else {
-        resetSessionTimer(); // Reset session timer after successful login
+      const jwtToken = localStorage.getItem(token);
+      if (jwtToken) {
         navigate("/");
       }
     } catch (error) {
