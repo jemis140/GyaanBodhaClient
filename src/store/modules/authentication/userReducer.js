@@ -1,28 +1,29 @@
-import { SET_USER, CLEAR_USER, UPDATE_USER } from "./userActionTypes";
+// userReducer.js
+import {
+  LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
+  SIGNUP_SUCCESS,
+} from "./userActionTypes";
 
 const initialState = {
-  user: null,
+  token: null,
+  userId: null,
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_USER:
+    case LOGIN_SUCCESS:
+    case SIGNUP_SUCCESS:
       return {
         ...state,
-        user: action.payload,
+        token: action.payload.token,
+        userId: action.payload.userId,
       };
-    case CLEAR_USER:
+    case LOGOUT_SUCCESS:
       return {
         ...state,
-        user: null,
-      };
-    case UPDATE_USER:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          ...action.payload,
-        },
+        token: null,
+        userId: null,
       };
     default:
       return state;

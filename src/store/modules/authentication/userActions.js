@@ -1,13 +1,13 @@
-export const setUser = (user) => ({
-  type: SET_USER,
-  payload: user,
+export const loginSuccess = (token) => ({
+  type: LOGIN_SUCCESS,
+  payload: { token },
 });
 
-export const clearUser = () => ({
-  type: CLEAR_USER,
+export const logoutSuccess = () => ({
+  type: LOGOUT_SUCCESS,
 });
 
-export const updateUser = (userData) => ({
-  type: UPDATE_USER,
-  payload: userData,
+export const signupSuccess = (token, userId) => ({
+  type: SIGNUP_SUCCESS,
+  payload: { token, userId },
 });

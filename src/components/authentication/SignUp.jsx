@@ -36,6 +36,9 @@ const SignUp = () => {
         const { token, userId } = response; // Ensure the response has token and userId
         console.log("userID", userId);
         if (userId) {
+          // Store userId in session storage for further use
+          sessionStorage.setItem("userId", userId);
+
           navigate("/");
           resolve(response); // Resolve with the response
         } else {

@@ -6,7 +6,7 @@ import { getQueryResponse } from "./api/PdfAPI";
 import { storePdfChat } from "../../store/modules/pdf/pdfActions";
 
 const storeChatDataInRealtimeDb = (content, type) => {
-  const chatRef = ref(realtimeDb, "chats"); // Use ref from the Realtime Database instance
+  const chatRef = ref(realtimeDb, "chatsPdf"); // Use ref from the Realtime Database instance
   console.log("chatRef", chatRef);
   const newChatRef = push(chatRef); // Push a new chat node
 

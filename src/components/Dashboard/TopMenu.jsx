@@ -1,37 +1,52 @@
 import React from "react";
-import { Layout, Row, Col, Menu, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Layout, Menu, Typography, message } from "antd";
+import { auth } from "../../firebase";
 import {
   UserOutlined,
-  BulbOutlined,
   SettingOutlined,
   DownOutlined,
   LogoutOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
+import { signOut } from "firebase/auth";
 
 const { Header } = Layout;
 const { Title } = Typography;
 const { SubMenu } = Menu;
 
 const TopMenu = () => {
+  const navigate = useNavigate();
   const headerStyle = {
-    background: "linear-gradient(to right, #4d2882, #b74400)", // Adjust gradient colors
+    background: "linear-gradient(to right, #4d2882, #b74400)",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    position: "fixed", // Set position to fixed
-    width: "100%", // Set width to 100% to cover the entire screen
-    zIndex: 1000, // Set a high z-index to ensure it stays on top
+    position: "fixed",
+    width: "100%",
+    zIndex: 1000,
   };
 
   const titleStyle = {
-    background: "linear-gradient(to down, #b74400, #f0f0f0)", // Adjust gradient colors
+    background: "linear-gradient(to down, #b74400, #f0f0f0)",
     WebkitBackgroundClip: "text",
     color: "#f0f0f0",
   };
 
   const menuStyle = {
-    background: "transparent", // Adjust the background to be transparent
+    background: "transparent",
+  };
+
+  const handleSignout = async () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        navigate("/login");
+        console.log("Signed out successfully");
+      })
+      .catch((error) => {
+        message.info("Something went wrong");
+      });
   };
 
   return (
@@ -51,7 +66,11 @@ const TopMenu = () => {
           }
         >
           <Menu.Item key="user-info">User Info</Menu.Item>
-          <Menu.Item key="logout" icon={<LogoutOutlined />}>
+          <Menu.Item
+            key="logout"
+            icon={<LogoutOutlined />}
+            onClick={handleSignout}
+          >
             Logout
           </Menu.Item>
           <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
@@ -60,9 +79,6 @@ const TopMenu = () => {
         </SubMenu>
         <Menu.Item key="settings" icon={<SettingOutlined />}>
           Settings
-        </Menu.Item>
-        <Menu.Item key="dark-mode" icon={<BulbOutlined />}>
-          Dark Mode
         </Menu.Item>
       </Menu>
     </Header>
