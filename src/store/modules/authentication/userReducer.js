@@ -1,6 +1,4 @@
-// store/user/userReducer.js
-
-import { SET_USER, CLEAR_USER } from "./userActionTypes";
+import { SET_USER, CLEAR_USER, UPDATE_USER } from "./userActionTypes";
 
 const initialState = {
   user: null,
@@ -17,6 +15,14 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: null,
+      };
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.payload,
+        },
       };
     default:
       return state;

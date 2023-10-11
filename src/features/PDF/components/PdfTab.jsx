@@ -40,7 +40,7 @@ const PdfTab = () => {
   };
 
   useEffect(() => {
-    chatRef.current = ref(realtimeDb, "chats");
+    chatRef.current = ref(realtimeDb, "chatsPdf");
 
     // Set up a listener for changes in the chat data
     const chatListener = onValue(chatRef.current, (snapshot) => {

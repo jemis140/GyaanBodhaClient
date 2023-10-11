@@ -1,3 +1,15 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Typography, Input, Button, Checkbox, Spin } from "antd";
+import { signIn } from "./api/authenticationAPI";
+import Spinner from "../common/general/Spinner";
+import {
+  startSessionTimer,
+  resetSessionTimer,
+} from "../../session/sessionManager";
+
+const { Title } = Typography;
+
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Change to false initially
@@ -15,22 +27,25 @@ const Login = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-
-    try {
-      const token = await signIn(formData);
-      console.log("token login", token);
-      localStorage.setItem("token", token);
-      const jwtToken = localStorage.getItem(token);
-      if (jwtToken) {
-        navigate("/");
+    return new Promise(async (resolve, reject) => {
+      try {
+        event.preventDefault();
+        setLoading(true);
+        const token = await signIn(formData);
+        console.log("token login", token);
+        localStorage.setItem("token", token);
+        const jwtToken = localStorage.getItem("token");
+        if (jwtToken) {
+          navigate("/");
+          resolve(token); // Resolve with the token
+        }
+      } catch (error) {
+        console.log("Login failed:", error);
+        reject(error); // Reject with the error
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.log("Login failed:", error);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return (
