@@ -1,5 +1,3 @@
-import { SET_USER, CLEAR_USER } from "./userActionTypes";
-
 export const setUser = (user) => ({
   type: SET_USER,
   payload: user,
@@ -7,4 +5,9 @@ export const setUser = (user) => ({
 
 export const clearUser = () => ({
   type: CLEAR_USER,
+});
+
+export const updateUser = (userData) => ({
+  type: UPDATE_USER,
+  payload: userData,
 });

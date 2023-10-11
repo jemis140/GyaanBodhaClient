@@ -24,25 +24,31 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    try {
-      const response = await signup(formData);
-      console.log("Signup API response:", response); // Log the response
+  const handleSubmit = (event) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        event.preventDefault();
+        setLoading(true);
 
-      const { token, userId } = response; // Ensure the response has token and userId
-      console.log("userID", userId);
-      if (userId) {
-        navigate("/");
-      } else {
-        navigate("/login");
+        const response = await signup(formData);
+        console.log("Signup API response:", response); // Log the response
+
+        const { token, userId } = response; // Ensure the response has token and userId
+        console.log("userID", userId);
+        if (userId) {
+          navigate("/");
+          resolve(response); // Resolve with the response
+        } else {
+          navigate("/login");
+          reject(new Error("User ID not available")); // Reject with an error
+        }
+      } catch (error) {
+        console.log("Signup failed:", error);
+        reject(error); // Reject with the error
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.log("Signup failed:", error);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return (

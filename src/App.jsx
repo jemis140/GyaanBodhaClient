@@ -14,29 +14,6 @@ import PrivateRoute from "./utils/PrivateRoute";
 import { startSessionTimer, resetSessionTimer } from "./session/sessionManager";
 
 function App() {
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   // Check if the user is already authenticated
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     setLoading(false);
-  //   });
-
-  //   startSessionTimer();
-
-  //   // Attach event listener for user activity
-  //   document.addEventListener("mousemove", resetSessionTimer);
-  //   document.addEventListener("keydown", resetSessionTimer);
-
-  //   return () => {
-  //     // Clean up event listeners when the component unmounts
-  //     clearSessionTimer();
-  //     document.removeEventListener("mousemove", resetSessionTimer);
-  //     document.removeEventListener("keydown", resetSessionTimer);
-  //     unsubscribe();
-  //   };
-  // }, []);
-
   return (
     <Provider store={store}>
       <div>
