@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { auth } from "./firebase";
-import { onAuthStateChanged } from "firebase/auth"; // Import auth from your firebase configuration
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import SignupPage from "./pages/SignUpPage";
-import HomePage from "./pages/Hompage";
+import HomePage from "./pages/HomPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./components/authentication/ResetPassword";
+import ProfilePage from "./pages/ProfilePage";
 import store from "./store/store";
-import PrivateRoute from "./utils/PrivateRoute";
-
-import { startSessionTimer, resetSessionTimer } from "./session/sessionManager";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    // Firebase authentication listener to update the currentUser state
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(currentUser);
+        const uid = user.uid;
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+  }, []);
   return (
     <Provider store={store}>
-      <div>
-        <BrowserRouter>
-          <Routes>
-            {/* Redirect to login if not authenticated */}
-            <Route exact path="/" element={<HomePage />} />
-            <Route exact path="/dashboard" element={<Dashboard />} />
-            {/* Other routes */}
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/reset" element={<ResetPassword />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/profile" element={<ProfilePage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/reset" element={<ResetPassword />} />
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 }

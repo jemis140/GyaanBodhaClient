@@ -1,25 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Row, Col, Button, Card } from "antd";
-
 import ArticleURLForm from "./ArticleURLForm";
 import ArticleSummary from "./Summary";
-import { getArticleSummary } from "../api/articleAPI";
-import { handleArticleSummaryData } from "../api/articleFirebaseFunctions";
-import { realtimeDb } from "../../../firebase";
-import { ref, onValue, off } from "firebase/database";
+import Conversation from "../../../components/common/conversation/Conversation";
+import Loader from "../../../components/common/conversation/Loader";
+import Description from "../../../components/common/data-display/Desciption";
+import { getCurrentUserId } from "../../../components/authentication/api/authenticationAPI";
 import { useDispatch } from "react-redux";
 import { fetchArticleSummary } from "../../../store/modules/article/articleThunks";
-import Description from "../../../components/common/data-display/Desciption";
-import Loader from "../../../components/common/conversation/Loader";
-import Conversation from "../../../components/common/conversation/Conversation";
+import { handleArticleSummaryData } from "../api/articleFirebaseFunctions";
+import { getArticleSummary } from "../api/articleAPI";
+import { realtimeDb } from "../../../firebase";
+import { ref, onValue, off } from "firebase/database";
 
 const ArticleTab = () => {
   const dispatch = useDispatch();
-
   const [chatData, setChatData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const chatRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -30,8 +28,9 @@ const ArticleTab = () => {
   };
 
   useEffect(() => {
-    chatRef.current = ref(realtimeDb, "chatsArticle");
-
+    const userId = getCurrentUserId();
+    console.log(userId);
+    chatRef.current = ref(realtimeDb, `chatsArticle/${userId}`);
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];
       snapshot.forEach((childSnapshot) => {
@@ -40,7 +39,6 @@ const ArticleTab = () => {
       setChatData(chatDataArray);
       setIsLoading(false);
     });
-
     return () => {
       if (chatRef.current) {
         off(chatRef.current, "value", chatListener);
@@ -49,7 +47,8 @@ const ArticleTab = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchArticleSummary());
+    const userId = getCurrentUserId();
+    dispatch(fetchArticleSummary(userId));
   }, []);
 
   const handleGenerateSummary = async (articleUrl) => {
@@ -60,7 +59,8 @@ const ArticleTab = () => {
       if (response.status === 200) {
         setLoading(false);
         const summary = response.data.aiResponse;
-        handleArticleSummaryData(summary);
+        const userId = getCurrentUserId();
+        handleArticleSummaryData(summary, userId);
         scrollToBottom();
       } else {
         console.error(`Failed to get article summary: ${response.status}`);
@@ -98,7 +98,6 @@ const ArticleTab = () => {
       </Card>
       <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
         <Col xs={24} sm={24} md={24} lg={24}>
-          {/* Conversation component */}
           {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
         </Col>
       </Row>

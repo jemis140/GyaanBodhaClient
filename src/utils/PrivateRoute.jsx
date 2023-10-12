@@ -1,28 +1,27 @@
-import React from "react";
-import { Route, Navigate } from "react-router-dom";
-import { auth } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth"; // Import onAuthStateChanged from firebase/auth
+import { auth } from "../firebase"; // Import your Firebase auth instance
 
-const PrivateRoute = ({ path, element }) => {
-  const [authenticated, setAuthenticated] = React.useState(false);
+const ProtectedRoute = ({ element }) => {
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthenticated(true);
-      } else {
-        setAuthenticated(false);
-      }
-    });
+  // useEffect(() => {
+  //   // Check Firebase authentication state
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       // User is not logged in, redirect to login page
+  //       navigate("/");
+  //     }
+  //   });
 
-    return () => unsubscribe();
-  }, []);
+  //   // Cleanup the subscription when the component is unmounted
+  //   return () => unsubscribe();
+  // }, [navigate]);
 
-  return authenticated ? (
-    <Route path={path} element={element} />
-  ) : (
-    <Navigate to="/login" />
-  );
+  return isAuthenticated ? element : null;
 };
 
-export default PrivateRoute;
+export default ProtectedRoute;

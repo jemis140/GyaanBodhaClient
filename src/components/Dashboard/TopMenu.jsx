@@ -15,7 +15,7 @@ const { Header } = Layout;
 const { Title } = Typography;
 const { SubMenu } = Menu;
 
-const TopMenu = () => {
+const TopMenu = ({ currentUser }) => {
   const navigate = useNavigate();
   const headerStyle = {
     background: "linear-gradient(to right, #4d2882, #b74400)",
@@ -38,15 +38,17 @@ const TopMenu = () => {
   };
 
   const handleSignout = async () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        navigate("/login");
-        console.log("Signed out successfully");
-      })
-      .catch((error) => {
-        message.info("Something went wrong");
-      });
+    try {
+      // Clear relevant data from localStorage and sessionStorage
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("userId");
+
+      await signOut(auth);
+      navigate("/login");
+      console.log("Signed out successfully");
+    } catch (error) {
+      message.info("Something went wrong");
+    }
   };
 
   return (
