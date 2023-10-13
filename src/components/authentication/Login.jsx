@@ -31,11 +31,18 @@ const Login = () => {
       try {
         event.preventDefault();
         setLoading(true);
-        const token = await signIn(formData);
+
+        const response = await signIn(formData);
+
+        const { token, userId } = response.data; // Adjust the response structure
+
         console.log("token login", token);
+        console.log("UserID login", userId);
+
         localStorage.setItem("token", token);
-        const jwtToken = localStorage.getItem("token");
-        if (jwtToken) {
+        localStorage.setItem("userId", userId);
+
+        if (token) {
           navigate("/");
           resolve(token); // Resolve with the token
         }

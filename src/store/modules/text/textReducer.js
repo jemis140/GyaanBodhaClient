@@ -7,10 +7,12 @@ const initialState = {
 const textReducer = (state = initialState, action) => {
   switch (action.type) {
     case STORE_TEXT_CHAT:
-      console.log("state of chat", state.chatData);
+      const { chatData, userId } = action.payload;
+      const userChatData = state[userId] || [];
+      const updatedChatData = [...userChatData, ...chatData];
       return {
         ...state,
-        chatData: [...state.chatData, ...action.payload],
+        [userId]: updatedChatData,
       };
     default:
       return state;

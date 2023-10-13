@@ -24,19 +24,17 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     return new Promise(async (resolve, reject) => {
       try {
         event.preventDefault();
         setLoading(true);
 
         const response = await signup(formData);
-        console.log("Signup API response:", response); // Log the response
 
-        const { token, userId } = response; // Ensure the response has token and userId
-        console.log("userID", userId);
+        const { token, userId } = response.data; // Adjust the response structure
+
         if (userId) {
-          // Store userId in session storage for further use
           sessionStorage.setItem("userId", userId);
 
           navigate("/");
@@ -53,7 +51,6 @@ const SignUp = () => {
       }
     });
   };
-
   return (
     <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
       <Title level={2}>Sign Up</Title>

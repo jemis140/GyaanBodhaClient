@@ -8,6 +8,7 @@ export const getArticleSummary = async (articleUrl) => {
     formData.append("articleUrl", articleUrl);
 
     const jwtToken = localStorage.getItem("token");
+    console.log("jwt token", jwtToken);
 
     if (!jwtToken) {
       throw new Error("JWT token not found.");
@@ -23,7 +24,7 @@ export const getArticleSummary = async (articleUrl) => {
       formData,
       { headers }
     );
-
+    console.log("response article api", response);
     return response;
   } catch (error) {
     throw error;

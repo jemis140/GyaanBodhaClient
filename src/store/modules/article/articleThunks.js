@@ -7,6 +7,7 @@ export const fetchArticleSummary = () => {
   return async (dispatch) => {
     try {
       const userId = getCurrentUserId();
+      console.log("inside article thunk", userId);
       const chatRef = ref(realtimeDb, `users/${userId}/chatsArticle`);
 
       onValue(chatRef, (snapshot) => {

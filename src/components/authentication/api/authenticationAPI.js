@@ -11,7 +11,7 @@ const BASE_URL = "http://127.0.0.1:8000"; // Update this with your actual backen
 export const signup = async (userData) => {
   try {
     const response = await axios.post(`${BASE_URL}/signup`, userData);
-    return response.data;
+    return response;
   } catch (error) {
     throw error;
   }
@@ -20,7 +20,7 @@ export const signup = async (userData) => {
 export const signIn = async (formData) => {
   try {
     const response = await axios.post(`${BASE_URL}/login`, formData);
-    return response.data.token;
+    return response;
   } catch (error) {
     throw error;
   }
@@ -38,6 +38,7 @@ export const signOut = async (uid) => {
 export const getCurrentUserId = () => {
   const user = auth.currentUser;
   if (user) {
+    console.log("user id authentication api", user.uid);
     return user.uid;
   } else {
     // No user is signed in.

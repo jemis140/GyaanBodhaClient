@@ -41,7 +41,7 @@ const TopMenu = ({ currentUser }) => {
     try {
       // Clear relevant data from localStorage and sessionStorage
       localStorage.removeItem("token");
-      sessionStorage.removeItem("userId");
+      localStorage.removeItem("userId");
 
       await signOut(auth);
       navigate("/login");

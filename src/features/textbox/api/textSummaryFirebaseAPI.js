@@ -1,14 +1,6 @@
-// feature/pdf/scripts/pdfFunctions.js
-
-import { realtimeDb } from "../../../firebase"; // Import Firebase and set up Firebase in your project
-import { ref, push, set } from "firebase/database"; // Import necessary functions
-import { getTextSummary } from "./textSummaryAPI";
-import { storeTextChat } from "../../../store/modules/text/textActions";
-
-const storeTextChatData = (content, type) => {
-  const chatRef = ref(realtimeDb, "chatsText"); // Use ref from the Realtime Database instance
-  console.log("chatRef", chatRef);
-  const newChatRef = push(chatRef); // Push a new chat node
+const storeTextChatData = (content, type, userId) => {
+  const chatRef = ref(realtimeDb, `users/${userId}/chatsText`);
+  const newChatRef = push(chatRef);
 
   set(newChatRef, {
     type,
@@ -19,12 +11,12 @@ const storeTextChatData = (content, type) => {
   storeTextChat([{ type: "ai", content: aiMessage }]);
 };
 
-export const handleTextSummaryData = async (summary) => {
+export const handleTextSummaryData = async (summary, userId) => {
   try {
     console.log("ai message", summary);
     const aiMessageContent = summary;
     if (aiMessageContent) {
-      storeTextChatData(aiMessageContent, "ai");
+      storeTextChatData(aiMessageContent, "ai", userId);
     }
   } catch (error) {
     console.error("Get Query Response Error:", error);

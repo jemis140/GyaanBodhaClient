@@ -27,6 +27,17 @@ function App() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Redirect to login page
+      navigate("/login");
+      // Clear session storage
+    }, 3600000); // 1 hour
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Provider store={store}>
       <BrowserRouter>

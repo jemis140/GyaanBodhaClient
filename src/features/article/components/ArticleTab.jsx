@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Row, Col, Button, Card } from "antd";
+import { Row, Col, Card } from "antd";
 import ArticleURLForm from "./ArticleURLForm";
-import ArticleSummary from "./Summary";
 import Conversation from "../../../components/common/conversation/Conversation";
 import Loader from "../../../components/common/conversation/Loader";
 import Description from "../../../components/common/data-display/Desciption";
-import { getCurrentUserId } from "../../../components/authentication/api/authenticationAPI";
 import { useDispatch } from "react-redux";
 import { fetchArticleSummary } from "../../../store/modules/article/articleThunks";
 import { handleArticleSummaryData } from "../api/articleFirebaseFunctions";
@@ -20,6 +18,8 @@ const ArticleTab = () => {
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
 
+  const userId = localStorage.getItem("userId");
+
   const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -28,9 +28,12 @@ const ArticleTab = () => {
   };
 
   useEffect(() => {
-    const userId = getCurrentUserId();
-    console.log(userId);
-    chatRef.current = ref(realtimeDb, `chatsArticle/${userId}`);
+    const userId = localStorage.getItem("userId");
+    dispatch(fetchArticleSummary(userId));
+  }, [dispatch]);
+
+  useEffect(() => {
+    chatRef.current = ref(realtimeDb, `users/${userId}/chatsArticle`);
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];
       snapshot.forEach((childSnapshot) => {
@@ -44,12 +47,7 @@ const ArticleTab = () => {
         off(chatRef.current, "value", chatListener);
       }
     };
-  }, []);
-
-  useEffect(() => {
-    const userId = getCurrentUserId();
-    dispatch(fetchArticleSummary(userId));
-  }, []);
+  }, [userId]);
 
   const handleGenerateSummary = async (articleUrl) => {
     try {
@@ -59,7 +57,7 @@ const ArticleTab = () => {
       if (response.status === 200) {
         setLoading(false);
         const summary = response.data.aiResponse;
-        const userId = getCurrentUserId();
+        console.log("summary  userId", summary, "\n", "userID", userId);
         handleArticleSummaryData(summary, userId);
         scrollToBottom();
       } else {
