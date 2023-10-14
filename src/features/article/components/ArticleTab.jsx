@@ -18,7 +18,7 @@ const ArticleTab = () => {
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
 
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
 
   const scrollToBottom = () => {
     window.scrollTo({
@@ -28,12 +28,12 @@ const ArticleTab = () => {
   };
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
     dispatch(fetchArticleSummary(userId));
   }, [dispatch]);
 
   useEffect(() => {
-    chatRef.current = ref(realtimeDb, `users/${userId}/chatsArticle`);
+    const userId = sessionStorage.getItem("userId");
+    chatRef.current = ref(realtimeDb, `users/${userId}/article`);
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];
       snapshot.forEach((childSnapshot) => {

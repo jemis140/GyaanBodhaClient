@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Spin } from "antd"; // Added Spin component for spinner
 
 import TextInput from "./TextForm";
 import TextSummary from "./TextConversation";
@@ -18,8 +18,15 @@ const TextTab = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [chatData, setChatData] = useState([]);
-
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false); // Added state for spinner
   const chatRef = useRef(null);
+
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     const userId = sessionStorage.getItem("userId");
@@ -47,17 +54,19 @@ const TextTab = () => {
 
   const handleGenerateSummary = async (text) => {
     try {
+      setIsGeneratingSummary(true); // Show spinner during API call
       const response = await getTextSummary(text);
       if (response.status === 200) {
         const summary = response.data.aiResponse;
-
-        console.log("summary", summary);
         handleTextSummaryData(summary);
+        scrollToBottom(); // Scroll to the bottom after successful API call
       } else {
         console.error(`Failed to get article summary: ${response.status}`);
       }
     } catch (error) {
       console.error("Generate Vector Store Error:", error);
+    } finally {
+      setIsGeneratingSummary(false); // Hide spinner after API call
     }
   };
 
@@ -80,12 +89,16 @@ const TextTab = () => {
       >
         <TextInput onTextSubmit={handleGenerateSummary} />
       </div>
-      <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
-        <Col xs={24} sm={24} md={24} lg={24}>
-          {/* Conversation component */}
-          {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
-        </Col>
-      </Row>
+      {isGeneratingSummary ? ( // Show spinner when generating summary
+        <Spin size="large" />
+      ) : (
+        <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
+          <Col xs={24} sm={24} md={24} lg={24}>
+            {/* Conversation component */}
+            {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };

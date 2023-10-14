@@ -13,7 +13,7 @@ export const getEuclidConversationChain = async (files, url, text) => {
     formData.append("article_url", url);
     formData.append("textbox", text);
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.post(
       `${BASE_URL}/geteuclidconversationchain`,

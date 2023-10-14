@@ -7,7 +7,7 @@ export const getArticleSummary = async (articleUrl) => {
     const formData = new FormData();
     formData.append("articleUrl", articleUrl);
 
-    const jwtToken = localStorage.getItem("token");
+    const jwtToken = sessionStorage.getItem("token");
     console.log("jwt token", jwtToken);
 
     if (!jwtToken) {

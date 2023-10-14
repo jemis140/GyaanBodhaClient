@@ -3,7 +3,7 @@ import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000"; // Update this with your actual backend URL
 
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 
 export const getConversationChain = async (files) => {
   try {

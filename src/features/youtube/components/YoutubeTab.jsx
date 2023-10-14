@@ -8,12 +8,14 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import YoutubeQuestionInput from "./YoutubeQuestion";
 import YoutubeURLInput from "./YoutubeUrlInput";
 import Conversation from "../../../components/common/conversation/Conversation";
-import { handleYoutubeQuestionSubmission } from "../youtubeHelperFunctions";
+import { handleYoutubeQuestionSubmission } from "../api/youtubeFunctions";
 import { fetchYoutubeChatConversations } from "../../../store/modules/youtube/youtubeThunks";
 import ChatInput from "../../../components/common/data/ChatQuestion";
 import GradientButton from "../../../components/common/general/Button";
 import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
+import { scrollToBottom } from "../../../utils/helperFunctions";
+import NoConversationComponent from "../../../components/common/general/NoConversationMessage";
 
 const { Title } = Typography;
 const YoutubeTab = () => {
@@ -30,7 +32,8 @@ const YoutubeTab = () => {
   const chatRef = useRef(null); // Use a ref to store the database reference
 
   useEffect(() => {
-    chatRef.current = ref(realtimeDb, "chatsYoutube");
+    const userId = sessionStorage.getItem("userId");
+    chatRef.current = ref(realtimeDb, `users/${userId}/modules/youtube`);
 
     // Set up a listener for changes in the chat data
     const chatListener = onValue(chatRef.current, (snapshot) => {
@@ -43,6 +46,10 @@ const YoutubeTab = () => {
     });
 
     // Clean up the listener when the component unmounts
+    // if (!!chatDataArray || chatDataArray.length === 0) {
+    //   setIsLoading(false); // To do: in case of empty chat No conversation
+    // }
+
     return () => {
       if (chatRef.current) {
         off(chatRef.current, "value", chatListener); // Detach the listener
@@ -66,6 +73,7 @@ const YoutubeTab = () => {
         const id = response.data.unique_id;
         setUniqueId(id);
         setIsChainCreated(true);
+        scrollToBottom();
         console.log(`conversation chain create with unique id: ${uniqueId}`);
       } else {
         console.error(`Failed to get vector store: ${response.status}`);
@@ -141,6 +149,9 @@ const YoutubeTab = () => {
           </Col>
         </Row>
         {loading && <Loader />}
+        {chatData.length === 0 && (
+          <NoConversationComponent moduleName="Youtube Q/A conversation" />
+        )}
       </Card>
       <Row
         gutter={[16, 16]}

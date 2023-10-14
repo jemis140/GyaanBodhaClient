@@ -39,8 +39,8 @@ const Login = () => {
         console.log("token login", token);
         console.log("UserID login", userId);
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId);
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("userId", userId);
 
         if (token) {
           navigate("/");

@@ -5,7 +5,7 @@ import { ref, onValue } from "firebase/database"; // Import necessary functions
 export const fetchTextSummary = () => {
   return async (dispatch) => {
     try {
-      const userId = localStorage.getItem("userId");
+      const userId = sessionStorage.getItem("userId");
       const chatRef = ref(realtimeDb, `users/${userId}/text`);
 
       onValue(chatRef, (snapshot) => {

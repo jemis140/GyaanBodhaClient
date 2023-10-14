@@ -1,13 +1,15 @@
 // feature/pdf/scripts/pdfFunctions.js
 
-import { realtimeDb } from "../../firebase"; // Import Firebase and set up Firebase in your project
+import { realtimeDb } from "../../../firebase"; // Import Firebase and set up Firebase in your project
 import { ref, push, set } from "firebase/database"; // Import necessary functions
-import { getYoutubeQueryResponse } from "./api/youtubeAPI";
-import { storeYoutubeChat } from "../../store/modules/youtube/youtubeActions";
+import { getYoutubeQueryResponse } from "./youtubeAPI";
+import { storeYoutubeChat } from "../../../store/modules/youtube/youtubeActions";
 
 const storeYoutubeChatData = (content, type) => {
-  const chatRef = ref(realtimeDb, "chatsYoutube"); // Use ref from the Realtime Database instance
-  console.log("chatRef", chatRef);
+  const userId = sessionStorage.getItem("userId");
+  console.log("userID storeChatDataInRealtimeDb", userId);
+  const chatRef = ref(realtimeDb, `users/${userId}/modules/youtube`); // Use ref from the Realtime Database instance
+
   const newChatRef = push(chatRef); // Push a new chat node
 
   set(newChatRef, {

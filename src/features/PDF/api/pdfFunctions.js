@@ -1,12 +1,14 @@
 // feature/pdf/scripts/pdfFunctions.js
 
-import { realtimeDb } from "../../firebase"; // Import Firebase and set up Firebase in your project
+import { realtimeDb } from "../../../firebase"; // Import Firebase and set up Firebase in your project
 import { ref, push, set } from "firebase/database"; // Import necessary functions
-import { getQueryResponse } from "./api/PdfAPI";
-import { storePdfChat } from "../../store/modules/pdf/pdfActions";
+import { getQueryResponse } from "./PdfAPI";
+import { storePdfChat } from "../../../store/modules/pdf/pdfActions";
 
 const storeChatDataInRealtimeDb = (content, type) => {
-  const chatRef = ref(realtimeDb, "chatsPdf"); // Use ref from the Realtime Database instance
+  const userId = sessionStorage.getItem("userId");
+  console.log("userID storeChatDataInRealtimeDb", userId);
+  const chatRef = ref(realtimeDb, `users/${userId}/modules/pdf`); // Use ref from the Realtime Database instance
   console.log("chatRef", chatRef);
   const newChatRef = push(chatRef); // Push a new chat node
 

@@ -5,7 +5,9 @@ import { ref, onValue } from "firebase/database"; // Import necessary functions
 export const fetchChatConversations = () => {
   return async (dispatch) => {
     try {
-      const chatRef = ref(realtimeDb, "chatsEuclid"); // Use ref from the Realtime Database instance
+      console.log("inside euclid store");
+      const userId = sessionStorage.getItem("userId");
+      const chatRef = ref(realtimeDb, `users/${userId}/modules/euclid`); // Use ref from the Realtime Database instance
 
       onValue(chatRef, (snapshot) => {
         const chatData = [];
