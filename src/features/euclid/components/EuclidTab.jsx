@@ -34,7 +34,8 @@ const EuclidTab = () => {
   };
 
   useEffect(() => {
-    chatRef.current = ref(realtimeDb, "chatsEuclid");
+    const userId = sessionStorage.getItem("userId");
+    chatRef.current = ref(realtimeDb, `users/${userId}/modules/euclid`);
 
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];

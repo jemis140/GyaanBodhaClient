@@ -9,7 +9,7 @@ export const getYoutubeConversationChain = async (youtubeUrl) => {
     const formData = new FormData();
 
     formData.append("youtube_url", youtubeUrl);
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.post(
       `${BASE_URL}/getvectorstoreyt`,
@@ -35,7 +35,7 @@ export const getYoutubeQueryResponse = async (query, uniqueId) => {
     formData.append("query", query);
     formData.append("unique_id", uniqueId);
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.post(`${BASE_URL}/getyoutube`, formData, {
       headers: {

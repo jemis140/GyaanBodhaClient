@@ -6,9 +6,9 @@ import { realtimeDb } from "../../../firebase";
 export const fetchArticleSummary = () => {
   return async (dispatch) => {
     try {
-      const userId = getCurrentUserId();
+      const userId = sessionStorage.getItem("userId");
       console.log("inside article thunk", userId);
-      const chatRef = ref(realtimeDb, `users/${userId}/chatsArticle`);
+      const chatRef = ref(realtimeDb, `users/${userId}/modules/article`);
 
       onValue(chatRef, (snapshot) => {
         const chatData = [];

@@ -5,7 +5,10 @@ import { storeArticleChat } from "../../../store/modules/article/articleActions"
 
 export const storeArticleChatData = (content, type, userId) => {
   try {
-    const chatRef = ref(realtimeDb, `users/${userId}/chatsArticle`);
+    const userId = sessionStorage.getItem("userId");
+    console.log("userID storeChatDataInRealtimeDb", userId);
+    const chatRef = ref(realtimeDb, `users/${userId}/modules/article`); // Use ref from the Realtime Database instance
+
     const newChatRef = push(chatRef);
 
     set(newChatRef, {

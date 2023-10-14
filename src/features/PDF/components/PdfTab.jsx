@@ -5,7 +5,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import UploadDoc from "./UploadDoc";
 import { getConversationChain } from "../api/PdfAPI";
 import Conversation from "../../../components/common/conversation/Conversation";
-import { handleQuestionSubmission } from "../pdfFunctions";
+import { handleQuestionSubmission } from "../api/pdfFunctions";
 import { realtimeDb } from "../../../firebase";
 import { ref, onValue, off } from "firebase/database";
 import { useDispatch } from "react-redux";
@@ -40,7 +40,8 @@ const PdfTab = () => {
   };
 
   useEffect(() => {
-    chatRef.current = ref(realtimeDb, "chatsPdf");
+    const userId = sessionStorage.getItem("userId");
+    chatRef.current = ref(realtimeDb, `users/${userId}/modules/pdf`);
 
     // Set up a listener for changes in the chat data
     const chatListener = onValue(chatRef.current, (snapshot) => {
@@ -49,7 +50,11 @@ const PdfTab = () => {
         chatDataArray.push(childSnapshot.val());
       });
       setChatData(chatDataArray);
-      setIsLoading(false);
+
+      // Set isLoading to false if chatDataArray is empty or not defined
+      if (!!chatDataArray || chatDataArray.length === 0) {
+        setIsLoading(false);
+      }
     });
 
     // Clean up the listener when the component unmounts
@@ -77,9 +82,7 @@ const PdfTab = () => {
         const id = response.data.unique_id;
         setUniqueId(id);
         setIsChainCreated(true); // Mark the chain as created
-        message.success(
-          `Conversation chain created with unique id: ${uniqueId}`
-        );
+        message.success("Conversation chain created");
       } else {
         message.error(`Failed to get vector store: ${response.status}`);
       }
