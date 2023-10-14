@@ -1,39 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Row, Col } from "antd";
 import Sidebar from "../components/Dashboard/Sidebar";
 import Tabs from "../components/Dashboard/Tabs";
 import TopMenu from "../components/Dashboard/TopMenu";
-import { getCurrentUser } from "../components/authentication/api/authenticationAPI";
-import { useNavigate } from "react-router-dom";
-import Spinner from "../components/common/general/Spinner";
+import ProtectedRoute from "../utils/PrivateRoute";
+import { auth } from "../firebase";
 
 const { Content } = Layout;
 
-const Homepage = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+const HomePage = () => {
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const checkToken = async () => {
-      try {
-        const { isUserSignedIn } = await getCurrentUser();
-
-        if (isUserSignedIn) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error checking JWT token:", error);
-        navigate("/login");
-      } finally {
-        setLoading(false);
+    // Firebase authentication listener to update the currentUser state
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        setCurrentUser(user);
+        console.log("user", currentUser);
+      } else {
+        // No user is signed in.
+        setCurrentUser(null);
       }
-    };
+    });
 
-    checkToken();
-  }, [navigate]);
+    // Cleanup the listener on component unmount
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
-      <TopMenu />
+      <TopMenu currentUser={currentUser} />
       <Layout style={{ marginLeft: "0", transition: "margin 0.3s" }}>
         <Content>
           <Row>
@@ -50,4 +47,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default HomePage;

@@ -25,26 +25,32 @@ const SignUp = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+    return new Promise(async (resolve, reject) => {
+      try {
+        event.preventDefault();
+        setLoading(true);
 
-    try {
-      const { userId, token } = await signup(formData);
-      localStorage.setItem("token", token);
+        const response = await signup(formData);
 
-      if (token) {
-        resetSessionTimer(); // Reset session timer after successful sign-up
-        navigate("/");
-      } else {
-        navigate("/login");
+        const { token, userId } = response.data; // Adjust the response structure
+
+        if (userId) {
+          sessionStorage.setItem("userId", userId);
+
+          navigate("/");
+          resolve(response); // Resolve with the response
+        } else {
+          navigate("/login");
+          reject(new Error("User ID not available")); // Reject with an error
+        }
+      } catch (error) {
+        console.log("Signup failed:", error);
+        reject(error); // Reject with the error
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.log("Signup failed:", error);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
-
   return (
     <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
       <Title level={2}>Sign Up</Title>

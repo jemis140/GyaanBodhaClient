@@ -13,7 +13,6 @@ const { Title } = Typography;
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Change to false initially
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,25 +27,32 @@ const Login = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+    return new Promise(async (resolve, reject) => {
+      try {
+        event.preventDefault();
+        setLoading(true);
 
-    try {
-      const token = await signIn(formData);
-      console.log("token login", token);
-      localStorage.setItem("token", token);
+        const response = await signIn(formData);
 
-      if (!token) {
-        navigate("/login");
-      } else {
-        resetSessionTimer(); // Reset session timer after successful login
-        navigate("/");
+        const { token, userId } = response.data; // Adjust the response structure
+
+        console.log("token login", token);
+        console.log("UserID login", userId);
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId);
+
+        if (token) {
+          navigate("/");
+          resolve(token); // Resolve with the token
+        }
+      } catch (error) {
+        console.log("Login failed:", error);
+        reject(error); // Reject with the error
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.log("Login failed:", error);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return (

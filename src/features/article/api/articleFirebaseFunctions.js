@@ -1,32 +1,32 @@
-// feature/pdf/scripts/pdfFunctions.js
-
-import { realtimeDb } from "../../../firebase"; // Import Firebase and set up Firebase in your project
-import { ref, push, set } from "firebase/database"; // Import necessary functions
+import { realtimeDb } from "../../../firebase";
+import { ref, push, set } from "firebase/database";
 import { getArticleSummary } from "./articleAPI";
 import { storeArticleChat } from "../../../store/modules/article/articleActions";
 
-const storeArticleChatData = (content, type) => {
-  const chatRef = ref(realtimeDb, "chatsArticle"); // Use ref from the Realtime Database instance
-  console.log("chatRef", chatRef);
-  const newChatRef = push(chatRef); // Push a new chat node
+export const storeArticleChatData = (content, type, userId) => {
+  try {
+    const chatRef = ref(realtimeDb, `users/${userId}/chatsArticle`);
+    const newChatRef = push(chatRef);
 
-  set(newChatRef, {
-    type,
-    content,
-    timestamp: Date.now(), // Use ServerValue.TIMESTAMP for the timestamp
-  });
+    set(newChatRef, {
+      type,
+      content,
+      timestamp: Date.now(),
+    });
+  } catch (error) {
+    console.error("Error storing article chat data:", error);
+  }
 
   storeArticleChat([{ type: "ai", content: aiMessage }]);
 };
 
-export const handleArticleSummaryData = async (summary) => {
+export const handleArticleSummaryData = async (summary, userId) => {
   try {
-    console.log("ai message", summary);
     const aiMessageContent = summary;
     if (aiMessageContent) {
-      storeArticleChatData(aiMessageContent, "ai");
+      await storeArticleChatData(aiMessageContent, "ai", userId);
     }
   } catch (error) {
-    console.error("Get Query Response Error:", error);
+    console.error("Error handling article summary data:", error);
   }
 };

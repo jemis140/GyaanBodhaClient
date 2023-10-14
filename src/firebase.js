@@ -19,7 +19,6 @@ const auth = getAuth();
 console.log("auth", auth);
 
 const db = getFirestore(); // change name here to authDb
-console.log(db, "db user");
 const googleProvider = new GoogleAuthProvider();
 console.log("Google provider", googleProvider);
 const realtimeDb = getDatabase(firebaseApp);

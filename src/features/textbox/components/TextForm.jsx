@@ -15,7 +15,8 @@ const TextInput = ({ onTextSubmit }) => {
   };
 
   const handleTextSubmit = () => {
-    onTextSubmit(text);
+    const userId = localStorage.getItem("userId");
+    onTextSubmit(text, userId);
   };
 
   return (

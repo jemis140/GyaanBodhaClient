@@ -7,7 +7,7 @@ import { ref, onValue } from "firebase/database"; // Import necessary functions
 export const fetchChatConversations = () => {
   return async (dispatch) => {
     try {
-      const chatRef = ref(realtimeDb, "chats"); // Use ref from the Realtime Database instance
+      const chatRef = ref(realtimeDb, "chatsPdf"); // Use ref from the Realtime Database instance
 
       onValue(chatRef, (snapshot) => {
         const chatData = [];

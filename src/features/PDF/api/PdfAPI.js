@@ -3,6 +3,8 @@ import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000"; // Update this with your actual backend URL
 
+const token = localStorage.getItem("token");
+
 export const getConversationChain = async (files) => {
   try {
     console.log(files);
@@ -10,8 +12,6 @@ export const getConversationChain = async (files) => {
     files.forEach((file) => {
       formData.append("files", file.originFileObj);
     });
-
-    const token = localStorage.getItem("token");
 
     const response = await axios.post(
       `${BASE_URL}/getconversationchain`,
@@ -42,6 +42,7 @@ export const getQueryResponse = async (query, uniqueId) => {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         }, // To handle binary data like pickle files
       }
     );

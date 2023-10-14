@@ -1,17 +1,15 @@
-// api.js
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000"; // Update this with your actual backend URL
+const BASE_URL = "http://127.0.0.1:8000";
 
 export const getArticleSummary = async (articleUrl) => {
   try {
     const formData = new FormData();
     formData.append("articleUrl", articleUrl);
 
-    // Retrieve JWT token from localStorage
-    const jwtToken = localStorage.getItem("jwtToken");
+    const jwtToken = localStorage.getItem("token");
+    console.log("jwt token", jwtToken);
 
-    // Make sure you have the token before proceeding
     if (!jwtToken) {
       throw new Error("JWT token not found.");
     }
@@ -26,8 +24,7 @@ export const getArticleSummary = async (articleUrl) => {
       formData,
       { headers }
     );
-
-    console.log("article summary response", response);
+    console.log("response article api", response);
     return response;
   } catch (error) {
     throw error;
