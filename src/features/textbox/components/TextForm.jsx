@@ -10,12 +10,12 @@ const TextInput = ({ onTextSubmit }) => {
   const [text, setText] = useState("");
 
   const handleTextChange = (e) => {
-    const newText = e.target.value.trim(); // Trim extra spaces and new lines
+    const newText = e.target.value.trim();
     setText(newText);
   };
 
   const handleTextSubmit = () => {
-    const userId = localStorage.getItem("userId");
+    const userId = sessionStorage.getItem("userId");
     onTextSubmit(text, userId);
   };
 

@@ -8,11 +8,11 @@ const textReducer = (state = initialState, action) => {
   switch (action.type) {
     case STORE_TEXT_CHAT:
       const { chatData, userId } = action.payload;
-      const userChatData = state[userId] || [];
-      const updatedChatData = [...userChatData, ...chatData];
+      const updatedChatData = { ...state.chatData };
+      updatedChatData[userId] = chatData;
       return {
         ...state,
-        [userId]: updatedChatData,
+        chatData: updatedChatData,
       };
     default:
       return state;

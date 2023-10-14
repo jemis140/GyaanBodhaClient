@@ -1,24 +1,24 @@
-const storeTextChatData = (content, type, userId) => {
-  const chatRef = ref(realtimeDb, `users/${userId}/chatsText`);
-  const newChatRef = push(chatRef);
+import { realtimeDb } from "../../../firebase";
+import { ref, push, set } from "firebase/database";
 
+const storeTextChatData = (content) => {
+  const userId = localStorage.getItem("userId");
+
+  console.log("userId,", userId);
+  const chatRef = ref(realtimeDb, `users/${userId}/modules/text`);
+  const newChatRef = push(chatRef);
   set(newChatRef, {
-    type,
     content,
     timestamp: Date.now(),
   });
-
-  storeTextChat([{ type: "ai", content: aiMessage }]);
 };
 
-export const handleTextSummaryData = async (summary, userId) => {
+export const handleTextSummaryData = async (summary) => {
   try {
-    console.log("ai message", summary);
-    const aiMessageContent = summary;
-    if (aiMessageContent) {
-      storeTextChatData(aiMessageContent, "ai", userId);
+    if (summary) {
+      storeTextChatData(summary);
     }
   } catch (error) {
-    console.error("Get Query Response Error:", error);
+    console.error("Error handling text summary data:", error);
   }
 };
