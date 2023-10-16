@@ -28,8 +28,8 @@ const ArticleTab = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchArticleSummary(userId));
-  }, [dispatch]);
+    dispatch(fetchArticleSummary());
+  }, []);
 
   useEffect(() => {
     const userId = sessionStorage.getItem("userId");
@@ -52,16 +52,24 @@ const ArticleTab = () => {
   const handleGenerateSummary = async (articleUrl) => {
     try {
       setLoading(true);
-      const response = await getArticleSummary(articleUrl);
+      const jwtToken = sessionStorage.getItem("token");
+      if (!jwtToken) {
+        console.error("JWT token not found.");
+        return;
+      }
 
-      if (response.status === 200) {
+      const summaryResponse = await getArticleSummary(articleUrl, jwtToken);
+
+      if (summaryResponse.status === 200) {
         setLoading(false);
-        const summary = response.data.aiResponse;
+        const summary = summaryResponse.data.aiResponse;
         console.log("summary  userId", summary, "\n", "userID", userId);
         handleArticleSummaryData(summary, userId);
         scrollToBottom();
       } else {
-        console.error(`Failed to get article summary: ${response.status}`);
+        console.error(
+          `Failed to get article summary: ${summaryResponse.status}`
+        );
       }
     } catch (error) {
       console.error("Generate Vector Store Error:", error);

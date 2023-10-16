@@ -3,6 +3,8 @@ import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000"; // Update this with your actual backend URL
 
+const token = sessionStorage.getItem("token");
+
 export const getEuclidConversationChain = async (files, url, text) => {
   try {
     console.log(files);
@@ -12,8 +14,6 @@ export const getEuclidConversationChain = async (files, url, text) => {
     });
     formData.append("article_url", url);
     formData.append("textbox", text);
-
-    const token = sessionStorage.getItem("token");
 
     const response = await axios.post(
       `${BASE_URL}/geteuclidconversationchain`,
@@ -44,7 +44,8 @@ export const getEuclidQueryResponse = async (query, uniqueId) => {
       {
         headers: {
           "Content-Type": "application/json",
-        }, // To handle binary data like pickle files
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     console.log("response inside frontend", response);

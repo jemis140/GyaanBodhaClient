@@ -3,7 +3,7 @@ import { ref, push, set } from "firebase/database";
 import { getArticleSummary } from "./articleAPI";
 import { storeArticleChat } from "../../../store/modules/article/articleActions";
 
-export const storeArticleChatData = (content, type, userId) => {
+export const storeArticleChatData = (type, content) => {
   try {
     const userId = sessionStorage.getItem("userId");
     console.log("userID storeChatDataInRealtimeDb", userId);
@@ -20,14 +20,14 @@ export const storeArticleChatData = (content, type, userId) => {
     console.error("Error storing article chat data:", error);
   }
 
-  storeArticleChat([{ type: "ai", content: aiMessage }]);
+  storeArticleChat([{ type: "ai", payload: content }]);
 };
 
-export const handleArticleSummaryData = async (summary, userId) => {
+export const handleArticleSummaryData = async (summary) => {
   try {
     const aiMessageContent = summary;
     if (aiMessageContent) {
-      await storeArticleChatData(aiMessageContent, "ai", userId);
+      await storeArticleChatData(aiMessageContent, "ai");
     }
   } catch (error) {
     console.error("Error handling article summary data:", error);

@@ -41,7 +41,7 @@ const Login = () => {
 
         sessionStorage.setItem("token", token);
         sessionStorage.setItem("userId", userId);
-
+        console.log("token login", token);
         if (token) {
           navigate("/");
           resolve(token); // Resolve with the token
