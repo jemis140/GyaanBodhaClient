@@ -1,9 +1,19 @@
-import { Popover, Button } from "antd";
-import { CopyOutlined, PlusOutlined, LikeOutlined } from "@ant-design/icons";
+import React from "react";
+import { Popover, Button, message } from "antd";
+import { CopyOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import NotePopover from "./NotePopover";
 
-import NotePopover from "../NotePopover";
+const ResearchAssistantPopover = ({
+  onCopyText,
+  onTakeNotes,
+  onDelete,
+  item,
+}) => {
+  const handleDelete = () => {
+    // Handle delete logic here
+    message.success("Item deleted successfully");
+  };
 
-const ResearchAssistantPopover = () => {
   return (
     <div
       style={{
@@ -13,14 +23,20 @@ const ResearchAssistantPopover = () => {
       }}
     >
       <Popover content="Copy Text">
-        <Button type="text" icon={<CopyOutlined />} />
+        <Button
+          type="text"
+          icon={<CopyOutlined />}
+          onClick={() => {
+            onCopyText(item.content);
+          }}
+        />
       </Popover>
       <Popover content="Take Notes">
         <Popover
           content={
             <NotePopover
               onNoteSubmit={(note, isImportant) => {
-                /* Handle note submission here */
+                onTakeNotes(note, isImportant);
               }}
             />
           }
@@ -29,8 +45,12 @@ const ResearchAssistantPopover = () => {
           <Button type="text" icon={<PlusOutlined />} />
         </Popover>
       </Popover>
-      <Popover>
-        <Button type="text" icon={<LikeOutlined />} />
+      <Popover content="Delete">
+        <Button
+          type="text"
+          icon={<DeleteOutlined />}
+          onClick={() => handleDelete(item)}
+        />
       </Popover>
     </div>
   );
