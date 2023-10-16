@@ -18,7 +18,7 @@ export const fetchChatConversations = () => {
         dispatch(storePdfChat(chatData)); // Dispatch the correct action
       });
     } catch (error) {
-      // Handle error
+      console.log("error occured", error);
     }
   };
 };

@@ -1,3 +1,4 @@
+import { LocalOfferSharp } from "@mui/icons-material";
 import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000";
@@ -6,27 +7,22 @@ export const getArticleSummary = async (articleUrl) => {
   try {
     const formData = new FormData();
     formData.append("articleUrl", articleUrl);
-
     const jwtToken = sessionStorage.getItem("token");
-    console.log("jwt token", jwtToken);
-
-    if (!jwtToken) {
-      throw new Error("JWT token not found.");
-    }
-
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwtToken}`,
-    };
 
     const response = await axios.post(
       `${BASE_URL}/getarticlesummary`,
       formData,
-      { headers }
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`, // Include the token in the Authorization header
+        },
+      }
     );
     console.log("response article api", response);
     return response;
   } catch (error) {
-    throw error;
+    console.error("Error getting article summary:", error);
+    return { status: 500, data: { error: "Internal Server Error" } }; // Return a default response for error
   }
 };

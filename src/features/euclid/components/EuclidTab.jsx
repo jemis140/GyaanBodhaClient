@@ -37,18 +37,24 @@ const EuclidTab = () => {
     const userId = sessionStorage.getItem("userId");
     chatRef.current = ref(realtimeDb, `users/${userId}/modules/euclid`);
 
+    // Set up a listener for changes in the chat data
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];
       snapshot.forEach((childSnapshot) => {
         chatDataArray.push(childSnapshot.val());
       });
       setChatData(chatDataArray);
-      setIsLoading(false);
+
+      // Set isLoading to false if chatDataArray is empty or not defined
+      if (!!chatDataArray || chatDataArray.length === 0) {
+        setIsLoading(false);
+      }
     });
 
+    // Clean up the listener when the component unmounts
     return () => {
       if (chatRef.current) {
-        off(chatRef.current, "value", chatListener);
+        off(chatRef.current, "value", chatListener); // Detach the listener
       }
     };
   }, []);
@@ -65,9 +71,7 @@ const EuclidTab = () => {
         const id = response.data.unique_id;
         setUniqueId(id);
         setIsChainCreated(true); // Mark the chain as created
-        message.success(
-          `Conversation chain created with unique id: ${uniqueId}`
-        );
+        message.success(`Conversation chain created`);
       } else {
         message.error(`Failed to get vector store: ${response.status}`);
       }

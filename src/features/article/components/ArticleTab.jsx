@@ -28,18 +28,15 @@ const ArticleTab = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchArticleSummary(userId));
-  }, [dispatch]);
-
-  useEffect(() => {
     const userId = sessionStorage.getItem("userId");
-    chatRef.current = ref(realtimeDb, `users/${userId}/article`);
+    chatRef.current = ref(realtimeDb, `users/${userId}/modules/article`);
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];
       snapshot.forEach((childSnapshot) => {
         chatDataArray.push(childSnapshot.val());
       });
       setChatData(chatDataArray);
+      console.log("Chat Data"), chatData;
       setIsLoading(false);
     });
     return () => {
@@ -47,24 +44,32 @@ const ArticleTab = () => {
         off(chatRef.current, "value", chatListener);
       }
     };
-  }, [userId]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchArticleSummary());
+  }, []);
 
   const handleGenerateSummary = async (articleUrl) => {
     try {
       setLoading(true);
-      const response = await getArticleSummary(articleUrl);
 
-      if (response.status === 200) {
-        setLoading(false);
-        const summary = response.data.aiResponse;
+      const summaryResponse = await getArticleSummary(articleUrl);
+
+      if (summaryResponse.status === 200) {
+        const summary = summaryResponse.data.aiResponse;
         console.log("summary  userId", summary, "\n", "userID", userId);
-        handleArticleSummaryData(summary, userId);
+        handleArticleSummaryData(summary);
         scrollToBottom();
       } else {
-        console.error(`Failed to get article summary: ${response.status}`);
+        console.error(
+          `Failed to get article summary: ${summaryResponse.status}`
+        );
       }
     } catch (error) {
       console.error("Generate Vector Store Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

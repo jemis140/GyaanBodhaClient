@@ -25,7 +25,10 @@ export const getYoutubeConversationChain = async (youtubeUrl) => {
     console.log("youtube response", response);
     return response;
   } catch (error) {
-    throw error;
+    console.error("Error in getYoutubeConversationChain:", error.message);
+    throw new Error(
+      "Failed to create conversation chain. Please try again later."
+    );
   }
 };
 
@@ -47,6 +50,9 @@ export const getYoutubeQueryResponse = async (query, uniqueId) => {
     console.log("response inside frontend", response);
     return response; // Return response.data instead of the entire response
   } catch (error) {
-    throw error;
+    console.error("Error in getYoutubeConversationChain:", error.message);
+    throw new Error(
+      "Failed to create conversation chain. Please try again later."
+    );
   }
 };

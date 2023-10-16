@@ -6,7 +6,7 @@ export const fetchTextSummary = () => {
   return async (dispatch) => {
     try {
       const userId = sessionStorage.getItem("userId");
-      const chatRef = ref(realtimeDb, `users/${userId}/text`);
+      const chatRef = ref(realtimeDb, `users/${userId}/modules/text`);
 
       onValue(chatRef, (snapshot) => {
         const chatData = [];
