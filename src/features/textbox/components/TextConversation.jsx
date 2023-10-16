@@ -1,16 +1,83 @@
 import React from "react";
-import { List, Avatar, Typography, Space, Popover, Button } from "antd";
+import {
+  List,
+  Avatar,
+  Typography,
+  Space,
+  Popover,
+  Button,
+  message,
+  Modal,
+} from "antd";
 import {
   RobotOutlined,
   CopyOutlined,
   PlusOutlined,
-  LikeOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import NotePopover from "../../../components/common/NotePopover";
+import { auth } from "../../../firebase"; // Import the auth object
+import { remove } from "firebase/database";
 
 const { Text } = Typography;
 
 const TextSummary = ({ chatData }) => {
+  const handleCopyText = (text) => {
+    // Copy the text to the clipboard
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        // Notify the user that the text has been copied
+        message.success("Text copied to clipboard");
+      })
+      .catch((error) => {
+        console.error("Error copying text to clipboard:", error);
+        // Notify the user about the error
+        message.error("Failed to copy text to clipboard");
+      });
+  };
+
+  const handleTakeNotes = (item) => {
+    // Logic to handle taking notes for the item
+    // You can implement this based on your requirements
+    // For example, you can open a modal to allow the user to input notes
+    Modal.info({
+      title: "Take Notes",
+      content: (
+        <div>
+          <p>Write your notes here:</p>
+          <NotePopover
+            onNoteSubmit={(note, isImportant) => {
+              // Handle note submission here
+              console.log("Note:", note);
+              console.log("Is Important:", isImportant);
+            }}
+          />
+        </div>
+      ),
+      onOk() {},
+    });
+  };
+
+  const handleDelete = (item) => {
+    const userId = auth.currentUser.uid;
+    const chatItemId = item.id; // Assuming there is an 'id' property in the item
+    const chatItemRef = ref(
+      realtimeDb,
+      `users/${userId}/modules/text/${chatItemId}`
+    );
+
+    // Remove the chat item from Firebase
+    remove(chatItemRef)
+      .then(() => {
+        message.success("Item deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting chat item:", error);
+        message.error("Failed to delete the item");
+      });
+  };
+
   return (
     <List
       itemLayout="horizontal"
@@ -87,24 +154,25 @@ const TextSummary = ({ chatData }) => {
                 }}
               >
                 <Popover content="Copy Text">
-                  <Button type="text" icon={<CopyOutlined />} />
+                  <Button
+                    type="text"
+                    icon={<CopyOutlined />}
+                    onClick={() => handleCopyText(item.content)}
+                  />
                 </Popover>
                 <Popover content="Take Notes">
-                  <Popover
-                    content={
-                      <NotePopover
-                        onNoteSubmit={(note, isImportant) => {
-                          /* Handle note submission here */
-                        }}
-                      />
-                    }
-                    trigger="click"
-                  >
-                    <Button type="text" icon={<PlusOutlined />} />
-                  </Popover>
+                  <Button
+                    type="text"
+                    icon={<PlusOutlined />}
+                    onClick={() => handleTakeNotes(item)}
+                  />
                 </Popover>
-                <Popover>
-                  <Button type="text" icon={<LikeOutlined />} />
+                <Popover content="Delete">
+                  <Button
+                    type="text"
+                    icon={<DeleteOutlined />}
+                    onClick={() => handleDelete(item)}
+                  />
                 </Popover>
               </div>
             </div>
