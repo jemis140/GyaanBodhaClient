@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { Provider } from "react-redux";
 import SignupPage from "./pages/SignUpPage";
 import HomePage from "./pages/HomPage";
@@ -13,7 +13,6 @@ import { auth } from "./firebase";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-
   useEffect(() => {
     // Firebase authentication listener to update the currentUser state
     onAuthStateChanged(auth, (user) => {
@@ -28,15 +27,15 @@ function App() {
     });
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // Redirect to login page
-      navigate("/login");
-      // Clear session storage
-    }, 3600000); // 1 hour
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     // Redirect to login page
+  //     navigate("/login");
+  //     // Clear session storage
+  //   }, 3600000); // 1 hour
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <Provider store={store}>

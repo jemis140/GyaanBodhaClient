@@ -1,35 +1,33 @@
 import { realtimeDb } from "../../../firebase";
 import { ref, push, set } from "firebase/database";
-import { getArticleSummary } from "./articleAPI";
-import { storeArticleChat } from "../../../store/modules/article/articleActions";
+import { storeTextChat } from "../../../store/modules/text/textActions";
 
-export const storeArticleChatData = (type, content) => {
-  try {
-    const userId = sessionStorage.getItem("userId");
-    console.log("userID storeChatDataInRealtimeDb", userId);
-    const chatRef = ref(realtimeDb, `users/${userId}/modules/article`); // Use ref from the Realtime Database instance
+const storeChatDataInRealtimeDb = (content, type) => {
+  const userId = sessionStorage.getItem("userId");
+  const chatRef = ref(realtimeDb, `users/${userId}/modules/article`);
+  const newChatRef = push(chatRef);
 
-    const newChatRef = push(chatRef);
+  set(newChatRef, {
+    type,
+    content,
+    timestamp: Date.now(),
+  });
+};
 
-    set(newChatRef, {
-      type,
-      content,
-      timestamp: Date.now(),
-    });
-  } catch (error) {
-    console.error("Error storing article chat data:", error);
-  }
-
-  storeArticleChat([{ type: "ai", payload: content }]);
+const addChatMessagesToStore = (aiMessage) => {
+  storeTextChat([{ type: "ai", content: aiMessage }]);
 };
 
 export const handleArticleSummaryData = async (summary) => {
   try {
     const aiMessageContent = summary;
     if (aiMessageContent) {
-      await storeArticleChatData(aiMessageContent, "ai");
+      storeChatDataInRealtimeDb(aiMessageContent, "ai");
+      addChatMessagesToStore(aiMessageContent);
     }
   } catch (error) {
-    console.error("Error handling article summary data:", error);
+    console.error("Error handling summary data:", error);
   }
 };
+
+// Rest of the code for storeTextChat, textActions, and textReducer remains the same as needed for text module

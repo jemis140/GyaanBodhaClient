@@ -28,18 +28,15 @@ const ArticleTab = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchArticleSummary());
-  }, []);
-
-  useEffect(() => {
     const userId = sessionStorage.getItem("userId");
-    chatRef.current = ref(realtimeDb, `users/${userId}/article`);
+    chatRef.current = ref(realtimeDb, `users/${userId}/modules/article`);
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];
       snapshot.forEach((childSnapshot) => {
         chatDataArray.push(childSnapshot.val());
       });
       setChatData(chatDataArray);
+      console.log("Chat Data"), chatData;
       setIsLoading(false);
     });
     return () => {
@@ -47,24 +44,22 @@ const ArticleTab = () => {
         off(chatRef.current, "value", chatListener);
       }
     };
-  }, [userId]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchArticleSummary());
+  }, []);
 
   const handleGenerateSummary = async (articleUrl) => {
     try {
       setLoading(true);
-      const jwtToken = sessionStorage.getItem("token");
-      if (!jwtToken) {
-        console.error("JWT token not found.");
-        return;
-      }
 
-      const summaryResponse = await getArticleSummary(articleUrl, jwtToken);
+      const summaryResponse = await getArticleSummary(articleUrl);
 
       if (summaryResponse.status === 200) {
-        setLoading(false);
         const summary = summaryResponse.data.aiResponse;
         console.log("summary  userId", summary, "\n", "userID", userId);
-        handleArticleSummaryData(summary, userId);
+        handleArticleSummaryData(summary);
         scrollToBottom();
       } else {
         console.error(
@@ -73,6 +68,8 @@ const ArticleTab = () => {
       }
     } catch (error) {
       console.error("Generate Vector Store Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

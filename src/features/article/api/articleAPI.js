@@ -7,17 +7,17 @@ export const getArticleSummary = async (articleUrl) => {
   try {
     const formData = new FormData();
     formData.append("articleUrl", articleUrl);
-
-    const jwtToken = localStorage.getItem("token");
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwtToken}`,
-    };
+    const jwtToken = sessionStorage.getItem("token");
 
     const response = await axios.post(
       `${BASE_URL}/getarticlesummary`,
       formData,
-      { headers }
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`, // Include the token in the Authorization header
+        },
+      }
     );
     console.log("response article api", response);
     return response;

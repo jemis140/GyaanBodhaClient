@@ -71,9 +71,7 @@ const EuclidTab = () => {
         const id = response.data.unique_id;
         setUniqueId(id);
         setIsChainCreated(true); // Mark the chain as created
-        message.success(
-          `Conversation chain created with unique id: ${uniqueId}`
-        );
+        message.success(`Conversation chain created`);
       } else {
         message.error(`Failed to get vector store: ${response.status}`);
       }
