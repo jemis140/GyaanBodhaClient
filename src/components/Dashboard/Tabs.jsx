@@ -5,6 +5,7 @@ import {
   YoutubeOutlined,
   FileTextOutlined,
   FilePdfOutlined,
+  FileSearchOutlined,
 } from "@ant-design/icons";
 import PdfTab from "../../features/PDF/components/PdfTab";
 import YoutubeTab from "../../features/youtube/components/YoutubeTab";
@@ -59,7 +60,7 @@ export default function ColorTabs() {
         <TabPane
           tab={
             <span>
-              <FileTextOutlined />
+              <FileSearchOutlined />
               Article Summary
             </span>
           }

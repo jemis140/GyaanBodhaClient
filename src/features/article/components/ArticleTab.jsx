@@ -78,14 +78,14 @@ const ArticleTab = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        margin: "25px",
+        margin: "15px",
       }}
     >
       <Card
         style={{
           background: "linear-gradient(to right, #ffffff, #f0f0f0f)",
           boxShadow: " 0 4px 8px rgba(0, 0, 0.1, 0.1)",
-          marginBottom: "10px",
+          margin: "15px",
         }}
         bodyStyle={{
           borderColor: "linear-gradient(to left, #4d2882, #b74400)",
@@ -99,7 +99,7 @@ const ArticleTab = () => {
         <ArticleURLForm onUrlSubmit={handleGenerateSummary} />
         {loading && <Loader />}
       </Card>
-      <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
+      <Row gutter={[16, 16]} style={{ margin: "8px" }}>
         <Col xs={24} sm={24} md={24} lg={24}>
           {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
         </Col>
