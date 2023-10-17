@@ -47,10 +47,9 @@ const TextSummary = ({ chatData }) => {
         <div>
           <p>Write your notes here:</p>
           <NotePopover
-            onNoteSubmit={(note, isImportant) => {
+            onNoteSubmit={(note) => {
               // Handle note submission here
               console.log("Note:", note);
-              console.log("Is Important:", isImportant);
             }}
           />
         </div>
@@ -61,7 +60,7 @@ const TextSummary = ({ chatData }) => {
 
   const handleDelete = (item) => {
     const userId = auth.currentUser.uid;
-    const chatItemId = item.id; // Assuming there is an 'id' property in the item
+    const chatItemId = item; // Assuming there is an 'id' property in the item
     const chatItemRef = ref(
       realtimeDb,
       `users/${userId}/modules/text/${chatItemId}`

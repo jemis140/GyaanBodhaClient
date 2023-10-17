@@ -1,17 +1,11 @@
 import React from "react";
-import { Popover, Button, message } from "antd";
+import { Popover, Button, message, Modal } from "antd";
 import { CopyOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import NotePopover from "./NotePopover";
 
-const ResearchAssistantPopover = ({
-  onCopyText,
-  onTakeNotes,
-  onDelete,
-  item,
-}) => {
+const ResearchAssistantPopover = ({ onCopyText, onTakeNotes, onDelete }) => {
   const handleDelete = () => {
-    // Handle delete logic here
-    message.success("Item deleted successfully");
+    console.log("Delete functionality"); // Implement delete functionality here
   };
 
   return (
@@ -27,29 +21,31 @@ const ResearchAssistantPopover = ({
           type="text"
           icon={<CopyOutlined />}
           onClick={() => {
-            onCopyText(item.content);
+            onCopyText();
           }}
         />
       </Popover>
-      <Popover content="Take Notes">
-        <Popover
-          content={
-            <NotePopover
-              onNoteSubmit={(note, isImportant) => {
-                onTakeNotes(note, isImportant);
-              }}
-            />
-          }
-          trigger="click"
-        >
-          <Button type="text" icon={<PlusOutlined />} />
+      {onTakeNotes && ( // Only show if onTakeNotes function is provided
+        <Popover content="Take Notes">
+          <Popover
+            content={
+              <NotePopover
+                onNoteSubmit={(note) => {
+                  onTakeNotes(note);
+                }}
+              />
+            }
+            trigger="click"
+          >
+            <Button type="text" icon={<PlusOutlined />} />
+          </Popover>
         </Popover>
-      </Popover>
+      )}
       <Popover content="Delete">
         <Button
           type="text"
           icon={<DeleteOutlined />}
-          onClick={() => handleDelete(item)}
+          onClick={() => handleDelete()}
         />
       </Popover>
     </div>

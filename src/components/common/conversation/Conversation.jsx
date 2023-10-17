@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { UpOutlined } from "@ant-design/icons";
-import { List, Button, Row, Spin, message } from "antd";
+import { List, Button, Row, Spin, message, Modal } from "antd";
 import UserConversation from "./UserConversation";
 import AIConversation from "./AIConversation";
-import ResearchAssistantPopover from "./ResearchAssistantPopover"; // Update the import
+import ResearchAssistantPopover from "./ResearchAssistantPopover";
+import NotePopover from "./NotePopover"; // Include NotePopover
 
 const Conversation = ({ chatData, responseFlag }) => {
   const [scrollToTopVisible, setScrollToTopVisible] = useState(false);
@@ -52,45 +53,27 @@ const Conversation = ({ chatData, responseFlag }) => {
   };
 
   const handleTakeNotes = (item) => {
-    // Logic to handle taking notes for the item
-    // You can implement this based on your requirements
-    // For example, you can open a modal to allow the user to input notes
-    Modal.info({
-      title: "Take Notes",
-      content: (
-        <div>
-          <p>Write your notes here:</p>
-          <NotePopover
-            onNoteSubmit={(note, isImportant) => {
-              // Handle note submission here
-              console.log("Note:", note);
-              console.log("Is Important:", isImportant);
-            }}
-          />
-        </div>
-      ),
-      onOk() {},
-    });
-  };
-
-  const handleDelete = (item) => {
-    const userId = auth.currentUser.uid;
-    const chatItemId = item.id; // Assuming there is an 'id' property in the item
-    const chatItemRef = ref(
-      realtimeDb,
-      `users/${userId}/modules/text/${chatItemId}`
-    );
-
-    // Remove the chat item from Firebase
-    remove(chatItemRef)
-      .then(() => {
-        message.success("Item deleted successfully");
-      })
-      .catch((error) => {
-        console.error("Error deleting chat item:", error);
-        message.error("Failed to delete the item");
+    if (item.type === "bot") {
+      Modal.info({
+        title: "Take Notes",
+        content: (
+          <div>
+            <p>Write your notes here:</p>
+            <NotePopover
+              onNoteSubmit={(note) => {
+                // Handle note submission and save to Firebase
+                addNoteToFirebase(item, note);
+              }}
+            />
+          </div>
+        ),
+        onOk() {},
       });
+    } else {
+      message.warning("You can only add notes for AI Conversation items.");
+    }
   };
+
   return (
     <div>
       <List
@@ -108,7 +91,6 @@ const Conversation = ({ chatData, responseFlag }) => {
       >
         {chatData.map((item) => (
           <List.Item
-            key={item.id}
             style={{
               width: "100%",
               display: "flex",
@@ -124,13 +106,10 @@ const Conversation = ({ chatData, responseFlag }) => {
               <UserConversation item={item} />
             ) : (
               <AIConversation item={item}>
-                {/* Research Assistant Popover */}
                 <div style={{ marginLeft: "5px" }}>
                   <ResearchAssistantPopover
                     onCopyText={() => handleCopyText(item.content)}
-                    onTakeNotes={(note, isImportant) =>
-                      handleTakeNotes(note, isImportant)
-                    }
+                    onTakeNotes={() => handleTakeNotes(item)}
                     onDelete={() => handleDelete()}
                   />
                 </div>

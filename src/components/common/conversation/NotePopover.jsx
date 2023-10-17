@@ -1,24 +1,20 @@
 import React, { useState } from "react";
-import { Input, Checkbox, Button } from "antd";
+import { Input, Button } from "antd";
+import { addNoteToFirebase } from "../../../utils/firebaseUtils";
 
 const { TextArea } = Input;
 
-const NotePopover = ({ onNoteSubmit }) => {
+const NotePopover = ({ onNoteSubmit, chatItemId }) => {
   const [note, setNote] = useState("");
-  const [isImportant, setIsImportant] = useState(false);
 
   const handleNoteChange = (e) => {
     setNote(e.target.value);
   };
 
-  const handleIsImportantChange = (e) => {
-    setIsImportant(e.target.checked);
-  };
-
   const handleSubmit = () => {
-    onNoteSubmit(note, isImportant);
+    addNoteToFirebase(chatItemId, note);
+    onNoteSubmit(note);
     setNote("");
-    setIsImportant(false);
   };
 
   return (
@@ -29,9 +25,6 @@ const NotePopover = ({ onNoteSubmit }) => {
         onChange={handleNoteChange}
         autoSize={{ minRows: 3, maxRows: 6 }}
       />
-      <Checkbox checked={isImportant} onChange={handleIsImportantChange}>
-        Important
-      </Checkbox>
       <Button type="primary" onClick={handleSubmit}>
         Submit
       </Button>

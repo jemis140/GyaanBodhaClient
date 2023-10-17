@@ -96,7 +96,7 @@ const ArticleSummary = ({ chatData }) => {
                   <Popover
                     content={
                       <NotePopover
-                        onNoteSubmit={(note, isImportant) => {
+                        onNoteSubmit={(note) => {
                           /* Handle note submission here */
                         }}
                       />

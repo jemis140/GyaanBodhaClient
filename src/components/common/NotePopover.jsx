@@ -1,37 +1,32 @@
-// NotePopover.jsx
-
 import React, { useState } from "react";
-import { Input, Button, Checkbox } from "antd";
+import { Input, Button } from "antd";
+import { addNoteToFirebase } from "../../utils/firebaseUtils";
 
-const NotePopover = ({ onNoteSubmit }) => {
+const { TextArea } = Input;
+
+const NotePopover = ({ onNoteSubmit, chatItemId }) => {
   const [note, setNote] = useState("");
-  const [isImportant, setIsImportant] = useState(false);
 
   const handleNoteChange = (e) => {
     setNote(e.target.value);
   };
 
-  const handleCheckboxChange = (e) => {
-    setIsImportant(e.target.checked);
-  };
-
-  const handleNoteSubmit = () => {
-    onNoteSubmit(note, isImportant);
+  const handleSubmit = () => {
+    addNoteToFirebase(chatItemId, note);
+    onNoteSubmit(note);
     setNote("");
-    setIsImportant(false);
   };
 
   return (
-    <div>
-      <Input
-        placeholder="Add a note..."
+    <div style={{ width: "200px" }}>
+      <TextArea
+        placeholder="Enter your note"
         value={note}
         onChange={handleNoteChange}
-        onPressEnter={handleNoteSubmit}
+        autoSize={{ minRows: 3, maxRows: 6 }}
       />
-      <Checkbox onChange={handleCheckboxChange}>Important</Checkbox>
-      <Button type="primary" onClick={handleNoteSubmit}>
-        Save
+      <Button type="primary" onClick={handleSubmit}>
+        Submit
       </Button>
     </div>
   );
