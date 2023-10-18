@@ -29,7 +29,7 @@ const TextTab = () => {
   };
 
   useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     chatRef.current = ref(realtimeDb, `users/${userId}/modules/text`);
 
     const chatListener = onValue(chatRef.current, (snapshot) => {

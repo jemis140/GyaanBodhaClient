@@ -32,7 +32,7 @@ const YoutubeTab = () => {
   const chatRef = useRef(null); // Use a ref to store the database reference
 
   useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     chatRef.current = ref(realtimeDb, `users/${userId}/modules/youtube`);
 
     // Set up a listener for changes in the chat data

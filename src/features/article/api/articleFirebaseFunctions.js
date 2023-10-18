@@ -3,7 +3,7 @@ import { ref, push, set } from "firebase/database";
 import { storeTextChat } from "../../../store/modules/text/textActions";
 
 const storeChatDataInRealtimeDb = (content, type) => {
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   const chatRef = ref(realtimeDb, `users/${userId}/modules/article`);
   const newChatRef = push(chatRef);
 

@@ -7,7 +7,7 @@ export const getArticleSummary = async (articleUrl) => {
   try {
     const formData = new FormData();
     formData.append("articleUrl", articleUrl);
-    const jwtToken = sessionStorage.getItem("token");
+    const jwtToken = localStorage.getItem("token");
 
     const response = await axios.post(
       `${BASE_URL}/getarticlesummary`,

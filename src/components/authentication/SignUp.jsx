@@ -35,7 +35,7 @@ const SignUp = () => {
         const { token, userId } = response.data; // Adjust the response structure
 
         if (userId) {
-          sessionStorage.setItem("userId", userId);
+          localStorage.setItem("userId", userId);
 
           navigate("/");
           resolve(response); // Resolve with the response

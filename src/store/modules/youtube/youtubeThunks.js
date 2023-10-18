@@ -7,7 +7,7 @@ import { ref, onValue } from "firebase/database"; // Import necessary functions
 export const fetchYoutubeChatConversations = () => {
   return async (dispatch) => {
     try {
-      const userId = sessionStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
       const chatRef = ref(realtimeDb, `users/${userId}/modules/youtube`); // Use ref from the Realtime Database instance
 
       onValue(chatRef, (snapshot) => {

@@ -40,7 +40,7 @@ const PdfTab = () => {
   };
 
   useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     chatRef.current = ref(realtimeDb, `users/${userId}/modules/pdf`);
 
     // Set up a listener for changes in the chat data

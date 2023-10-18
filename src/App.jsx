@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { Provider } from "react-redux";
 import SignupPage from "./pages/SignUpPage";
-import HomePage from "./pages/HomPage";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./components/authentication/ResetPassword";
@@ -13,29 +13,34 @@ import { auth } from "./firebase";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+
   useEffect(() => {
+    // Check localStorage for authentication state
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (storedUser) {
+      setCurrentUser(storedUser);
+    }
+
     // Firebase authentication listener to update the currentUser state
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setCurrentUser(currentUser);
+        setCurrentUser(user);
+        localStorage.setItem("currentUser", JSON.stringify(user)); // Store user in localStorage
         const uid = user.uid;
         // ...
       } else {
+        setCurrentUser(null);
+        localStorage.removeItem("currentUser"); // Remove user from localStorage on logout
         // User is signed out
         // ...
       }
     });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     // Redirect to login page
-  //     navigate("/login");
-  //     // Clear session storage
-  //   }, 3600000); // 1 hour
-
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   return (
     <Provider store={store}>

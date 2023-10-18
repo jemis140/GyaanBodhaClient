@@ -6,7 +6,7 @@ import { getYoutubeQueryResponse } from "./youtubeAPI";
 import { storeYoutubeChat } from "../../../store/modules/youtube/youtubeActions";
 
 const storeYoutubeChatData = (content, type) => {
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   console.log("userID storeChatDataInRealtimeDb", userId);
   const chatRef = ref(realtimeDb, `users/${userId}/modules/youtube`); // Use ref from the Realtime Database instance
 

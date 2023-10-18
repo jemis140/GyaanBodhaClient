@@ -9,7 +9,7 @@ export const getTextSummary = async (textData) => {
     const formData = new FormData();
 
     formData.append("textData", textData);
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     const response = await axios.post(`${BASE_URL}/gettextsummary`, formData, {
       headers: {

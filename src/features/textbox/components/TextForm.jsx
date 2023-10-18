@@ -15,7 +15,7 @@ const TextInput = ({ onTextSubmit }) => {
   };
 
   const handleTextSubmit = () => {
-    const userId = sessionStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     onTextSubmit(text, userId);
   };
 

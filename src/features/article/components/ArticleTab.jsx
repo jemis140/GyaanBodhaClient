@@ -18,7 +18,7 @@ const ArticleTab = () => {
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
 
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
 
   const scrollToBottom = () => {
     window.scrollTo({
@@ -28,7 +28,7 @@ const ArticleTab = () => {
   };
 
   useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     chatRef.current = ref(realtimeDb, `users/${userId}/modules/article`);
     const chatListener = onValue(chatRef.current, (snapshot) => {
       const chatDataArray = [];

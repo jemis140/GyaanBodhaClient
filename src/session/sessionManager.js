@@ -2,8 +2,8 @@ let sessionTimer;
 
 export const startSessionTimer = () => {
   sessionTimer = setTimeout(() => {
-    // Session expired, clear sessionStorage and redirect to login
-    sessionStorage.clear();
+    // Session expired, clear localStorage and redirect to login
+    localStorage.clear();
     window.location.href = "/login";
   }, 3600000); // 1 hour in milliseconds
 };
@@ -15,5 +15,5 @@ export const resetSessionTimer = () => {
 
 export const updateSessionTimestamp = () => {
   const timestamp = new Date().getTime();
-  sessionStorage.setItem("sessionTimestamp", JSON.stringify(timestamp));
+  localStorage.setItem("sessionTimestamp", JSON.stringify(timestamp));
 };

@@ -6,7 +6,7 @@ import { getQueryResponse } from "./PdfAPI";
 import { storePdfChat } from "../../../store/modules/pdf/pdfActions";
 
 const storeChatDataInRealtimeDb = (content, type) => {
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   console.log("userID storeChatDataInRealtimeDb", userId);
   const chatRef = ref(realtimeDb, `users/${userId}/modules/pdf`); // Use ref from the Realtime Database instance
   console.log("chatRef", chatRef);
