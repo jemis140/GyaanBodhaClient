@@ -8,6 +8,8 @@ import youtubeReducer from "./modules/youtube/youtubeReducer";
 import textReducer from "./modules/text/textReducer";
 import userReducer from "./slices/userSlice";
 
+import textSliceReducer from "./slices/textSlice";
+
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -15,6 +17,7 @@ const store = configureStore({
     youtube: youtubeReducer,
     article: articleReducer,
     textReducer: textReducer,
+    textSlice: textSliceReducer,
     user: userReducer,
   },
 });

@@ -14,6 +14,7 @@ import GradientButton from "../../../components/common/general/Button";
 import ChatInput from "../../../components/common/data/ChatQuestion";
 import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
+import NoConversationComponent from "../../../components/common/general/NoConversationMessage";
 import { message } from "antd";
 
 const { Title } = Typography;
@@ -168,6 +169,9 @@ const PdfTab = () => {
           </Col>
         </Row>
         {loading && <Loader />}
+        {chatData.length === 0 && (
+          <NoConversationComponent moduleName="Multiple PDF Conversation chain" />
+        )}
       </Card>
       {/* end of section */}
       <Row

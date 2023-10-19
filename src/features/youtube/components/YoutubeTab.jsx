@@ -150,7 +150,7 @@ const YoutubeTab = () => {
         </Row>
         {loading && <Loader />}
         {chatData.length === 0 && (
-          <NoConversationComponent moduleName="Multiple PDF" />
+          <NoConversationComponent moduleName="Youtube Conversation Chain" />
         )}
       </Card>
       <Row

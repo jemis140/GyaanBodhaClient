@@ -13,14 +13,22 @@ const HomePage = () => {
 
   useEffect(() => {
     // Firebase authentication listener to update the currentUser state
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (storedUser) {
+      setCurrentUser(storedUser);
+    }
+
+    // Firebase authentication listener to update the currentUser state
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         setCurrentUser(user);
-        console.log("user", currentUser);
+        localStorage.setItem("currentUser", JSON.stringify(user)); // Store user in localStorage
       } else {
         // No user is signed in.
         setCurrentUser(null);
+        localStorage.removeItem("currentUser"); // Remove user from localStorage on logout
       }
     });
 

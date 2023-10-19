@@ -12,6 +12,7 @@ import Conversation from "../../../components/common/conversation/Conversation";
 import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
 import EuclidForm from "./forms/EuclidForm";
+import NoConversationComponent from "../../../components/common/general/NoConversationMessage";
 
 const { Title } = Typography;
 
@@ -135,6 +136,9 @@ const EuclidTab = () => {
             />
           </Col>
         </Row>
+        {chatData.length === 0 && (
+          <NoConversationComponent moduleName="Multiple Data Source Conversation Chain" />
+        )}
       </Card>
       <Row gutter={[16, 16]} style={{ margin: "10px" }}>
         <Col xs={24} sm={24} md={24} lg={24}>

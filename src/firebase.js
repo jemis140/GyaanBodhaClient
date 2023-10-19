@@ -1,28 +1,34 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, setDoc, getDoc, doc } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBRwHWPVmqmzfFHGl4kusB8v8ddOWqLFy4",
-  authDomain: "gyaanbodha.firebaseapp.com",
-  databaseURL: "https://gyaanbodha-default-rtdb.firebaseio.com",
-  projectId: "gyaanbodha",
-  storageBucket: "gyaanbodha.appspot.com",
-  messagingSenderId: "71383435598",
-  appId: "1:71383435598:web:8700ed8fc194ceeaaa761f",
-  measurementId: "G-ZW9FBNWB5N",
+  apiKey: "AIzaSyD-FC09K_XDTjIA1O2XKgh3XxN5-lhaUd4",
+  authDomain: "gyaanbodhi.firebaseapp.com",
+  databaseURL: "https://gyaanbodhi-default-rtdb.firebaseio.com",
+  projectId: "gyaanbodhi",
+  storageBucket: "gyaanbodhi.appspot.com",
+  messagingSenderId: "677291001463",
+  appId: "1:677291001463:web:47c72f5699e7d2693d2872",
+  measurementId: "G-468EWDP2KV",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth();
 console.log("auth", auth);
 
-const db = getFirestore(); // change name here to authDb
+// change name here to authDb
 const googleProvider = new GoogleAuthProvider();
 console.log("Google provider", googleProvider);
 const realtimeDb = getDatabase(firebaseApp);
 console.log(realtimeDb);
 googleProvider.setCustomParameters({ prompt: "select_account" });
+const db = getFirestore(firebaseApp);
 
-export { auth, db, googleProvider, realtimeDb };
+const updateSummaryCountInFirestore = (userId, newSummaryCount) => {
+  const userDocRef = doc(db, "users", userId);
+  setDoc(userDocRef, { summaryCount: newSummaryCount }, { merge: true });
+};
+
+export { auth, db, googleProvider, realtimeDb, updateSummaryCountInFirestore };
