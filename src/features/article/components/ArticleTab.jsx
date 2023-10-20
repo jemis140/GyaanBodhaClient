@@ -10,6 +10,7 @@ import { handleArticleSummaryData } from "../api/articleFirebaseFunctions";
 import { getArticleSummary } from "../api/articleAPI";
 import { realtimeDb } from "../../../firebase";
 import { ref, onValue, off } from "firebase/database";
+import LimitMessage from "../../../components/common/feedback/LimitMessage";
 
 const ArticleTab = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const ArticleTab = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
+  const [summaryCount, setSummaryCount] = useState(0);
+  const [showLimitExceededModal, setShowLimitExceededModal] = useState(false);
 
   const userId = localStorage.getItem("userId");
 
@@ -59,8 +62,23 @@ const ArticleTab = () => {
       if (summaryResponse.status === 200) {
         const summary = summaryResponse.data.aiResponse;
         console.log("summary  userId", summary, "\n", "userID", userId);
-        handleArticleSummaryData(summary);
-        scrollToBottom();
+        if (summaryResponse.status === 200) {
+          const summary = summaryResponse.data.aiResponse;
+
+          // Handle summary count logic here
+          if (summaryCount >= 3) {
+            // Display the "Limit Exceeded" modal
+            setShowLimitExceededModal(true);
+          } else {
+            handleArticleSummaryData(summary);
+            setSummaryCount((prevCount) => prevCount + 1);
+            scrollToBottom();
+          }
+        } else {
+          console.error(
+            `Failed to get article summary: ${summaryResponse.status}`
+          );
+        }
       } else {
         console.error(
           `Failed to get article summary: ${summaryResponse.status}`
@@ -104,6 +122,10 @@ const ArticleTab = () => {
           {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
         </Col>
       </Row>
+      <LimitMessage
+        open={showLimitExceededModal}
+        onClose={() => setShowLimitExceededModal(false)}
+      />
     </div>
   );
 };
