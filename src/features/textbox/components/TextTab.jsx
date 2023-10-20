@@ -89,7 +89,7 @@ const TextTab = () => {
         if (userDoc.exists()) {
           let userSummaryCount = userDoc.data().summaryCount || 0;
 
-          if (userSummaryCount >= 3) {
+          if (userSummaryCount >= 35) {
             // Display the "Limit Exceeded" modal
             setShowLimitExceededModal(true);
           } else {
