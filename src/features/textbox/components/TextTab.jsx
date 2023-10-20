@@ -14,6 +14,11 @@ import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
 import Conversation from "../../../components/common/conversation/Conversation";
 import LimitMessage from "../../../components/common/feedback/LimitMessage";
+// import {
+//   createNewUserDocumen,
+//   updateSummaryCountInFirestore,
+//   trackAndLimitSummaryOrQuestions,
+// } from "../../../utils/firebaseUtils";
 
 const updateSummaryCountInFirestore = (userId, summaryCount) => {
   // Get a reference to Firestore

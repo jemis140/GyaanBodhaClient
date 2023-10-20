@@ -8,16 +8,28 @@ import Conversation from "../../../components/common/conversation/Conversation";
 import { handleQuestionSubmission } from "../api/pdfFunctions";
 import { realtimeDb } from "../../../firebase";
 import { ref, onValue, off } from "firebase/database";
+import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { fetchChatConversations } from "../../../store/modules/pdf/pdfThunks";
 import GradientButton from "../../../components/common/general/Button";
 import ChatInput from "../../../components/common/data/ChatQuestion";
 import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
+import LimitMessage from "../../../components/common/feedback/LimitMessage";
 import NoConversationComponent from "../../../components/common/general/NoConversationMessage";
 import { message } from "antd";
 
 const { Title } = Typography;
+const updateQuestionCountInFirestore = (userId, questionCount) => {
+  // Get a reference to Firestore
+  const userDocRef = doc(db, "users", userId);
+  setDoc(userDocRef, { questionCount }, { merge: true });
+};
+
+const createNewUserDocument = (userId, initialQuestionCount) => {
+  const userDocRef = doc(db, "users", userId);
+  setDoc(userDocRef, { summaryCount: initialQuestionCount });
+};
 
 const PdfTab = () => {
   const { Text } = Typography;
@@ -25,7 +37,9 @@ const PdfTab = () => {
   const [uniqueId, setUniqueId] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [questionCount, setQuestionCount] = useState(0);
   const [isChainCreated, setIsChainCreated] = useState(false);
+  const [showLimitExceededModal, setShowLimitExceededModal] = useState(false);
   const [responseFlag, setResponseFlag] = useState(false);
   const [question, setQuestion] = useState("");
 
@@ -80,12 +94,34 @@ const PdfTab = () => {
       setLoading(true); // Show loader
       const response = await getConversationChain(files);
       if (response.status === 200) {
+        const userId = localStorage.getItem("userId");
+        const userDocRef = doc(db, "users", userId);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userQuestionCount = userDoc.data().questionCount;
+          console.log("userQuestionCount", userQuestionCount);
+          if (useQuestionCount >= 3) {
+            // Display the "Limit Exceeded" modal
+            setShowLimitExceededModal(true);
+          } else {
+            setQuestionCount((prevCount) => prevCount + 1);
+            scrollToBottom();
+            const newQuestionCount = userQuestionCount + 1;
+            updateQuestionCountInFirestore(userId, newQuestionCount);
+          }
+        } else {
+          const initialQuestionCount = 1;
+          createNewUserDocument(userId, initialQuestionCount);
+          setQuestionCount(1);
+        }
+
         const id = response.data.unique_id;
         setUniqueId(id);
         setIsChainCreated(true); // Mark the chain as created
         message.success("Conversation chain created");
       } else {
-        message.error(`Failed to get vector store: ${response.status}`);
+        message.error("Failed to get vector store");
       }
     } catch (error) {
       message.error("Generate Vector Store Error:", error);
@@ -183,6 +219,10 @@ const PdfTab = () => {
           {isLoading ? <Loader /> : <Conversation chatData={chatData} />}
         </Col>
       </Row>
+      <LimitMessage
+        open={showLimitExceededModal}
+        onClose={() => setShowLimitExceededModal(false)}
+      />
     </div>
   );
 };
