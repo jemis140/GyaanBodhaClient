@@ -2,6 +2,7 @@ import React from "react";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from "file-saver"; // Import file-saver
 import GradientButton from "../general/Button";
+
 const GenerateReport = ({ chatData }) => {
   // Function to generate the report
   const generateDocument = () => {
@@ -10,13 +11,13 @@ const GenerateReport = ({ chatData }) => {
       sections: [
         {
           properties: {},
-          children: chatData.map((item, index) => {
-            return new Paragraph({
+          children: chatData.flatMap((item, index) => [
+            new Paragraph({
               children: [
-                new TextRun(`${index + 1}. ${item.content}`), // Include the index
+                new TextRun(`${index + 1} summary: ${item.content}\n \n`), // Include the index
               ],
-            });
-          }),
+            }),
+          ]),
         },
       ],
     });
