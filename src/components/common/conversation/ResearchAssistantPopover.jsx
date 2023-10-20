@@ -31,27 +31,6 @@ const ResearchAssistantPopover = ({
           }}
         />
       </Popover>
-      <Popover content="Take Notes">
-        <Popover
-          content={
-            <NotePopover
-              onNoteSubmit={(note, isImportant) => {
-                onTakeNotes(note, isImportant);
-              }}
-            />
-          }
-          trigger="click"
-        >
-          <Button type="text" icon={<PlusOutlined />} />
-        </Popover>
-      </Popover>
-      <Popover content="Delete">
-        <Button
-          type="text"
-          icon={<DeleteOutlined />}
-          onClick={() => handleDelete(item)}
-        />
-      </Popover>
     </div>
   );
 };

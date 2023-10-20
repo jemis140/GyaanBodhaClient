@@ -82,14 +82,15 @@ const ArticleTab = () => {
         const userDocSnapshot = await getDoc(userDocRef);
 
         if (userDocSnapshot.exists()) {
-          const userSummaryCount = userDocSnapshot.data().articleSummaryCount;
+          let userSummaryCount =
+            userDocSnapshot.data().articleSummaryCount || 0;
 
           if (userSummaryCount >= 3) {
             // Display the "Limit Exceeded" modal
             setShowLimitExceededModal(true);
           } else {
             handleArticleSummaryData(summary);
-            setArticleSummaryCount((prevCount) => prevCount + 1);
+            setArticleSummaryCount(userSummaryCount + 1);
             scrollToBottom();
             const newSummaryCount = userSummaryCount + 1;
 
@@ -99,7 +100,7 @@ const ArticleTab = () => {
         } else {
           const initialSummaryCount = 1;
           createNewUserDocument(userId, initialSummaryCount);
-          setArticleSummaryCount(1);
+          setArticleSummaryCount(initialSummaryCount);
           handleArticleSummaryData(summary);
           scrollToBottom();
         }
