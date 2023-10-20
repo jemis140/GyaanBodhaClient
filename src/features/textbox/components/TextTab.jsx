@@ -10,6 +10,7 @@ import { ref, onValue, off } from "firebase/database";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { fetchTextSummary } from "../../../store/modules/text/textThunks";
+import GenerateReport from "../../../components/common/data/GenerateReport";
 import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
 import Conversation from "../../../components/common/conversation/Conversation";
@@ -23,7 +24,7 @@ import LimitMessage from "../../../components/common/feedback/LimitMessage";
 const updateSummaryCountInFirestore = (userId, summaryCount) => {
   // Get a reference to Firestore
   const userDocRef = doc(db, "users", userId);
-  setDoc(userDocRef, { summaryCount }, { merge: true });
+  setDoc(userDocRef, { summaryCount });
 };
 
 const createNewUserDocument = (userId, initialSummaryCount) => {
@@ -86,14 +87,14 @@ const TextTab = () => {
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
-          const userSummaryCount = userDoc.data().summaryCount;
+          let userSummaryCount = userDoc.data().summaryCount || 0;
 
           if (userSummaryCount >= 3) {
             // Display the "Limit Exceeded" modal
             setShowLimitExceededModal(true);
           } else {
             handleTextSummaryData(summary);
-            setSummaryCount((prevCount) => prevCount + 1);
+            setSummaryCount(userSummaryCount + 1);
             scrollToBottom();
             const newSummaryCount = userSummaryCount + 1;
             updateSummaryCountInFirestore(userId, newSummaryCount);
@@ -101,7 +102,7 @@ const TextTab = () => {
         } else {
           const initialSummaryCount = 1;
           createNewUserDocument(userId, initialSummaryCount);
-          setSummaryCount(1);
+          setSummaryCount(initialSummaryCount);
           handleTextSummaryData(summary);
           scrollToBottom();
         }
@@ -114,7 +115,6 @@ const TextTab = () => {
       setIsGeneratingSummary(false);
     }
   };
-
   return (
     <div
       style={{
@@ -133,6 +133,15 @@ const TextTab = () => {
         }}
       >
         <TextInput onTextSubmit={handleGenerateSummary} />
+        <GenerateReport
+          style={{
+            padding: "6px 12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          chatData={chatData}
+        />
       </div>
       {isGeneratingSummary ? (
         <Spin size="large" />

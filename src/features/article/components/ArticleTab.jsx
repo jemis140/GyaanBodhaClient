@@ -8,7 +8,8 @@ import { useDispatch } from "react-redux";
 import { fetchArticleSummary } from "../../../store/modules/article/articleThunks";
 import { handleArticleSummaryData } from "../api/articleFirebaseFunctions";
 import { getArticleSummary } from "../api/articleAPI";
-import { realtimeDb } from "../../../firebase";
+import { realtimeDb, db } from "../../../firebase";
+import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, onValue, off } from "firebase/database";
 import LimitMessage from "../../../components/common/feedback/LimitMessage";
 
@@ -18,7 +19,7 @@ const ArticleTab = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
-  const [summaryCount, setSummaryCount] = useState(0);
+  const [articleSummaryCount, setArticleSummaryCount] = useState(0);
   const [showLimitExceededModal, setShowLimitExceededModal] = useState(false);
 
   const userId = localStorage.getItem("userId");
@@ -28,6 +29,20 @@ const ArticleTab = () => {
       top: document.documentElement.scrollHeight,
       behavior: "smooth",
     });
+  };
+
+  const updateSummaryCountInFirestore = async (userId, newSummaryCount) => {
+    const userDocRef = doc(db, "users", userId);
+    await setDoc(
+      userDocRef,
+      { articleSummaryCount: newSummaryCount },
+      { merge: true }
+    );
+  };
+
+  const createNewUserDocument = (userId, initialSummaryCount) => {
+    const userDocRef = doc(db, "users", userId);
+    setDoc(userDocRef, { articleSummaryCount: initialSummaryCount });
   };
 
   useEffect(() => {
@@ -61,23 +76,33 @@ const ArticleTab = () => {
 
       if (summaryResponse.status === 200) {
         const summary = summaryResponse.data.aiResponse;
-        console.log("summary  userId", summary, "\n", "userID", userId);
-        if (summaryResponse.status === 200) {
-          const summary = summaryResponse.data.aiResponse;
 
-          // Handle summary count logic here
-          if (summaryCount >= 3) {
+        // Retrieve the user's summary count from Firestore
+        const userDocRef = doc(db, "users", userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          let userSummaryCount =
+            userDocSnapshot.data().articleSummaryCount || 0;
+
+          if (userSummaryCount >= 3) {
             // Display the "Limit Exceeded" modal
             setShowLimitExceededModal(true);
           } else {
             handleArticleSummaryData(summary);
-            setSummaryCount((prevCount) => prevCount + 1);
+            setArticleSummaryCount(userSummaryCount + 1);
             scrollToBottom();
+            const newSummaryCount = userSummaryCount + 1;
+
+            // Update the summary count in Firestore
+            updateSummaryCountInFirestore(userId, newSummaryCount);
           }
         } else {
-          console.error(
-            `Failed to get article summary: ${summaryResponse.status}`
-          );
+          const initialSummaryCount = 1;
+          createNewUserDocument(userId, initialSummaryCount);
+          setArticleSummaryCount(initialSummaryCount);
+          handleArticleSummaryData(summary);
+          scrollToBottom();
         }
       } else {
         console.error(
