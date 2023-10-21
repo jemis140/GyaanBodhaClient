@@ -6,7 +6,7 @@ import UploadDoc from "./UploadDoc";
 import { getConversationChain } from "../api/PdfAPI";
 import Conversation from "../../../components/common/conversation/Conversation";
 import { handleQuestionSubmission } from "../api/pdfFunctions";
-import { realtimeDb } from "../../../firebase";
+import { realtimeDb, db } from "../../../firebase";
 import { ref, onValue, off } from "firebase/database";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
@@ -20,15 +20,16 @@ import NoConversationComponent from "../../../components/common/general/NoConver
 import { message } from "antd";
 
 const { Title } = Typography;
-const updateQuestionCountInFirestore = (userId, questionCount) => {
+
+const updateQuestionCountInFirestore = (userId, pdfQuestionCount) => {
   // Get a reference to Firestore
   const userDocRef = doc(db, "users", userId);
-  setDoc(userDocRef, { questionCount }, { merge: true });
+  setDoc(userDocRef, { pdfQuestionCount });
 };
 
-const createNewUserDocument = (userId, initialQuestionCount) => {
+const createNewUserDocument = (userId, initialSummaryCount) => {
   const userDocRef = doc(db, "users", userId);
-  setDoc(userDocRef, { summaryCount: initialQuestionCount });
+  setDoc(userDocRef, { pdfQuestionCount: initialSummaryCount });
 };
 
 const PdfTab = () => {
@@ -37,21 +38,58 @@ const PdfTab = () => {
   const [uniqueId, setUniqueId] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [questionCount, setQuestionCount] = useState(0);
   const [isChainCreated, setIsChainCreated] = useState(false);
   const [showLimitExceededModal, setShowLimitExceededModal] = useState(false);
   const [responseFlag, setResponseFlag] = useState(false);
   const [question, setQuestion] = useState("");
-
+  // Define pdfQuestionCount state variable at the top level
+  const [pdfQuestionCount, setPdfQuestionCount] = useState(0);
   const dispatch = useDispatch();
   const [chatData, setChatData] = useState([]);
   const chatRef = useRef(null); // Use a ref to store the database reference
+
+  const checkFileLimit = (files) => {
+    if (files.length > 3) {
+      message.error("You can upload a maximum of three files.");
+      return false;
+    }
+    return true;
+  };
 
   const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
       behavior: "smooth",
     });
+  };
+
+  const pdfQuestionRateLimiter = async () => {
+    const userId = localStorage.getItem("userId");
+    const userDocRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      let questionCount = userDoc.data().pdfQuestionCount || 0;
+
+      // Define the maximum number of questions allowed
+      const questionLimit = 7; // Change the limit to 7
+
+      if (questionCount >= questionLimit) {
+        // Disable the "Submit" button when the limit is reached
+        setShowLimitExceededModal(true);
+        return true;
+      } else {
+        setPdfQuestionCount(questionCount + 1);
+        const newPdfQuestionCount = questionCount + 1;
+        updateQuestionCountInFirestore(userId, newPdfQuestionCount);
+        return false;
+      }
+    } else {
+      const initialQuestionCount = 1;
+      createNewUserDocument(userId, initialQuestionCount);
+      setPdfQuestionCount(1);
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -65,11 +103,7 @@ const PdfTab = () => {
         chatDataArray.push(childSnapshot.val());
       });
       setChatData(chatDataArray);
-
-      // Set isLoading to false if chatDataArray is empty or not defined
-      if (!!chatDataArray || chatDataArray.length === 0) {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     });
 
     // Clean up the listener when the component unmounts
@@ -85,8 +119,7 @@ const PdfTab = () => {
   }, []);
 
   const handleCreateConversationChain = async () => {
-    if (!files) {
-      message.error("Please upload a document before starting a conversation.");
+    if (!files || !checkFileLimit(files)) {
       return;
     }
 
@@ -94,28 +127,6 @@ const PdfTab = () => {
       setLoading(true); // Show loader
       const response = await getConversationChain(files);
       if (response.status === 200) {
-        const userId = localStorage.getItem("userId");
-        const userDocRef = doc(db, "users", userId);
-        const userDoc = await getDoc(userDocRef);
-
-        if (userDoc.exists()) {
-          const userQuestionCount = userDoc.data().questionCount;
-          console.log("userQuestionCount", userQuestionCount);
-          if (useQuestionCount >= 3) {
-            // Display the "Limit Exceeded" modal
-            setShowLimitExceededModal(true);
-          } else {
-            setQuestionCount((prevCount) => prevCount + 1);
-            scrollToBottom();
-            const newQuestionCount = userQuestionCount + 1;
-            updateQuestionCountInFirestore(userId, newQuestionCount);
-          }
-        } else {
-          const initialQuestionCount = 1;
-          createNewUserDocument(userId, initialQuestionCount);
-          setQuestionCount(1);
-        }
-
         const id = response.data.unique_id;
         setUniqueId(id);
         setIsChainCreated(true); // Mark the chain as created
@@ -136,12 +147,16 @@ const PdfTab = () => {
       return;
     }
 
-    setLoading(true); // Show loader
-    await handleQuestionSubmission(question, uniqueId);
-    setLoading(false); // Hide loader
+    const rateLimitFlag = pdfQuestionRateLimiter();
 
-    // Scroll to the bottom when response is received
-    scrollToBottom();
+    if (!rateLimitFlag) {
+      setLoading(true); // Show loader
+      await handleQuestionSubmission(question, uniqueId);
+      setLoading(false); // Hide loader
+
+      // Scroll to the bottom when the response is received
+      scrollToBottom();
+    }
   };
 
   return (
@@ -205,7 +220,7 @@ const PdfTab = () => {
           </Col>
         </Row>
         {loading && <Loader />}
-        {chatData.length === 0 && (
+        {chatData.length === 0 && loading !== true && (
           <NoConversationComponent moduleName="Multiple PDF Conversation chain" />
         )}
       </Card>
