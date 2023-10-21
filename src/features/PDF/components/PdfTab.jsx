@@ -42,10 +42,19 @@ const PdfTab = () => {
   const [showLimitExceededModal, setShowLimitExceededModal] = useState(false);
   const [responseFlag, setResponseFlag] = useState(false);
   const [question, setQuestion] = useState("");
-
+  // Define pdfQuestionCount state variable at the top level
+  const [pdfQuestionCount, setPdfQuestionCount] = useState(0);
   const dispatch = useDispatch();
   const [chatData, setChatData] = useState([]);
   const chatRef = useRef(null); // Use a ref to store the database reference
+
+  const checkFileLimit = (files) => {
+    if (files.length > 3) {
+      message.error("You can upload a maximum of three files.");
+      return false;
+    }
+    return true;
+  };
 
   const scrollToBottom = () => {
     window.scrollTo({
@@ -53,9 +62,6 @@ const PdfTab = () => {
       behavior: "smooth",
     });
   };
-
-  // Define pdfQuestionCount state variable at the top level
-  const [pdfQuestionCount, setPdfQuestionCount] = useState(0);
 
   const pdfQuestionRateLimiter = async () => {
     const userId = localStorage.getItem("userId");
@@ -113,8 +119,7 @@ const PdfTab = () => {
   }, []);
 
   const handleCreateConversationChain = async () => {
-    if (!files) {
-      message.error("Please upload a document before starting a conversation.");
+    if (!files || !checkFileLimit(files)) {
       return;
     }
 
