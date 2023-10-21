@@ -10,11 +10,13 @@ import { ref, onValue, off } from "firebase/database";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { fetchTextSummary } from "../../../store/modules/text/textThunks";
-import GenerateReport from "../../../components/common/data/GenerateReport";
+
 import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
 import Conversation from "../../../components/common/conversation/Conversation";
 import LimitMessage from "../../../components/common/feedback/LimitMessage";
+import Card from "antd/es/card/Card";
+import Title from "antd/es/skeleton/Title";
 // import {
 //   createNewUserDocumen,
 //   updateSummaryCountInFirestore,
@@ -89,7 +91,7 @@ const TextTab = () => {
         if (userDoc.exists()) {
           let userSummaryCount = userDoc.data().summaryCount || 0;
 
-          if (userSummaryCount >= 35) {
+          if (userSummaryCount >= 17) {
             // Display the "Limit Exceeded" modal
             setShowLimitExceededModal(true);
           } else {
@@ -132,16 +134,7 @@ const TextTab = () => {
           justifyContent: "center",
         }}
       >
-        <TextInput onTextSubmit={handleGenerateSummary} />
-        <GenerateReport
-          style={{
-            padding: "6px 12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          chatData={chatData}
-        />
+        <TextInput onTextSubmit={handleGenerateSummary} chatData={chatData} />
       </div>
       {isGeneratingSummary ? (
         <Spin size="large" />

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Input, Button, Typography, Card, Row } from "antd";
+import { Input, Card, Row } from "antd";
 import GradientButton from "../../../components/common/general/Button";
 import Description from "../../../components/common/data-display/Desciption";
+import GenerateReport from "../../../components/common/data/GenerateReport";
 
 const { TextArea } = Input;
-const { Text } = Typography;
 
-const TextInput = ({ onTextSubmit }) => {
+const TextInput = ({ onTextSubmit, chatData }) => {
   const [text, setText] = useState("");
 
   const handleTextChange = (e) => {
@@ -21,59 +21,54 @@ const TextInput = ({ onTextSubmit }) => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-      }}
+      style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
     >
       <Card
         style={{
           background: "linear-gradient(to right, #ffffff, #f0f0f0)",
-          boxShadow: " 0 4px 8px rgba(0, 0.1, 0.1, 0.1)",
-        }}
-        bodyStyle={{
-          borderColor: "linear-gradient(to left, #4d2882, #b74400)",
-          border: "1px solid transparent",
-          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0.1, 0.1, 0.1)",
           padding: "20px",
           margin: "10px",
+          borderRadius: "8px",
         }}
       >
-        {/* start of input section */}
+        {/* Description */}
         <Description moduleType="TEXT_SUMMARY" />
-        <Row>
-          <TextArea
-            placeholder="Enter text here ..."
-            value={text}
-            onChange={handleTextChange}
-            autoSize={{ minRows: 7, maxRows: 20 }}
-            style={{ width: "100%" }}
-          />
-        </Row>
+
+        {/* Text Input */}
+        <TextArea
+          placeholder="Enter text here..."
+          value={text}
+          onChange={handleTextChange}
+          autoSize={{ minRows: 7, maxRows: 20 }}
+          style={{ width: "100%" }}
+        />
+
         <Row
-          xs={24}
-          sm={4}
-          md={4}
-          lg={4}
-          style={{
-            marginTop: "20px",
-          }}
+          style={{ marginTop: "20px", display: "flex", alignItems: "center" }}
         >
+          {/* Summarize Button */}
           <GradientButton
             label="Summarize"
             onClick={handleTextSubmit}
             style={{
-              width: "10%",
               fontSize: "14px",
               padding: "6px 12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "linear-gradient(to bottom, #502f73, #46287a)", // Darker shade of purple
-              color: "#fff", // White text color
-              overflow: "hidden",
+              background: "linear-gradient(to bottom, #502f73, #46287a)",
+              color: "#fff",
+              borderRadius: "4px",
+              marginRight: "5px",
             }}
+          />
+
+          {/* Generate Report Button */}
+          <GenerateReport
+            style={{
+              padding: "6px 12px",
+              marginLeft: "10px", // Increase the spacing between buttons
+              borderRadius: "4px",
+            }}
+            chatData={chatData}
           />
         </Row>
       </Card>
