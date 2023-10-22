@@ -17,6 +17,7 @@ import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
 import LimitMessage from "../../../components/common/feedback/LimitMessage";
 import NoConversationComponent from "../../../components/common/general/NoConversationMessage";
+import GenerateReportConvesation from "../../../components/common/data/GeneReportConversation";
 import { message } from "antd";
 
 const { Title } = Typography;
@@ -189,15 +190,25 @@ const PdfTab = () => {
           </Col>
         </Row>
         <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
-          <Col xs={24} sm={16} md={14} lg={10}>
+          <div lg={10} style={{ marginRight: "10px", marginLeft: "5px" }}>
             {/* Process button takes 10% of UploadDoc width */}
             <GradientButton
               onClick={handleCreateConversationChain}
               label="Submit"
-              width="30%"
+              width="100px"
               disabled={loading}
             />
-          </Col>
+          </div>
+          <div>
+            <GenerateReportConvesation
+              style={{
+                padding: "6px 12px",
+                marginLeft: "10px", // Increase the spacing between buttons
+                borderRadius: "4px",
+              }}
+              chatData={chatData}
+            />
+          </div>
         </Row>
         <Row gutter={[16, 16]} style={{ marginBottom: "10px" }}>
           <Col xs={24} sm={24} md={24} lg={24}>
