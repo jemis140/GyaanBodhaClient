@@ -24,6 +24,14 @@ const UploadDoc = ({ setFiles }) => {
     message.success(`${file.name} file removed.`);
   };
 
+  const beforeUpload = (file) => {
+    const isPDF = file.type === "application/pdf";
+    if (!isPDF) {
+      message.error("You can only upload PDF files!");
+    }
+    return isPDF;
+  };
+
   const isFileListEmpty = fileList.length === 0;
 
   return (
@@ -32,7 +40,7 @@ const UploadDoc = ({ setFiles }) => {
         <Col span={12}>
           <Dragger
             multiple={true}
-            beforeUpload={() => false}
+            beforeUpload={beforeUpload}
             fileList={fileList}
             onChange={handleUploadChange}
             onRemove={handleFileRemove}
@@ -43,7 +51,7 @@ const UploadDoc = ({ setFiles }) => {
               <InboxOutlined />
             </p>
             <p className="ant-upload-text">
-              Click or drag file to this area to upload
+              Click or drag PDF file to this area to upload
             </p>
           </Dragger>
         </Col>
