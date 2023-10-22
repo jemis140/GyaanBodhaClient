@@ -113,7 +113,10 @@ const EuclidTab = () => {
         }}
       >
         <Description moduleType="EUCLID_QA" />
-        <EuclidForm onFormSubmit={handleCreateConversationChain} />
+        <EuclidForm
+          onFormSubmit={handleCreateConversationChain}
+          chatData={chatData}
+        />
         <Row
           gutter={[16, 16]}
           style={{ marginBottom: "10px", marginLeft: "10px" }}
