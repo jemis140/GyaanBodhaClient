@@ -14,9 +14,11 @@ const GenerateReport = ({ chatData }) => {
           children: chatData.flatMap((item, index) => [
             new Paragraph({
               children: [
-                new TextRun(`${index + 1} summary: ${item.content}\n \n`), // Include the index
+                new TextRun(`${index + 1} summary: ${item.content}`),
+                // Include the index
               ],
             }),
+            new Paragraph(""),
           ]),
         },
       ],

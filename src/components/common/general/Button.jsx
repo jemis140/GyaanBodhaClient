@@ -9,7 +9,7 @@ const GradientButton = ({ label, onClick, width }) => {
     display: "flex",
     textAlign: "center",
     justifyContent: "center",
-    transition: "0.3s",
+    transition: "0.2s",
     alignItems: "center",
     cursor: "pointer",
     borderRadius: "5px",
@@ -20,7 +20,8 @@ const GradientButton = ({ label, onClick, width }) => {
 
   const hoverStyles = {
     background: "linear-gradient(to right, #8b4de8, #ff6c00)", // Hover background (normal shades of purple and orange)
-    color: "#fff", // White text color on hover
+    color: "#fff",
+    borderRadius: "6px", // White text color on hover
   };
 
   return (
