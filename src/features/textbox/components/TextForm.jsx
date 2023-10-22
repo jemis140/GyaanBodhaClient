@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Card, Row } from "antd";
+import { Input, Card, Row, Col } from "antd";
 import GradientButton from "../../../components/common/general/Button";
 import Description from "../../../components/common/data-display/Desciption";
 import GenerateReport from "../../../components/common/data/GenerateReport";
@@ -28,7 +28,7 @@ const TextInput = ({ onTextSubmit, chatData }) => {
           background: "linear-gradient(to right, #ffffff, #f0f0f0)",
           boxShadow: "0 4px 8px rgba(0, 0.1, 0.1, 0.1)",
           padding: "20px",
-          margin: "10px",
+          margin: "5px",
           borderRadius: "8px",
         }}
       >
@@ -47,29 +47,23 @@ const TextInput = ({ onTextSubmit, chatData }) => {
         <Row
           style={{ marginTop: "20px", display: "flex", alignItems: "center" }}
         >
-          {/* Summarize Button */}
-          <GradientButton
-            label="Summarize"
-            onClick={handleTextSubmit}
-            style={{
-              fontSize: "14px",
-              padding: "6px 12px",
-              background: "linear-gradient(to bottom, #502f73, #46287a)",
-              color: "#fff",
-              borderRadius: "4px",
-              marginRight: "5px",
-            }}
-          />
-
-          {/* Generate Report Button */}
-          <GenerateReport
-            style={{
-              padding: "6px 12px",
-              marginLeft: "10px", // Increase the spacing between buttons
-              borderRadius: "4px",
-            }}
-            chatData={chatData}
-          />
+          <Col style={{ marginRight: "5px" }}>
+            <GradientButton
+              label="Summarize"
+              onClick={handleTextSubmit}
+              style={{
+                fontSize: "14px",
+                padding: "6px 12px",
+                background: "linear-gradient(to bottom, #502f73, #46287a)",
+                color: "#fff",
+                borderRadius: "4px",
+                width: "100%", // Ensure the button takes full width on small screens
+              }}
+            />
+          </Col>
+          <Col style={{ margin: "5px" }}>
+            <GenerateReport chatData={chatData} />
+          </Col>
         </Row>
       </Card>
     </div>
