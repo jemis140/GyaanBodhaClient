@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Card, Row } from "antd";
+import { Input, Card, Row, Col } from "antd";
 import GradientButton from "../../../components/common/general/Button";
 import Description from "../../../components/common/data-display/Desciption";
 import GenerateReport from "../../../components/common/data/GenerateReport";
@@ -60,16 +60,17 @@ const TextInput = ({ onTextSubmit, chatData }) => {
               marginRight: "5px",
             }}
           />
-
+          <Col>
+            <GenerateReport
+              style={{
+                padding: "6px 12px",
+                marginLeft: "5px", // Increase the spacing between buttons
+                borderRadius: "4px",
+              }}
+              chatData={chatData}
+            />
+          </Col>
           {/* Generate Report Button */}
-          <GenerateReport
-            style={{
-              padding: "6px 12px",
-              marginLeft: "10px", // Increase the spacing between buttons
-              borderRadius: "4px",
-            }}
-            chatData={chatData}
-          />
         </Row>
       </Card>
     </div>

@@ -15,6 +15,7 @@ import GradientButton from "../../../components/common/general/Button";
 import Description from "../../../components/common/data-display/Desciption";
 import Loader from "../../../components/common/conversation/Loader";
 import { scrollToBottom } from "../../../utils/helperFunctions";
+import GenerateReportConvesation from "../../../components/common/data/GeneReportConversation";
 import NoConversationComponent from "../../../components/common/general/NoConversationMessage";
 
 const { Title } = Typography;
@@ -120,12 +121,23 @@ const YoutubeTab = () => {
           </Col>
         </Row>
         <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
-          <Col xs={24} sm={16} md={14} lg={10}>
+          <Col xs={24} sm={8} md={6} lg={3}>
             {/* Process button takes 10% of UploadDoc width */}
             <GradientButton
               label="Submit"
               onClick={handleCreateConversationChain}
-              width="30%"
+              width="100%"
+            />
+          </Col>
+          <Col xs={24} sm={8} md={6} lg={3}>
+            <GenerateReportConvesation
+              style={{
+                padding: "6px 12px",
+                marginLeft: "10px", // Increase the spacing between buttons
+                borderRadius: "4px",
+                width: "100%",
+              }}
+              chatData={chatData}
             />
           </Col>
         </Row>

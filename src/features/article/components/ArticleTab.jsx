@@ -139,7 +139,10 @@ const ArticleTab = () => {
         }}
       >
         <Description moduleType="ARTICLE_SUMMARY" />
-        <ArticleURLForm onUrlSubmit={handleGenerateSummary} />
+        <ArticleURLForm
+          onUrlSubmit={handleGenerateSummary}
+          chatData={chatData}
+        />
         {loading && <Loader />}
       </Card>
       <Row gutter={[16, 16]} style={{ margin: "8px" }}>
