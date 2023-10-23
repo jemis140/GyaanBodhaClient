@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Typography, Input, Button, Checkbox, Spin } from "antd";
+import { Input, Button, Checkbox, Typography, Row, Col } from "antd";
 import { signIn } from "./api/authenticationAPI";
 import Spinner from "../common/general/Spinner";
+import { UserOutlined } from "@ant-design/icons";
 import {
   startSessionTimer,
   resetSessionTimer,
 } from "../../session/sessionManager";
 
+import GradientButton from "../../components/common/general/Button";
 const { Title } = Typography;
 
 const Login = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // Change to false initially
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -27,36 +30,44 @@ const Login = () => {
   };
 
   const handleSubmit = async (event) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        event.preventDefault();
-        setLoading(true);
+    event.preventDefault();
+    setLoading(true);
 
-        const response = await signIn(formData);
-
-        const { token, userId } = response.data; // Adjust the response structure
-
-        console.log("token login", token);
-        console.log("UserID login", userId);
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId);
-        console.log("token login", token);
-        if (token) {
-          navigate("/");
-          resolve(token); // Resolve with the token
-        }
-      } catch (error) {
-        console.log("Login failed:", error);
-        reject(error); // Reject with the error
-      } finally {
-        setLoading(false);
-      }
-    });
+    try {
+      const response = await signIn(formData);
+      const { token, userId } = response.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Handle login error and set an appropriate error message
+      setErrorMessage("Incorrect email or password");
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
+      <Row
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Title
+          style={{
+            background: `linear-gradient(to right, #9C27B0, #FF9800)`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {" "}
+          Gyaan Bodhi
+        </Title>
+      </Row>
       <Title level={2}>Sign In</Title>
       <form onSubmit={handleSubmit}>
         <Input
@@ -65,7 +76,7 @@ const Login = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
+          style={{ marginBottom: "10px", height: "45px" }}
         />
         <Input
           type="password"
@@ -73,17 +84,33 @@ const Login = () => {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          style={{ marginBottom: "10px" }}
+          style={{ marginBottom: "10px", height: "45px" }}
         />
         <Checkbox style={{ marginBottom: "10px" }}>Remember me</Checkbox>
-        <Button type="primary" htmlType="submit" block>
-          Sign In
-        </Button>
+        <GradientButton
+          label="Sign In"
+          width="100%"
+          onClick={handleSubmit}
+          htmlType="submit"
+        />
         <div>{loading ? <Spinner /> : <></>}</div>
         <div style={{ marginTop: "10px" }}>
           <Link to="/reset">Forgot Password?</Link>
         </div>
+        {errorMessage && (
+          <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>
+        )}
       </form>
+      <Typography variant="body2" align="center">
+        Don't have an account?{" "}
+        <Link
+          to="/signup"
+          color="primary"
+          style={{ marginBottom: "10px", height: "45px" }}
+        >
+          Sign up
+        </Link>
+      </Typography>
     </div>
   );
 };
