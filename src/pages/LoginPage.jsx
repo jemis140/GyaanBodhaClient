@@ -41,7 +41,7 @@ export default function LoginPage() {
               style={{
                 height: "550px", // Set the maximum height to 100% for equal height
                 width: "330px",
-                borderRadius: "3%", // Allow the width to adjust proportionally
+                borderRadius: "5%", // Allow the width to adjust proportionally
               }}
             />
           </div>

@@ -12,6 +12,21 @@ import {
 import GradientButton from "../../components/common/general/Button";
 const { Title } = Typography;
 
+const buttonStyle = {
+  fontSize: "14px",
+  width: "100%", // Adjust the width if needed
+  height: "33px", // Set the desired height
+  display: "flex",
+  textAlign: "center",
+  justifyContent: "center",
+  transition: "0.2s",
+  alignItems: "center",
+  cursor: "pointer",
+  borderRadius: "5px",
+  background: "linear-gradient(to right, #4d2882, #b74400)",
+  color: "#fff",
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -87,12 +102,16 @@ const Login = () => {
           style={{ marginBottom: "10px", height: "45px" }}
         />
         <Checkbox style={{ marginBottom: "10px" }}>Remember me</Checkbox>
-        <GradientButton
-          label="Sign In"
+        <button
           width="100%"
+          height="50px"
+          style={buttonStyle}
           onClick={handleSubmit}
           htmlType="submit"
-        />
+        >
+          Sign In
+        </button>
+
         <div>{loading ? <Spinner /> : <></>}</div>
         <div style={{ marginTop: "10px" }}>
           <Link to="/reset">Forgot Password?</Link>
