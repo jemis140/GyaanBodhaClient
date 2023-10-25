@@ -2,13 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Layout, Menu, Typography, message } from "antd";
 import { auth } from "../../firebase";
-import {
-  UserOutlined,
-  SettingOutlined,
-  DownOutlined,
-  LogoutOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { signOut } from "firebase/auth";
 
 const { Header } = Layout;
@@ -39,7 +33,7 @@ const TopMenu = ({ currentUser }) => {
 
   const handleSignout = async () => {
     try {
-      // Clear relevant data from localStorage and localStorage
+      // Clear relevant data from localStorage
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
 
@@ -57,30 +51,12 @@ const TopMenu = ({ currentUser }) => {
         GyaanBodhi
       </Title>
       <Menu mode="horizontal" theme="dark" selectable={false} style={menuStyle}>
-        <SubMenu
-          key="profile"
-          icon={<UserOutlined />}
-          title={
-            <span>
-              Profile
-              <DownOutlined />
-            </span>
-          }
+        <Menu.Item
+          key="logout"
+          icon={<LogoutOutlined />}
+          onClick={handleSignout}
         >
-          <Menu.Item key="user-info">User Info</Menu.Item>
-          <Menu.Item
-            key="logout"
-            icon={<LogoutOutlined />}
-            onClick={handleSignout}
-          >
-            Logout
-          </Menu.Item>
-          <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
-            Help
-          </Menu.Item>
-        </SubMenu>
-        <Menu.Item key="settings" icon={<SettingOutlined />}>
-          Settings
+          Logout
         </Menu.Item>
       </Menu>
     </Header>

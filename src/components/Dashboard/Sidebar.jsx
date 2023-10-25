@@ -24,10 +24,8 @@ function getItem(label, key, icon, children, type) {
 }
 
 const items = [
-  getItem("Research State", "1", <BarChartOutlined />),
-  getItem("Reports", "2", <SnippetsOutlined />),
-  getItem("About Info", "3", <InfoCircleOutlined />), // Updated icon here
-  getItem("User guide", "4", <QuestionCircleOutlined />),
+  getItem("About Info", "1", <InfoCircleOutlined />), // Updated icon here
+  getItem("User guide", "2", <QuestionCircleOutlined />),
 ];
 
 const SideBar = () => {

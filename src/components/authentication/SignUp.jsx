@@ -110,7 +110,7 @@ const SignUp = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          style={inputStyle} // Apply the marginBottom style
+          style={{ marginBottom: "10px", height: "45px" }}
         />
         <Input
           type="password"
