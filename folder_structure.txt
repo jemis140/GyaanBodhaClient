@@ -55,3 +55,48 @@ feature/
     │   │   │   ├── notebookActions.js
     │   │   │   ├── notebookReducer.js
     │   │   │   ├── notebookThunks.js
+
+
+project-root
+│
+├── src
+│   ├── components
+│   │   ├── assets
+│   │   └── common
+│   │       ├── general
+│   ├── features
+│   │   ├── pdf
+│   │   │   ├── api
+│   │   │   │   ├── pdfAPI.js
+│   │   │   │   ├── pdfFirebaseFunctions.js
+│   │   │   ├── components
+│   │   │   │   ├── pdfTab.jsx
+│   │   ├── article
+│   │   │   ├── (Same structure as pdf)
+│   │   ├── youtube
+│   │   │   ├── (Same structure as pdf)
+│   │   ├── text
+│   │   │   ├── (Same structure as pdf)
+│   │   ├── Euclid
+│   │   │   ├── (Same structure as pdf)
+│
+├── tests
+│   ├── components
+│   │   ├── common
+│   │       ├── general
+│   │           ├── (Test files for components in general)
+│   ├── features
+│   │   ├── pdf
+│   │   │   ├── api
+│   │   │   │   ├── pdfAPI.test.js
+│   │   │   │   ├── pdfFirebaseFunctions.test.js
+│   │   │   ├── components
+│   │   │   │   ├── pdfTab.test.js
+│   │   ├── article
+│   │   │   ├── (Test files for components in article)
+│   │   ├── youtube
+│   │   │   ├── (Test files for components in youtube)
+│   │   ├── text
+│   │   │   ├── (Test files for components in text)
+│   │   ├── Euclid
+│   │   │   ├── (Test files for components in Euclid)
