@@ -1,11 +1,13 @@
 // api.js
 import axios from "axios";
 
-const BASE_URL = "https://gyaan-bodhi-3-6arjwkve7a-em.a.run.app"; // Update this with your actual backend URL
+const BASE_URL = "http://127.0.0.1:8000"; // Update this with your actual backend URL
+
+const token = localStorage.getItem("token");
 
 export const getConversationChain = async (files) => {
   try {
-    const token = localStorage.getItem("token");
+    console.log(files);
     const formData = new FormData();
     files.forEach((file) => {
       formData.append("files", file.originFileObj);
@@ -30,7 +32,6 @@ export const getConversationChain = async (files) => {
 
 export const getQueryResponse = async (query, uniqueId) => {
   try {
-    const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("question", query);
     formData.append("uniqueId", uniqueId);
