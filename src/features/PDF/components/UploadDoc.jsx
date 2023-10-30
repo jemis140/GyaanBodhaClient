@@ -10,11 +10,11 @@ const UploadDoc = ({ setFiles }) => {
     const newFileList = [...info.fileList];
     setFiles(newFileList);
     setFileList(newFileList);
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
+    // if (info.file.status === "done") {
+    //   message.success(`${info.file.name} file uploaded successfully.`);
+    // } else if (info.file.status === "error") {
+    //   message.error(`${info.file.name} file upload failed.`);
+    // }
   };
 
   const handleFileRemove = (file) => {
