@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/gyaanbodhaclient/static/css/main.18bc2e11.css",
+    "main.js": "/gyaanbodhaclient/static/js/main.8406936a.js",
+    "index.html": "/gyaanbodhaclient/index.html",
+    "main.18bc2e11.css.map": "/gyaanbodhaclient/static/css/main.18bc2e11.css.map",
+    "main.8406936a.js.map": "/gyaanbodhaclient/static/js/main.8406936a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.18bc2e11.css",
+    "static/js/main.8406936a.js"
+  ]
+}
