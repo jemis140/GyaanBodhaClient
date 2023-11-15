@@ -1,7 +1,7 @@
 // api.js
 import axios from "axios";
 
-const BASE_URL = "https://gyaan-bodhi-3-6arjwkve7a-em.a.run.app"; // Update this with your actual backend URL
+import { BASE_URL } from "../../../utils/URLContants"; // Update this with your actual backend URL
 
 const token = localStorage.getItem("token");
 

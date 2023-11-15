@@ -1,7 +1,6 @@
 import { LocalOfferSharp } from "@mui/icons-material";
 import axios from "axios";
-
-const BASE_URL = "https://gyaan-bodhi-3-6arjwkve7a-em.a.run.app";
+import { BASE_URL } from "../../../utils/URLContants";
 
 export const getArticleSummary = async (articleUrl) => {
   try {

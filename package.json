@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "https://jemis140.github.io/gyaanbodhaclient",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -36,6 +37,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build", 
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
@@ -66,6 +69,7 @@
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.33.2",
+    "gh-pages": "^6.0.0",
     "react-test-renderer": "^18.2.0"
   }
 }
