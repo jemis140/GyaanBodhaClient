@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { BASE_URL } from "../../../utils/URLContants"; // Update this with your actual backend URL
 
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 
 export const getConversationChain = async (files) => {
   try {
@@ -33,6 +33,7 @@ export const getConversationChain = async (files) => {
 export const getQueryResponse = async (query, uniqueId) => {
   try {
     const formData = new FormData();
+    console.log("inside query response");
     formData.append("question", query);
     formData.append("uniqueId", uniqueId);
 

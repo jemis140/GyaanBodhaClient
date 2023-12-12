@@ -73,7 +73,7 @@ const PdfTab = () => {
       let questionCount = userDoc.data().pdfQuestionCount || 0;
 
       // Define the maximum number of questions allowed
-      const questionLimit = 7; // Change the limit to 7
+      const questionLimit = 100; // Change the limit to 7
 
       if (questionCount >= questionLimit) {
         // Disable the "Submit" button when the limit is reached
@@ -147,17 +147,14 @@ const PdfTab = () => {
       message.error("Please upload a document before starting a conversation.");
       return;
     }
+    console.log("inside handle ask pdf question");
 
-    const rateLimitFlag = pdfQuestionRateLimiter();
+    setLoading(true); // Show loader
+    console.log("inside handle ask pdf question");
+    handleQuestionSubmission(question, uniqueId);
+    setLoading(false); // Hide loader
 
-    if (!rateLimitFlag) {
-      setLoading(true); // Show loader
-      await handleQuestionSubmission(question, uniqueId);
-      setLoading(false); // Hide loader
-
-      // Scroll to the bottom when the response is received
-      scrollToBottom();
-    }
+    // Scroll to the bottom when the response is received
   };
 
   return (

@@ -33,9 +33,9 @@ const TopMenu = ({ currentUser }) => {
 
   const handleSignout = async () => {
     try {
-      // Clear relevant data from localStorage
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
+      // Clear relevant data from sessionStorage
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("userId");
 
       await signOut(auth);
       navigate("/login");

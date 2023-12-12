@@ -10,7 +10,6 @@ const ChatInput = ({ question, setQuestion, onAsk }) => {
 
   const handleSend = () => {
     // Handle sending the question (e.g., send to a chatbot)
-    console.log("Question:", question);
     // Clear the input field after sending the question
     setQuestion("");
   };

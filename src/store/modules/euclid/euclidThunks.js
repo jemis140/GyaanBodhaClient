@@ -6,7 +6,7 @@ export const fetchChatConversations = () => {
   return async (dispatch) => {
     try {
       console.log("inside euclid store");
-      const userId = localStorage.getItem("userId");
+      const userId = sessionStorage.getItem("userId");
       const chatRef = ref(realtimeDb, `users/${userId}/modules/euclid`); // Use ref from the Realtime Database instance
 
       onValue(chatRef, (snapshot) => {

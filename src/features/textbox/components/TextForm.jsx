@@ -15,7 +15,7 @@ const TextInput = ({ onTextSubmit, chatData }) => {
   };
 
   const handleTextSubmit = () => {
-    const userId = localStorage.getItem("userId");
+    const userId = sessionStorage.getItem("userId");
     onTextSubmit(text, userId);
   };
 

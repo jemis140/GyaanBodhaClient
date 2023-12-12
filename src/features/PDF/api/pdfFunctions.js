@@ -30,6 +30,7 @@ const addChatMessagesToStore = (humanMessage, aiMessage) => {
 export const handleQuestionSubmission = async (question, uniqueId) => {
   if (question.trim() !== "") {
     try {
+      console.log("inside handle ask pdf question");
       const response = await getQueryResponse(question, uniqueId);
 
       const aiMessageContent = response.data.aiResponse;

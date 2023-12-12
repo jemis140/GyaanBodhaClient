@@ -52,7 +52,7 @@ const TextTab = () => {
   };
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
+    const userId = sessionStorage.getItem("userId");
     chatRef.current = ref(realtimeDb, `users/${userId}/modules/text`);
 
     const chatListener = onValue(chatRef.current, (snapshot) => {
@@ -84,7 +84,7 @@ const TextTab = () => {
       if (response.status === 200) {
         const summary = response.data.aiResponse;
 
-        const userId = localStorage.getItem("userId");
+        const userId = sessionStorage.getItem("userId");
         const userDocRef = doc(db, "users", userId);
         const userDoc = await getDoc(userDocRef);
 

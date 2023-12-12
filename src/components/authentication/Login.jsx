@@ -51,8 +51,8 @@ const Login = () => {
     try {
       const response = await signIn(formData);
       const { token, userId } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", userId);
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("userId", userId);
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);

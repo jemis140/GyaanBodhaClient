@@ -4,7 +4,7 @@ import { getEuclidQueryResponse } from "./euclidAPI";
 import { storeEuclidChat } from "../../../store/modules/euclid/euclidActions";
 
 const storeEuclidChatData = (content, type) => {
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   console.log("storeEuclideChatData", userId);
   const chatRef = ref(realtimeDb, `users/${userId}/modules/euclid`); // Use ref from the Realtime Database instance
   console.log("chatRef", chatRef);

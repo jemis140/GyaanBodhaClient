@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     // Check localStorage for authentication state
-    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    const storedUser = JSON.parse(sessionStorage.getItem("currentUser"));
 
     if (storedUser) {
       setCurrentUser(storedUser);

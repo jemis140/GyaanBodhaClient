@@ -6,7 +6,7 @@ import {
 import { auth } from "../../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const BASE_URL = "https://gyaan-bodhi-3-6arjwkve7a-em.a.run.app"; // Update this with your actual backend URL
+import { BASE_URL } from "../../../utils/URLContants"; // Update this with your actual backend URL
 
 export const signup = async (userData) => {
   try {
